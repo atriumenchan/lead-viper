@@ -1,1 +1,1 @@
-async function l(){return{ok:!0}}async function d(){}export{d as f,l};
+﻿async function l(t){try{const r=await fetch("/api/log-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(t||{})});return r.ok?r.json():{ok:!0}}catch{return{ok:!0}}}async function d(){}export{d as f,l};
