@@ -1,0 +1,11 @@
+# Offline mirror artifacts (not part of the deployable site)
+_DataURI/
+connect.facebook.net/
+scripts.clarity.ms/
+www.clarity.ms/
+www.googletagmanager.com/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
