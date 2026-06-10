@@ -19,9 +19,9 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const STRIPE_SECRET_KEY         = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET     = process.env.STRIPE_WEBHOOK_SECRET;
 
-if (!STRIPE_SECRET_KEY)         throw new Error('Missing STRIPE_SECRET_KEY in .env');
-if (!SUPABASE_URL)              throw new Error('Missing SUPABASE_URL in .env');
-if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY in .env');
+if (!STRIPE_SECRET_KEY)         console.warn('WARNING: STRIPE_SECRET_KEY not set');
+if (!SUPABASE_URL)              console.warn('WARNING: SUPABASE_URL not set');
+if (!SUPABASE_SERVICE_ROLE_KEY) console.warn('WARNING: SUPABASE_SERVICE_ROLE_KEY not set');
 
 // ── Clients ───────────────────────────────────────────────────────────────────
 const stripe   = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2024-11-20.acacia' });
@@ -419,14 +419,18 @@ app.get('*', (req, res) => {
   return res.status(404).send('Not found');
 });
 
-// ── Start ─────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log('\n========================================');
-  console.log(` AI Lead Bundle backend`);
-  console.log(` http://localhost:${PORT}`);
-  console.log('========================================');
-  console.log(` Frontend : ${FRONTEND_DIR}`);
-  console.log(` Supabase : ${SUPABASE_URL}`);
-  console.log(` Stripe   : ${STRIPE_SECRET_KEY.startsWith('sk_live') ? 'LIVE' : 'TEST'} mode`);
-  console.log('========================================\n');
-});
+// ── Start (local dev) / Export (Vercel serverless) ───────────────────────────
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log('\n========================================');
+    console.log(` AI Lead Bundle backend`);
+    console.log(` http://localhost:${PORT}`);
+    console.log('========================================');
+    console.log(` Frontend : ${FRONTEND_DIR}`);
+    console.log(` Supabase : ${SUPABASE_URL}`);
+    console.log(` Stripe   : ${STRIPE_SECRET_KEY.startsWith('sk_live') ? 'LIVE' : 'TEST'} mode`);
+    console.log('========================================\n');
+  });
+}
+
+module.exports = app;
