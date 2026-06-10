@@ -11,8 +11,7 @@ const { createClient } = require('@supabase/supabase-js');
 const PORT        = process.env.PORT || 3001;
 const SITE_URL    = (process.env.SITE_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
 const FRONTEND_DIR = process.env.FRONTEND_DIR ||
-  path.join(__dirname, '..', 'website', 'aileadbundle',
-    'source code', 'aileadbundle.com', 'aileadbundle.com', 'leadengine.admexo.com');
+  path.join(__dirname, 'public');
 
 const SUPABASE_URL              = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY         = process.env.SUPABASE_ANON_KEY;
