@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local static server with SPA fallback for the mirrored aileadbundle.com site."""
+"""Local static server with SPA fallback for the leadengine.admexo.com site."""
 
 import http.server
 import os
