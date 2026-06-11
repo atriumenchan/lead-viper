@@ -49,6 +49,34 @@ module.exports = async function handler(req, res) {
     const { tier, bumpFunnel, bumpPrompts, baseCents } = inferTierAndBumps(priceNum);
     const totalCents = Math.round(priceNum * 100);
 
+    // ── Duplicate prevention (before Stripe call) ─────────────────────────
+    let lead_id = null;
+    if (supabase) {
+      const { data: existingLeads } = await supabase
+        .from('leads')
+        .select('id, converted')
+        .eq('email', email)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      const existingLead = existingLeads?.[0] || null;
+
+      if (existingLead?.converted === true) {
+        return res.status(409).json({
+          error: 'This email has already been used to purchase. Check your inbox for access details.',
+        });
+      }
+
+      lead_id = existingLead?.id || null;
+
+      if (!lead_id) {
+        const { data: newLead, error: leadErr } = await supabase.from('leads').insert({
+          first_name: firstName, last_name: '', email, mobile: phone || '', country_code: '+1', profession: 'Not specified', converted: false,
+        }).select('id').single();
+        if (!leadErr && newLead?.id) lead_id = newLead.id;
+      }
+    }
+
     const lineItems = [
       { price_data: { currency: 'usd', product_data: { name: TIER_NAMES[tier] || 'AI Lead Bundle' }, unit_amount: baseCents }, quantity: 1 },
     ];
@@ -66,16 +94,10 @@ module.exports = async function handler(req, res) {
       metadata: { tier, first_name: firstName, phone: phone || '', bump_funnel_copy: bumpFunnel ? 'true' : 'false', bump_ai_prompts: bumpPrompts ? 'true' : 'false' },
     });
 
-    if (supabase) {
-      const { data: leadData, error: leadErr } = await supabase.from('leads').insert({
-        first_name: firstName, last_name: '', email, mobile: phone || '', country_code: '+1', profession: 'Not specified', converted: false,
-      }).select('id').single();
-
-      if (!leadErr && leadData?.id) {
-        await supabase.from('orders').insert({
-          lead_id: leadData.id, stripe_session_id: session.id, tier, amount_cents: totalCents, bump_funnel_copy: bumpFunnel, bump_ai_prompts: bumpPrompts, status: 'pending',
-        });
-      }
+    if (supabase && lead_id) {
+      await supabase.from('orders').insert({
+        lead_id, stripe_session_id: session.id, tier, amount_cents: totalCents, bump_funnel_copy: bumpFunnel, bump_ai_prompts: bumpPrompts, status: 'pending',
+      });
     }
 
     return res.json({ url: session.url });
