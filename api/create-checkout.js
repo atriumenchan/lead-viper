@@ -52,22 +52,30 @@ module.exports = async function handler(req, res) {
     // ── Duplicate prevention (before Stripe call) ─────────────────────────
     let lead_id = null;
     if (supabase) {
-      const { data: existingLeads } = await supabase
+      // Check if ANY row for this email has converted=true (not just the latest)
+      const { data: convertedRows } = await supabase
         .from('leads')
-        .select('id, converted')
+        .select('id')
         .eq('email', email)
-        .order('created_at', { ascending: false })
+        .eq('converted', true)
         .limit(1);
 
-      const existingLead = existingLeads?.[0] || null;
-
-      if (existingLead?.converted === true) {
+      if (convertedRows && convertedRows.length > 0) {
         return res.status(409).json({
           error: 'This email has already been used to purchase. Check your inbox for access details.',
         });
       }
 
-      lead_id = existingLead?.id || null;
+      // Get latest unconverted lead to reuse (avoids duplicate rows)
+      const { data: existingLeads } = await supabase
+        .from('leads')
+        .select('id')
+        .eq('email', email)
+        .eq('converted', false)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      lead_id = existingLeads?.[0]?.id || null;
 
       if (!lead_id) {
         const { data: newLead, error: leadErr } = await supabase.from('leads').insert({
