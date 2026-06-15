@@ -78,7 +78,7 @@
     .lesson-crumb{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d97706;display:flex;align-items:center;gap:5px;margin-bottom:10px}
     .lesson-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;margin-bottom:6px}
     .lesson-sub{font-size:14px;color:#9ca3af;margin-bottom:20px}
-    .lesson-body{font-size:14px;color:#d1d5db;line-height:1.8;white-space:pre-wrap;margin-bottom:8px}
+    .lesson-body-plain{font-size:14px;color:#d1d5db;line-height:1.8;white-space:pre-wrap;margin-bottom:8px}
     .coach-list{margin:16px 0;padding:0;list-style:none;columns:2;gap:16px}
     .coach-list li{font-size:13px;color:#9ca3af;padding:2px 0}
     .coach-list li::before{content:'â€” ';color:#d97706}
@@ -90,6 +90,13 @@
     .res-info .res-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
     .res-info .res-url{font-size:11px;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
     .coming-soon{font-size:13px;color:#374151;font-style:italic}
+    .lc-h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#fff;margin:18px 0 6px;padding-top:4px}
+    .lc-p{font-size:14px;color:#d1d5db;line-height:1.7;margin:3px 0}
+    .lc-bq{border-left:3px solid #d97706;padding:8px 14px;background:rgba(217,119,6,.07);border-radius:0 6px 6px 0;margin:6px 0;font-size:13px;color:#d1d5db;line-height:1.6;font-style:italic}
+    .lc-li{font-size:13px;color:#9ca3af;padding:2px 0 2px 16px;line-height:1.6;display:block;position:relative}
+    .lc-li::before{content:'•';color:#d97706;position:absolute;left:0}
+    .lc-hr{border:none;border-top:1px solid #1a1a2e;margin:14px 0}
+    .lesson-body{font-size:14px;color:#d1d5db;line-height:1.8;margin-bottom:8px}
 
     /* â”€â”€ Upgrade banner â”€â”€ */
     .upgrade-bar{background:linear-gradient(135deg,#1a0f00,#0c0c1a);border:1px solid rgba(217,119,6,.4);border-radius:10px;padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -172,10 +179,10 @@ const BLOCKS = [
         body:`A step-by-step guide to start using my Custom GPT â€” no ChatGPT Plus subscription needed.\n\nâœ… Step 1: Click the Shared Link\nOpen the link provided. It looks like: https://chat.openai.com/g/g-XXXXXXXXXXX\nThis link opens my Custom GPT in ChatGPT.\n\nðŸ’¬ Step 2: Sign in to ChatGPT\nIf not already signed in, log in using your OpenAI account. A free ChatGPT account works â€” a paid plan is not required to use a shared GPT.\n\nðŸ“¦ Step 3: Click "Try GPT" or "Explore GPT"\nYou will see a button labeled "Try GPT" or "Explore GPT". Click it to open the Custom GPT and begin chatting.\n\nðŸ“Œ Optional: Pin It for Easy Access\nTo reuse the Custom GPT anytime:\nâ€¢ Click the â˜… (star) icon to pin it.\nâ€¢ Or check your ChatGPT sidebar under "Your GPTs".\n\nâœ… That's it! You are now using my Custom GPT inside your free ChatGPT account.\n\nNeed Help? Feel free to reply or message me if you need support getting started.`,
         resources:[]
       },
-      { id:'lead-finder', title:'20 Lead Finder AI Agent', resources:[{name:'Open 20 Lead Finder AI Agent',url:'https://chatgpt.com/g/g-69989e6b59338816d569663d4eb893a1-20-lead-finder-gpt'}] },
-      { id:'script-5130', title:'5130 Script AI Agent (One to One)', resources:[{name:'Open 5130 Script AI Agent',url:'https://chatgpt.com/g/g-6914a86f34a88191a9cbcb2fc81920d0-5130-script-gpt'}] },
-      { id:'aca', title:'ACA AI Agent', resources:[{name:'Open ACA AI Agent',url:'https://chatgpt.com/g/g-68727cca63d88f91a88b514eb030f016-aca-gpt'}] },
-      { id:'appt-setter', title:'Appointment Setter AI Agent', resources:[{name:'Open Appointment Setter AI Agent',url:'https://chatgpt.com/g/g-6666ac585bbc81918b22edffac3879da-appointment-setter-gpt'}] },
+      { id:'lead-finder', title:'20 Lead Finder AI Agent', resources:[{name:'Open 20 Lead Finder AI Agent',url:'https://chatgpt.com/g/g-69889e8b593881919d56963d4eb893a1-20-lead-finder-gpt'}] },
+      { id:'script-5130', title:'5130 Script AI Agent (One to One)', resources:[{name:'Open 5130 Script AI Agent',url:'https://chatgpt.com/g/g-6914a86f34a88191a9cbdb2fc81920d0-5130-script-gpt'}] },
+      { id:'aca', title:'ACA AI Agent', resources:[{name:'Open ACA AI Agent',url:'https://chatgpt.com/g/g-68727dca63d88191a88b514eb030f0f6-aca-gpt'}] },
+      { id:'appt-setter', title:'Appointment Setter AI Agent', resources:[{name:'Open Appointment Setter AI Agent',url:'https://chatgpt.com/g/g-6866ac585bbc81918b22edf1ac3879da-appointment-setter-gpt'}] },
       { id:'cash', title:'Cash AI Agent',
         subtitle:'Install Cash AI Agent in your ChatGPT and use the prompts below.',
         resources:[
@@ -185,7 +192,7 @@ const BLOCKS = [
           {name:'Connection Request AI Agent',url:'https://chatgpt.com/share/67e8ed21-dfac-800f-85bc-5196acd76b05'}
         ]
       },
-      { id:'content', title:'Content AI Agent', resources:[] },
+      { id:'content', title:'Content AI Agent', resources:[{name:'Open Content AI Agent',url:'https://chatgpt.com/g/g-684d9fbd4d548191b210b578f3c873b6-content-gpt'}] },
       { id:'sales-script', title:'Customize Sales Script AI Agent', resources:[] },
       { id:'ebook', title:'Ebook AI Agent', resources:[] },
       { id:'followup', title:'Followup and Objection AI Agent', resources:[] },
@@ -208,7 +215,114 @@ const BLOCKS = [
     desc:'Build a self-running sales machine that closes deals on autopilot.',
     bg:'bg-sales', num:'$', lbl:'Machine',
     tiers:['gold'],
-    lessons:[]
+    lessons:[
+      { id:'outreach-bundle', title:'Outreach Script Bundle',
+        subtitle:'LinkedIn Script Library — Generating Leads & Booking Appointments',
+        body:`## 🎯 Connection Request Scripts (by Niche)
+
+**Niche: Financial Consultants** — *Target: MSMEs, SMEs, Startups*
+> "It took me 5 years to decode how businesses save 50% on taxes and reinvest profits to scale. After many ups and downs, I cracked the formula for smart financial planning that helps MSMEs grow without overspending. Worth a chat if I show you how to boost profits and save big?"
+
+**Niche: Business Coaches** — *Target: SME Owners, Startup Founders, Entrepreneurs*
+> "It took me 7 years to refine systems that streamline operations and attract high-ticket clients. After a lot of trial and error, I built a framework that helps business coaches scale sustainably and free up time. Worth a chat if I show you how to grow faster with ease?"
+
+**Niche: Life Coaches** — *Target: Individuals Seeking Personal Development*
+> "It took me 4 years to help individuals overcome challenges and create clarity for meaningful growth. After working with many, I developed strategies to turn roadblocks into opportunities for a purposeful life. Worth a chat if I show you how to make breakthroughs happen?"
+
+**Niche: Freelancers Offering Services** — *Target: Other Freelancers*
+> "It took me 6 years to figure out how freelancers attract premium clients and avoid burnout. After facing the ups and downs myself, I cracked the method to build a sustainable freelancing business. Worth a chat if I show you how to earn more while working less?"
+
+**Niche: Productivity Coaches** — *Target: Busy Professionals, Entrepreneurs*
+> "It took me 3 years to decode what makes professionals double productivity without burning out. After testing and learning, I built frameworks that help coaches achieve big results consistently. Worth a chat if I show you how to scale with less stress?"
+
+**Niche: Social Media Managers** — *Target: Small Business Owners, Influencers, Startups*
+> "It took me 5 years to master strategies that grow social media audiences and turn followers into customers. Through trial and error, I built proven methods to scale brand presence and revenue. Worth a chat if I show you how to grow and convert your audience?"
+
+**Niche: Content Writers / Copywriters** — *Target: Business Owners, Marketers*
+> "It took me 7 years to decode the psychology of what makes people buy. After refining my process, I cracked how to write copy that connects deeply and converts leads into paying customers. Worth a chat if I show you where your messaging is missing sales?"
+
+**Niche: Career Coaches** — *Target: Professionals Looking for Job Growth*
+> "It took me 5 years to help professionals land dream jobs and fast-track promotions. Through hands-on work, I developed strategies to grow careers faster without the guesswork. Worth a chat if I show you how to achieve your next career leap?"
+
+**Niche: Web Developers / Tech Consultants** — *Target: Startups, Founders, SMBs*
+> "It took me 4 years to learn how to build MVPs that launch faster and scale smarter. After working with startups, I created systems to deliver products on time and under budget. Worth a chat if I show you how to fast-track your product launch?"
+
+**Niche: Health Coaches** — *Target: Busy Professionals, Fitness Enthusiasts*
+> "It took me 6 years to decode how professionals transform health while managing busy lives. After refining my approach, I built methods to help lose weight, gain energy, and stay consistent. Worth a chat if I show you how to hit your health goals effortlessly?"
+
+---
+
+## 🔁 Follow-Up Scripts
+
+**Message 1 (After Connection Accepted):**
+- *Website Designers & Developers:* "Hi [Name], thanks for connecting! Recently, I helped [specific client] redesign their website, boosting their conversion rates by 40%. If you're looking to achieve similar results, I'd love to explore how we can work together."
+- *SEO Providers:* "Hi [Name], appreciate the connection! I specialize in helping B2B companies optimize their SEO strategies to rank higher and drive consistent leads. If this aligns with your goals, let's chat!"
+- *Career Coaches:* "Hi [Name], I've worked with career coaches to consistently book 30+ high-ticket appointments. One of my clients increased their service price by 3x in just 2 weeks. Let's explore how we can achieve similar results for you!"
+- *Financial Consultants:* "Hi [Name], I recently worked with a financial consultant who doubled their client base in 3 months. I'd love to share insights that could help you achieve similar growth. Let's chat!"
+
+**Message 2 (No Response After 1 Week):**
+- *General Reminder:* "Hi [Name], just circling back to see if exploring [specific benefit] is something you'd like to discuss. I've seen great results helping [similar industry/niche] overcome [pain point], and I'd love to do the same for you."
+- *Business Coaches:* "Hi [Name], I know things can get busy! I'd love to share how I've helped business coaches streamline operations and attract consistent, high-ticket clients. Let me know if this resonates!"
+
+---
+
+## ❄️ Cold Outreach Script
+
+> "It took me years of working with agencies to understand what drives impactful client engagement and revenue growth. Recently, I helped [specific agency/client] achieve [specific result]. I'd love to explore how we can collaborate to scale your impact."
+
+---
+
+## 💬 If They Reply
+
+- **Case Study + Zoom Invite:** "Hi [Name], thank you for replying! Recently, I helped [client/industry] achieve [specific result]. I'm confident we can explore similar strategies for you. How about a quick 15 min chat?"
+- **If Unsure:** "Hi [Name], no problem at all! Let me share a free resource that has been invaluable for others in [niche/industry]. If it resonates, we can explore further. Sound good?"
+
+---
+
+## 📅 Booking Appointments
+
+- **When Prospect Agrees:** "Great, [Name]! Does [date and time] work for a quick chat? Let me know, and I'll send a calendar invite."
+- **If They Disagree:** "No worries! When would be a better time for you?"
+- **If They Are Unsure:** "I totally understand! Let me share a resource that might give more clarity on how we can help."
+
+---
+
+## ⏰ Follow-Up Time
+
+- After 1 Day
+- After 5 Days
+- After 2 Weeks
+
+---
+
+## 📝 Notes
+
+- Personalize each script with specific details about the prospect's profile, company, or goals.
+- Keep a sales sheet to track prospects, conversations, and follow-ups.
+- Use Google Calendar for scheduling calls instead of relying solely on tools like Calendly.
+- Highlight pain points and dream outcomes in your messaging.
+- Maintain consistency in follow-ups while respecting the prospect's time.`,
+        resources:[]
+      },
+      { id:'scripts-template', title:'Scripts and Template',
+        subtitle:'Ready-to-use outreach scripts and templates. Click any file below to download.',
+        body:'',
+        resources:[
+          {name:'Appointment Setting Script (DOCX)',url:'https://aileadbundle.com/downloads/appointment_setting_script.docx'},
+          {name:'Connection Request Template (DOCX)',url:'https://aileadbundle.com/downloads/Connection_Request_Template.docx'},
+          {name:'Follow-Up Template (DOCX)',url:'https://aileadbundle.com/downloads/Follow_Up_Template.docx'},
+          {name:'Hero Introduction Template (DOCX)',url:'https://aileadbundle.com/downloads/Hero_Introduction_Template.docx'},
+          {name:'Instagram Outreach Template (DOCX)',url:'https://aileadbundle.com/downloads/Instagram_Outreach_Template.docx'}
+        ]
+      },
+      { id:'1m-sales', title:'1 Million $ Sales Machine', body:'', resources:[] },
+      { id:'8step', title:'8 Step to 8 Figure Coaching', body:'', resources:[] },
+      { id:'21day-ebook', title:'21 Day Challenge Ebook', body:'', resources:[] },
+      { id:'chat-ai', title:'Chat AI Agent For Coaches', body:'', resources:[] },
+      { id:'ai-linkedin', title:'AI Agent for LinkedIn', body:'', resources:[] },
+      { id:'linkedin-sales', title:'LinkedIn Sales Machine', body:'', resources:[] },
+      { id:'live-qna', title:'Live QnA Classes', body:'', resources:[] }
+    ]
   },
   // â”€â”€ BONUSES
   {
@@ -261,6 +375,23 @@ function signOut() {
 }
 
 // â”€â”€ SVG HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function fmtInline(s) {
+  return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+}
+function md(s) {
+  if (!s) return '';
+  let html = '';
+  for (const l of s.split('\n')) {
+    if (/^## /.test(l))        html += `<h3 class="lc-h2">${fmtInline(l.slice(3))}</h3>`;
+    else if (/^> /.test(l))    html += `<blockquote class="lc-bq">${fmtInline(l.slice(2))}</blockquote>`;
+    else if (/^- /.test(l))    html += `<span class="lc-li">${fmtInline(l.slice(2))}</span>`;
+    else if (/^---$/.test(l.trim())) html += '<hr class="lc-hr"/>';
+    else if (l.trim()==='')    html += '<br>';
+    else                       html += `<p class="lc-p">${fmtInline(l)}</p>`;
+  }
+  return html;
+}
+
 const ARROW = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
 const FOLDER_SVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`;
 const EXT_SVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
@@ -369,7 +500,7 @@ function renderLesson() {
       <div class="lesson-crumb">${FOLDER_SVG} ${b.title}</div>
       <h1 class="lesson-title">${l.title}</h1>
       ${l.subtitle ? `<p class="lesson-sub">${l.subtitle}</p>` : ''}
-      ${l.body ? `<p class="lesson-body">${l.body}</p>` : ''}
+      ${l.body ? `<div class="lesson-body">${md(l.body)}</div>` : ''}
       ${coaches}
       ${more}
       ${resources}
