@@ -32,9 +32,9 @@ const BASE_PRICES = { 3: 'basic', 9: 'silver', 15: 'gold' };
 const BUMP1_CENTS = 1200;   // $12 funnel copy bump
 const BUMP2_CENTS = 1700;   // $17 AI prompts bump
 const TIER_NAMES  = {
-  basic:  'AI Lead Bundle — Basic (One-Time)',
-  silver: 'AI Lead Bundle — Silver (One-Time)',
-  gold:   'AI Lead Bundle — Gold (One-Time)',
+  basic:  'AI Lead Engine — Basic (One-Time)',
+  silver: 'AI Lead Engine — Silver (One-Time)',
+  gold:   'AI Lead Engine — Gold (One-Time)',
 };
 
 function inferTierAndBumps(priceUsd) {
@@ -156,7 +156,7 @@ app.post('/api/create-checkout', async (req, res) => {
       {
         price_data: {
           currency: 'usd',
-          product_data: { name: TIER_NAMES[tier] || 'AI Lead Bundle' },
+          product_data: { name: TIER_NAMES[tier] || 'AI Lead Engine' },
           unit_amount: baseCents,
         },
         quantity: 1,
@@ -423,7 +423,7 @@ app.get('*', (req, res) => {
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log('\n========================================');
-    console.log(` AI Lead Bundle backend`);
+    console.log(` AI Lead Engine backend`);
     console.log(` http://localhost:${PORT}`);
     console.log('========================================');
     console.log(` Frontend : ${FRONTEND_DIR}`);

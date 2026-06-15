@@ -1,7 +1,7 @@
 {
   "name": "ai-lead-backend",
   "version": "1.0.0",
-  "description": "Backend server for AI Lead Bundle — serves frontend with live Stripe + Supabase",
+  "description": "Backend server for AI Lead Engine — serves frontend with live Stripe + Supabase",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

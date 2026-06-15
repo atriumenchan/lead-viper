@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
         Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
         Destination: { ToAddresses: [lead.email] },
         Message: {
-          Subject: { Data: '⏰ You left your AI Lead Bundle behind...' },
+          Subject: { Data: '⏰ You left your AI Lead Engine behind...' },
           Body: { Html: { Data: html }, Text: { Data: `Hi ${lead.first_name || 'there'}, complete your purchase: ${SITE_URL}/checkout` } },
         },
       }));

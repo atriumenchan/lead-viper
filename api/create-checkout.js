@@ -6,9 +6,9 @@ const BASE_PRICES = { 3: 'basic', 9: 'silver', 15: 'gold' };
 const BUMP1_CENTS = 1200;
 const BUMP2_CENTS = 1700;
 const TIER_NAMES  = {
-  basic:  'AI Lead Bundle — Basic (One-Time)',
-  silver: 'AI Lead Bundle — Silver (One-Time)',
-  gold:   'AI Lead Bundle — Gold (One-Time)',
+  basic:  'AI Lead Engine — Basic (One-Time)',
+  silver: 'AI Lead Engine — Silver (One-Time)',
+  gold:   'AI Lead Engine — Gold (One-Time)',
 };
 
 function inferTierAndBumps(priceUsd) {
@@ -86,7 +86,7 @@ module.exports = async function handler(req, res) {
     }
 
     const lineItems = [
-      { price_data: { currency: 'usd', product_data: { name: TIER_NAMES[tier] || 'AI Lead Bundle' }, unit_amount: baseCents }, quantity: 1 },
+      { price_data: { currency: 'usd', product_data: { name: TIER_NAMES[tier] || 'AI Lead Engine' }, unit_amount: baseCents }, quantity: 1 },
     ];
     if (bumpFunnel)  lineItems.push({ price_data: { currency: 'usd', product_data: { name: 'AI Funnel Copy Creation Agent (Order Bump)' }, unit_amount: BUMP1_CENTS }, quantity: 1 });
     if (bumpPrompts) lineItems.push({ price_data: { currency: 'usd', product_data: { name: 'AI Prompts That Build Your Offer (Order Bump)' }, unit_amount: BUMP2_CENTS }, quantity: 1 });

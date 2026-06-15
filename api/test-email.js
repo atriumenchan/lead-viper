@@ -18,10 +18,10 @@ module.exports = async function handler(req, res) {
       Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
       Destination: { ToAddresses: [to] },
       Message: {
-        Subject: { Data: '✅ SES Test — AI Lead Bundle' },
+        Subject: { Data: '✅ SES Test — AI Lead Engine' },
         Body: {
-          Html: { Data: '<h2>SES is working!</h2><p>This is a test email from your AI Lead Bundle backend.</p>' },
-          Text: { Data: 'SES is working! This is a test email from your AI Lead Bundle backend.' },
+          Html: { Data: '<h2>SES is working!</h2><p>This is a test email from your AI Lead Engine backend.</p>' },
+          Text: { Data: 'SES is working! This is a test email from your AI Lead Engine backend.' },
         },
       },
     }));

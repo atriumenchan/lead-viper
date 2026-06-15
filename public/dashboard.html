@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Dashboard â€” AI Lead Bundle</title>
+  <title>Dashboard — AI Lead Engine</title>
   <link rel="icon" href="/favicon.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -120,7 +120,7 @@
   <div class="logo">
     <div class="logo-icon">âš¡</div>
     <div>
-      <div class="logo-text">AI Lead Bundle</div>
+      <div class="logo-text">AI Lead Engine</div>
       <div class="logo-sub">Member LMS</div>
     </div>
   </div>
@@ -142,7 +142,7 @@
 <script>
 // â”€â”€ AUTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let user;
-try { user = JSON.parse(sessionStorage.getItem('ailb_user')); } catch(e){}
+try { user = JSON.parse(localStorage.getItem('ailb_user') || sessionStorage.getItem('ailb_user')); } catch(e){}
 if (!user) { window.location.href = '/access'; }
 document.getElementById('userEmail').textContent = user.email || '';
 
@@ -369,6 +369,7 @@ function goBack() {
 }
 
 function signOut() {
+  localStorage.removeItem('ailb_user');
   sessionStorage.removeItem('ailb_user');
   window.location.href = '/access';
 }

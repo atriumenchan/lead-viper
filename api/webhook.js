@@ -1,67 +1,16 @@
 'use strict';
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
-const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 const crypto = require('crypto');
+const { buildWelcomeEmail, sendEmail } = require('./_email');
 
 const TIER_LABELS = { basic: 'Basic', silver: 'Silver', gold: 'Gold' };
 
-function getSESClient() {
-  return new SESClient({
-    region: process.env.AWS_SES_REGION || 'us-east-2',
-    credentials: {
-      accessKeyId:     process.env.AWS_SES_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY,
-    },
-  });
-}
-
 async function sendPurchaseEmail({ email, firstName, tier, password, dashboardUrl, bumpFunnel, bumpPrompts }) {
-  const ses = getSESClient();
   const tierLabel = TIER_LABELS[tier] || tier;
   const bumps = [bumpFunnel && 'AI Funnel Copy Creation Agent', bumpPrompts && 'AI Prompts That Build Your Offer'].filter(Boolean);
-
-  const html = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:40px 0">
-<tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;max-width:600px">
-  <tr><td style="background:#1a1a2e;padding:32px 40px;text-align:center">
-    <h1 style="color:#f0a500;margin:0;font-size:24px">🎉 You're In! Your AI Lead Bundle Is Ready</h1>
-  </td></tr>
-  <tr><td style="padding:32px 40px">
-    <p style="color:#333;font-size:16px;margin:0 0 16px">Hi ${firstName},</p>
-    <p style="color:#333;font-size:16px;margin:0 0 24px">Your payment was successful. You've unlocked the <strong>${tierLabel} Plan</strong>${bumps.length ? ' + ' + bumps.join(' + ') : ''}.</p>
-    <div style="background:#f8f9fa;border-radius:8px;padding:20px;margin:0 0 24px">
-      <p style="color:#666;font-size:14px;margin:0 0 8px">Your dashboard login credentials:</p>
-      <p style="margin:4px 0;font-size:15px"><strong>Email:</strong> ${email}</p>
-      <p style="margin:4px 0;font-size:15px"><strong>Password:</strong> <span style="font-family:monospace;background:#e9ecef;padding:2px 8px;border-radius:4px">${password}</span></p>
-    </div>
-    <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">
-      <a href="${dashboardUrl}" style="display:inline-block;background:#f0a500;color:#1a1a2e;font-weight:bold;font-size:16px;padding:16px 40px;border-radius:8px;text-decoration:none">Access Your Dashboard →</a>
-    </td></tr></table>
-    <p style="color:#999;font-size:13px;margin:24px 0 0;text-align:center">Save this email — you'll need it to log back in.</p>
-  </td></tr>
-  <tr><td style="background:#f8f9fa;padding:20px 40px;text-align:center">
-    <p style="color:#999;font-size:12px;margin:0">AI Lead Bundle · <a href="https://leadengine.admexo.com" style="color:#f0a500">leadengine.admexo.com</a></p>
-  </td></tr>
-</table>
-</td></tr>
-</table>
-</body>
-</html>`;
-
-  await ses.send(new SendEmailCommand({
-    Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
-    Destination: { ToAddresses: [email] },
-    Message: {
-      Subject: { Data: `🎉 Your AI Lead Bundle ${tierLabel} Access Is Ready` },
-      Body: { Html: { Data: html }, Text: { Data: `Hi ${firstName},\n\nYour AI Lead Bundle ${tierLabel} is ready.\n\nDashboard: ${dashboardUrl}\nEmail: ${email}\nPassword: ${password}\n\nSave this email to log back in.` } },
-    },
-  }));
+  const { subject, html, text } = buildWelcomeEmail({ firstName, email, password, tierLabel, bumps });
+  await sendEmail({ to: email, subject, html, text });
 }
 
 module.exports.config = { api: { bodyParser: false } };

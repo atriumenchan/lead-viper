@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Member Access — AI Lead Bundle</title>
+  <title>Member Access — AI Lead Engine</title>
   <link rel="icon" href="/favicon.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -12,24 +12,24 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{min-height:100vh;background:#0a0a1f;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
     .logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#d97706,#b45309);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
     .logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:#fff;line-height:1.2}
-    .logo-sub{font-size:10px;font-weight:500;color:#d97706;letter-spacing:.08em;text-transform:uppercase}
+    .logo-sub{font-size:10px;font-weight:500;color:#661fff;letter-spacing:.08em;text-transform:uppercase}
     .card{width:100%;max-width:420px;background:#0f0f1f;border:1px solid #1f2937;border-radius:16px;padding:40px 36px}
-    .lock-wrap{width:56px;height:56px;background:linear-gradient(135deg,#d97706,#b45309);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+    .lock-wrap{width:56px;height:56px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
     .card h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;color:#fff;text-align:center;margin-bottom:6px}
     .card p{font-size:14px;color:#9ca3af;text-align:center;margin-bottom:28px}
     .field{margin-bottom:18px}
     label{display:block;font-size:13px;font-weight:600;color:#d1d5db;margin-bottom:6px}
     input[type=email],input[type=password]{width:100%;background:#111827;border:1px solid #374151;border-radius:8px;padding:12px 14px;font-size:14px;color:#fff;outline:none;transition:border-color .2s}
-    input[type=email]:focus,input[type=password]:focus{border-color:#d97706}
+    input[type=email]:focus,input[type=password]:focus{border-color:#661fff}
     input::placeholder{color:#6b7280}
-    .btn{width:100%;padding:14px;background:linear-gradient(135deg,#d97706,#b45309);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:8px;cursor:pointer;transition:opacity .2s;margin-top:4px}
+    .btn{width:100%;padding:14px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;border:none;border-radius:8px;cursor:pointer;transition:opacity .2s;margin-top:4px}
     .btn:hover{opacity:.9}
     .btn:disabled{opacity:.5;cursor:not-allowed}
     .error{background:#3b1515;border:1px solid #7f1d1d;border-radius:8px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
     .support{text-align:center;margin-top:20px;font-size:13px;color:#6b7280}
-    .support a{color:#d97706;text-decoration:none}
+    .support a{color:#661fff;text-decoration:none}
     .support a:hover{text-decoration:underline}
   </style>
 </head>
@@ -37,7 +37,7 @@
   <div class="logo">
     <div class="logo-icon">⚡</div>
     <div>
-      <div class="logo-text">AI Lead Bundle</div>
+      <div class="logo-text">AI Lead Engine</div>
       <div class="logo-sub">Member LMS</div>
     </div>
   </div>
@@ -49,7 +49,7 @@
       </svg>
     </div>
     <h1>Member Access</h1>
-    <p>Log in to your AI Lead Bundle account</p>
+    <p>Log in to your AI Lead Engine account</p>
 
     <div class="error" id="errorMsg"></div>
 
@@ -71,6 +71,9 @@
   </div>
 
   <script>
+    // If already logged in, go straight to the dashboard (prevents back-button logout)
+    try { if (localStorage.getItem('ailb_user')) { window.location.replace('/dashboard'); } } catch(e){}
+
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
@@ -88,7 +91,7 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Invalid email or password');
-        sessionStorage.setItem('ailb_user', JSON.stringify(data));
+        localStorage.setItem('ailb_user', JSON.stringify(data));
         window.location.href = '/dashboard';
       } catch(ex) {
         err.textContent = ex.message;
