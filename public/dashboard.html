@@ -40,17 +40,16 @@
     .card:hover{border-color:#d97706;transform:translateY(-2px)}
     .card.locked{opacity:.45;cursor:default;pointer-events:none}
     .card-thumb{width:100%;height:175px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
-    .card-thumb::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(255,255,255,.015) 28px,rgba(255,255,255,.015) 29px),repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(255,255,255,.015) 28px,rgba(255,255,255,.015) 29px)}
-    .thumb-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:64px;line-height:1;position:relative;z-index:1}
-    .thumb-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7;position:relative;z-index:1}
-    .thumb-icon{font-size:52px;position:relative;z-index:1}
+    .card-thumb img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+    .thumb-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:64px;line-height:1;position:relative;z-index:1;text-shadow:0 2px 20px rgba(0,0,0,.8)}
+    .thumb-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;position:relative;z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.9)}
 
-    /* Thumbnail colors */
-    .bg-leads{background:radial-gradient(ellipse at 40% 55%,rgba(200,30,30,.85) 0%,rgba(100,0,0,.6) 45%,#06060e 72%)}
-    .bg-plugplay{background:radial-gradient(ellipse at 50% 45%,rgba(140,30,255,.85) 0%,rgba(60,0,180,.6) 45%,#06060e 72%)}
-    .bg-sales{background:radial-gradient(ellipse at 55% 45%,rgba(240,165,0,.85) 0%,rgba(150,80,0,.6) 45%,#06060e 72%)}
-    .bg-funnel{background:radial-gradient(ellipse at 40% 50%,rgba(0,160,220,.85) 0%,rgba(0,60,140,.6) 45%,#06060e 72%)}
-    .bg-prompts{background:radial-gradient(ellipse at 50% 40%,rgba(30,200,120,.85) 0%,rgba(0,90,60,.6) 45%,#06060e 72%)}
+    /* Fallback thumbnail colours (used when no image) */
+    .bg-leads{background:#080810}
+    .bg-plugplay{background:#080810}
+    .bg-sales{background:#080810}
+    .bg-funnel{background:radial-gradient(ellipse at 50% 50%,rgba(217,119,6,.35) 0%,#080810 70%)}
+    .bg-prompts{background:radial-gradient(ellipse at 50% 50%,rgba(217,119,6,.2) 0%,rgba(10,10,31,.95) 70%)}
 
     .card-badge{position:absolute;top:10px;right:10px;background:#d97706;color:#1a0f00;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;z-index:2}
     .card-badge.locked-badge{background:#1f2937;color:#6b7280}
@@ -152,16 +151,16 @@ const BLOCKS = [
   // â”€â”€ CORE
   {
     id:'leads30', type:'core',
-    title:'30 Leads in 30 Days AI Agent',
-    desc:'The complete AI-powered system to fill your calendar with 30 qualified leads in 30 days.',
-    bg:'bg-leads', num:'30', lbl:'Leads',
+    title:'21 Leads in 21 Days AI Agent',
+    desc:'The complete AI-powered system to fill your calendar with 21 qualified leads in 21 days.',
+    bg:'bg-leads', img:'/images/21-leads.jpg', num:'21', lbl:'Leads',
     tiers:['basic','silver','gold'],
     lessons:[
-      { id:'gpt30', title:'30 Leads in 30 Days GPT',
-        body:`**This system has helped more than 50+ Coaches globally.**\n\nCopy the link below and paste it into your browser where your ChatGPT is open.\n\nThis custom-made GPT will help you to book **30 Appointments in 30 Days**.`,
+      { id:'gpt30', title:'21 Leads in 21 Days GPT',
+        body:`**This system has helped more than 50+ Coaches globally.**\n\nCopy the link below and paste it into your browser where your ChatGPT is open.\n\nThis custom-made GPT will help you to book **21 Appointments in 21 Days**.`,
         coachList:['Gut Health Coach','Life Coach','Wellness Coach','Relationship Coach','Business Coach','Emotional Intelligence Coach','Perimenopause Coach','ADHD Productivity Coach','Divorce Transition Coach','Somatic Trauma Coach','Career Pivot Coach','Sleep Optimization Coach','Burnout Recovery Coach','Sober Living Coach','Grief Coach','Chronic Illness Coach'],
         moreText:'...and so on have taken advantage of it.',
-        resources:[{name:'30 Leads in 30 Days GPT',url:'https://chatgpt.com/g/g-68c84f905054819f82ea9b1e2a0c939c-30-leads-in-30-days-gpt'}]
+        resources:[{name:'21 Leads in 21 Days GPT',url:'https://chatgpt.com/g/g-68c84f905054819f82ea9b1e2a0c939c-30-leads-in-30-days-gpt'}]
       },
       { id:'supporting', title:'Supporting Custom GPTs', body:'Additional supporting GPTs to complement your system.', resources:[] }
     ]
@@ -170,7 +169,7 @@ const BLOCKS = [
     id:'plugplay', type:'core',
     title:'Plug & Play AI Agents',
     desc:'Ready-to-deploy AI agents you can plug into your business today.',
-    bg:'bg-plugplay', num:'22', lbl:'Agents',
+    bg:'bg-plugplay', img:'/images/plug-play.jpg', num:'22', lbl:'Agents',
     tiers:['silver','gold'],
     lessons:[
       { id:'watch-first', title:'ðŸŽ¬ WATCH THIS FIRST', body:'Watch this video before opening any agent.', resources:[] },
@@ -213,7 +212,7 @@ const BLOCKS = [
     id:'sales-machine', type:'core',
     title:'Sales Machine',
     desc:'Build a self-running sales machine that closes deals on autopilot.',
-    bg:'bg-sales', num:'$', lbl:'Machine',
+    bg:'bg-sales', img:'/images/sales-machine.jpg', num:'', lbl:'',
     tiers:['gold'],
     lessons:[
       { id:'outreach-bundle', title:'Outreach Script Bundle',
@@ -443,18 +442,18 @@ function renderDashboard() {
 
 function cardHtml(b) {
   const ok = canAccess(b);
-  return `<div class="card${ok?'':' locked'}" ${ok?`data-nav="block" data-block="${b.id}"`:''}>
-    <div class="card-thumb ${b.bg}">
-      <div class="thumb-num">${b.num}</div>
-      <div class="thumb-lbl">${b.lbl}</div>
-      ${ok ? (b.type==='bonus'?'<span class="card-badge">BONUS</span>':'') : '<span class="card-badge locked-badge">ðŸ”’ Locked</span>'}
-    </div>
-    <div class="card-body">
-      <div class="card-title${ok && b.type==='bonus' ?' amber':''}">${b.title}</div>
-      <div class="card-desc">${b.desc}</div>
-      <div class="card-cta${ok?'':' dim'}">${ok?'Open block â†’':'Upgrade to unlock'} ${ok?ARROW:''}</div>
-    </div>
-  </div>`;
+  const imgTag = b.img ? $('<img src="' + b.img + '" alt="' + b.title + '" loading="lazy">) : '';
+  const badge = ok ? (b.type==='bonus' ? '<span class="card-badge">BONUS</span>' : '') : '<span class="card-badge locked-badge">&#128274; Locked</span>';
+  const numHtml = b.num ? '<div class="thumb-num">' + b.num + '</div>' : '';
+  const lblHtml = b.lbl ? '<div class="thumb-lbl">' + b.lbl + '</div>' : '';
+  const ctaText = ok ? 'Open block &#8594;' : 'Upgrade to unlock';
+  return '<div class="card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
+    '<div class="card-thumb ' + b.bg + '">' + imgTag + numHtml + lblHtml + badge + '</div>' +
+    '<div class="card-body">' +
+    '<div class="card-title' + (ok && b.type==='bonus' ? ' amber' : '') + '">' + b.title + '</div>' +
+    '<div class="card-desc">' + b.desc + '</div>' +
+    '<div class="card-cta' + (ok ? '' : ' dim') + '">' + ctaText + (ok ? ' ' + ARROW : '') + '</div>' +
+    '</div></div>';
 }
 
 function renderBlock() {
