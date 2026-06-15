@@ -1,5 +1,10 @@
 'use strict';
 const { createClient } = require('@supabase/supabase-js');
+const crypto = require('crypto');
+
+function genPassword() {
+  return crypto.randomBytes(4).toString('hex').toUpperCase();
+}
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -14,8 +19,11 @@ module.exports = async function handler(req, res) {
   const { email, firstName, first_name, phone, mobile } = req.body;
   if (!email) return res.status(400).json({ error: 'email is required' });
 
+  const access_password = genPassword();
+
   const { data, error } = await supabase.from('leads').insert({
-    email, first_name: firstName || first_name || '', last_name: '', mobile: phone || mobile || '', country_code: '+1', profession: 'Not specified', converted: false,
+    email, first_name: firstName || first_name || '', last_name: '', mobile: phone || mobile || '',
+    country_code: '+1', profession: 'Not specified', converted: false, access_password,
   }).select('id').single();
 
   if (error) {

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard — AI Lead Bundle</title>
+  <link rel="icon" href="/favicon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:#0a0a1f;font-family:'Inter',sans-serif;color:#fff}
+
+    /* Header */
+    header{background:#0a0a1f;border-bottom:1px solid #1f2937;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#d97706,#b45309);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+    .logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;color:#fff;line-height:1.2}
+    .logo-sub{font-size:9px;font-weight:600;color:#d97706;letter-spacing:.1em;text-transform:uppercase}
+    .header-right{display:flex;align-items:center;gap:16px}
+    .user-email{font-size:13px;color:#9ca3af}
+    .signout-btn{background:none;border:1px solid #374151;border-radius:6px;padding:6px 12px;font-size:13px;color:#9ca3af;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+    .signout-btn:hover{border-color:#d97706;color:#d97706}
+
+    /* Main */
+    main{max-width:1100px;margin:0 auto;padding:40px 24px}
+    .welcome h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;margin-bottom:6px}
+    .welcome p{color:#9ca3af;font-size:15px;margin-bottom:36px}
+
+    /* Section */
+    .section-title{display:flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#d97706;margin-bottom:18px}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:40px}
+
+    /* Card */
+    .card{background:#0f0f1f;border:1px solid #1f2937;border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer;text-decoration:none;display:block}
+    .card:hover{border-color:#d97706;transform:translateY(-2px)}
+    .card.locked{opacity:.5;cursor:not-allowed;pointer-events:none}
+    .card-thumb{width:100%;height:170px;background:#111827;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+    .card-thumb img{width:100%;height:100%;object-fit:cover}
+    .badge{position:absolute;top:10px;right:10px;background:#d97706;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
+    .badge.locked-badge{background:#374151;color:#9ca3af}
+    .card-body{padding:18px}
+    .card-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:6px}
+    .card-desc{font-size:13px;color:#9ca3af;line-height:1.5;margin-bottom:14px}
+    .card-link{font-size:13px;font-weight:600;color:#d97706;display:flex;align-items:center;gap:4px}
+    .card-link svg{transition:transform .2s}
+    .card:hover .card-link svg{transform:translateX(4px)}
+    .card-link.locked-link{color:#4b5563}
+
+    /* Upgrade banner */
+    .upgrade-banner{background:linear-gradient(135deg,#1a0f00,#0f0a1f);border:1px solid #d97706;border-radius:12px;padding:24px 28px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .upgrade-banner h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:#fff;margin-bottom:4px}
+    .upgrade-banner p{font-size:13px;color:#9ca3af}
+    .upgrade-btn{background:linear-gradient(135deg,#d97706,#b45309);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
+    .upgrade-btn:hover{opacity:.9}
+
+    /* Not paid */
+    .no-access{text-align:center;padding:60px 24px}
+    .no-access h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;margin-bottom:10px}
+    .no-access p{color:#9ca3af;margin-bottom:24px}
+
+    @media(max-width:600px){
+      header{padding:0 16px}
+      main{padding:24px 16px}
+      .welcome h1{font-size:22px}
+      .upgrade-banner{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-text">AI Lead Bundle</div>
+        <div class="logo-sub">Member LMS</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="user-email" id="userEmail"></span>
+      <button class="signout-btn" onclick="signOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </header>
+
+  <main id="mainContent" style="display:none">
+    <div class="welcome">
+      <h1 id="welcomeMsg">Welcome back 👋</h1>
+      <p>Pick a block below and start learning.</p>
+    </div>
+
+    <div id="upgradeBanner" style="display:none">
+      <div class="upgrade-banner">
+        <div>
+          <h3>🔒 Unlock More Content</h3>
+          <p>Upgrade your plan to access all blocks and bonuses.</p>
+        </div>
+        <a href="/checkout" class="upgrade-btn">Upgrade Now →</a>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Core Blocks
+    </div>
+    <div class="grid" id="coreGrid"></div>
+
+    <div class="section-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Bonuses
+    </div>
+    <div class="grid" id="bonusGrid"></div>
+  </main>
+
+  <script>
+    // ─── CONTENT CONFIG ─────────────────────────────────────────────────────
+    // TODO: Replace placeholder URLs with real links when available
+    const CONTENT = {
+      core: [
+        {
+          title: '30 Leads in 30 Days AI Agent',
+          desc: 'The complete AI-powered system to fill your calendar with 30 qualified leads in 30 days.',
+          emoji: '🎯',
+          url: '#', // TODO: replace with real link
+          tiers: ['basic','silver','gold'],
+        },
+        {
+          title: 'Plug & Play AI Agents',
+          desc: 'Ready-to-deploy AI agents you can plug into your business today.',
+          emoji: '🤖',
+          url: '#', // TODO: replace with real link
+          tiers: ['silver','gold'],
+        },
+        {
+          title: 'Sales Machine',
+          desc: 'Build a self-running sales machine that closes deals on autopilot.',
+          emoji: '💰',
+          url: '#', // TODO: replace with real link
+          tiers: ['gold'],
+        },
+      ],
+      bonuses: [
+        {
+          title: 'AI Funnel Copy Creation Agent',
+          desc: 'Generate high-converting funnel copy with AI in minutes.',
+          emoji: '✍️',
+          url: '#', // TODO: replace with real link
+          bumpRequired: 'funnel',
+          tiers: ['basic','silver','gold'],
+        },
+        {
+          title: 'AI Prompts That Build Your Offer',
+          desc: 'The exact prompts to build, price and position your offer.',
+          emoji: '⚡',
+          url: '#', // TODO: replace with real link
+          bumpRequired: 'prompts',
+          tiers: ['basic','silver','gold'],
+        },
+        {
+          title: 'Make.com & N8N AI Agent Creation',
+          desc: 'Build powerful AI agents using Make.com and N8N — no code required.',
+          emoji: '🔗',
+          url: '#', // TODO: replace with real link
+          tiers: ['silver','gold'],
+        },
+        {
+          title: 'Waalaxy LinkedIn Activation',
+          desc: 'Activate your LinkedIn presence with Waalaxy automation.',
+          emoji: '🚀',
+          url: '#', // TODO: replace with real link
+          tiers: ['gold'],
+        },
+      ],
+    };
+    // ────────────────────────────────────────────────────────────────────────
+
+    function signOut() {
+      sessionStorage.removeItem('ailb_user');
+      window.location.href = '/access';
+    }
+
+    function hasAccess(item, user) {
+      if (!user.converted || !user.tier) return false;
+      const tierOrder = { basic: 1, silver: 2, gold: 3 };
+      const userLevel = tierOrder[user.tier] || 0;
+      const minLevel = Math.min(...item.tiers.map(t => tierOrder[t] || 99));
+      if (userLevel < minLevel) return false;
+      if (item.bumpRequired === 'funnel' && !user.bumpFunnel) return false;
+      if (item.bumpRequired === 'prompts' && !user.bumpPrompts) return false;
+      return true;
+    }
+
+    function buildCard(item, user) {
+      const access = hasAccess(item, user);
+      const card = document.createElement('a');
+      card.href = access && item.url !== '#' ? item.url : '#';
+      if (access && item.url !== '#') { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+      card.className = 'card' + (access ? '' : ' locked');
+
+      card.innerHTML = `
+        <div class="card-thumb">
+          <span>${item.emoji}</span>
+          ${access ? '' : '<span class="badge locked-badge">🔒 Locked</span>'}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${item.title}</div>
+          <div class="card-desc">${item.desc}</div>
+          <div class="card-link ${access ? '' : 'locked-link'}">
+            ${access ? 'Open block' : 'Upgrade to unlock'}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>`;
+      return card;
+    }
+
+    function init() {
+      const raw = sessionStorage.getItem('ailb_user');
+      if (!raw) { window.location.href = '/access'; return; }
+
+      const user = JSON.parse(raw);
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('welcomeMsg').textContent = `Welcome back, ${user.firstName || 'there'} 👋`;
+      document.getElementById('mainContent').style.display = 'block';
+
+      const tierOrder = { basic: 1, silver: 2, gold: 3 };
+      const userLevel = tierOrder[user.tier] || 0;
+      const hasAllCore = CONTENT.core.every(i => hasAccess(i, user));
+      if (!hasAllCore) document.getElementById('upgradeBanner').style.display = 'block';
+
+      const coreGrid = document.getElementById('coreGrid');
+      CONTENT.core.forEach(item => coreGrid.appendChild(buildCard(item, user)));
+
+      const bonusGrid = document.getElementById('bonusGrid');
+      CONTENT.bonuses.forEach(item => bonusGrid.appendChild(buildCard(item, user)));
+    }
+
+    init();
+  </script>
+</body>
+</html>
