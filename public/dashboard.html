@@ -48,8 +48,8 @@
     .bg-leads{background:#080810}
     .bg-plugplay{background:#080810}
     .bg-sales{background:#080810}
-    .bg-funnel{background:radial-gradient(ellipse at 50% 50%,rgba(217,119,6,.35) 0%,#080810 70%)}
-    .bg-prompts{background:radial-gradient(ellipse at 50% 50%,rgba(217,119,6,.2) 0%,rgba(10,10,31,.95) 70%)}
+    .bg-funnel{background:radial-gradient(ellipse at 50% 45%,rgba(217,119,6,.18) 0%,#0a0a1f 65%)}
+    .bg-prompts{background:radial-gradient(ellipse at 50% 45%,rgba(217,119,6,.18) 0%,#0a0a1f 65%)}
 
     .card-badge{position:absolute;top:10px;right:10px;background:#d97706;color:#1a0f00;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;z-index:2}
     .card-badge.locked-badge{background:#1f2937;color:#6b7280}
@@ -430,25 +430,24 @@ function renderDashboard() {
   const hasLocked = BLOCKS.some(b => !canAccess(b));
   return `
     <div class="welcome">
-      <h1>Welcome back, ${user.firstName || 'there'} ðŸ‘‹</h1>
+      <h1>Welcome back, ${user.firstName || 'there'} &#128075;</h1>
       <p>Pick a block below and start learning.</p>
     </div>
-    ${hasLocked ? `<div class="upgrade-bar"><div><h3>ðŸ”’ Unlock More Content</h3><p>Upgrade your plan to access all blocks and bonuses.</p></div><a href="https://leadengine.admexo.com" class="up-btn">Upgrade Now â†’</a></div>` : ''}
+    ${hasLocked ? `<div class="upgrade-bar"><div><h3>&#128274; Unlock More Content</h3><p>Upgrade your plan to access all blocks and bonuses.</p></div><a href="https://leadengine.admexo.com" class="up-btn">Upgrade Now &#8594;</a></div>` : ''}
     <div class="sec-title">${STAR} Core Blocks</div>
     <div class="grid3">${core.map(b => cardHtml(b)).join('')}</div>
     <div class="sec-title">${CROWN} Bonuses</div>
-    <div class="grid2">${bonuses.map(b => cardHtml(b)).join('')}</div>`;
+    <div class="grid3">${bonuses.map(b => cardHtml(b)).join('')}</div>`;
 }
 
 function cardHtml(b) {
   const ok = canAccess(b);
   const imgTag = b.img ? '<img src="' + b.img + '" alt="' + b.title + '" loading="lazy">' : '';
+  const fallback = b.img ? '' : '<svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="position:relative;z-index:1;opacity:.75"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
   const badge = ok ? (b.type==='bonus' ? '<span class="card-badge">BONUS</span>' : '') : '<span class="card-badge locked-badge">&#128274; Locked</span>';
-  const numHtml = b.num ? '<div class="thumb-num">' + b.num + '</div>' : '';
-  const lblHtml = b.lbl ? '<div class="thumb-lbl">' + b.lbl + '</div>' : '';
   const ctaText = ok ? 'Open block &#8594;' : 'Upgrade to unlock';
   return '<div class="card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
-    '<div class="card-thumb ' + b.bg + '">' + imgTag + numHtml + lblHtml + badge + '</div>' +
+    '<div class="card-thumb ' + b.bg + '">' + imgTag + fallback + badge + '</div>' +
     '<div class="card-body">' +
     '<div class="card-title' + (ok && b.type==='bonus' ? ' amber' : '') + '">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
