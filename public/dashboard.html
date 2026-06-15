@@ -442,7 +442,7 @@ function renderDashboard() {
 
 function cardHtml(b) {
   const ok = canAccess(b);
-  const imgTag = b.img ? $('<img src="' + b.img + '" alt="' + b.title + '" loading="lazy">) : '';
+  const imgTag = b.img ? '<img src="' + b.img + '" alt="' + b.title + '" loading="lazy">' : '';
   const badge = ok ? (b.type==='bonus' ? '<span class="card-badge">BONUS</span>' : '') : '<span class="card-badge locked-badge">&#128274; Locked</span>';
   const numHtml = b.num ? '<div class="thumb-num">' + b.num + '</div>' : '';
   const lblHtml = b.lbl ? '<div class="thumb-lbl">' + b.lbl + '</div>' : '';
