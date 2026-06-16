@@ -97,6 +97,15 @@
     .lc-hr{border:none;border-top:1px solid #1a1a2e;margin:14px 0}
     .lesson-body{font-size:14px;color:#d1d5db;line-height:1.8;margin-bottom:8px}
 
+    /* -- Bump block resource cards -- */
+    .bump-resources{display:flex;flex-direction:column;gap:14px;max-width:720px}
+    .bump-res-card{background:#0c0c1a;border:1px solid #1a1a2e;border-radius:10px;padding:20px 22px}
+    .bump-res-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:8px}
+    .bump-res-desc{font-size:13px;color:#9ca3af;line-height:1.7;margin-bottom:16px}
+    .bump-res-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#661fff,#4c1fb3);color:#fff;font-size:13px;font-weight:700;padding:9px 18px;border-radius:7px;text-decoration:none;transition:opacity .2s}
+    .bump-res-btn:hover{opacity:.85}
+    .sec-sub{font-size:13px;color:#6b7280;margin-top:-10px;margin-bottom:16px;line-height:1.5}
+
     /* â”€â”€ Upgrade banner â”€â”€ */
     .upgrade-bar{background:linear-gradient(135deg,#1a0f3a,#0c0c1a);border:1px solid rgba(102,31,255,.4);border-radius:10px;padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
     .upgrade-bar h3{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px}
@@ -323,22 +332,51 @@ const BLOCKS = [
       { id:'live-qna', title:'Live QnA Classes', body:'', resources:[] }
     ]
   },
-  // â”€â”€ BONUSES
+  // -- ORDER BUMPS
   {
-    id:'funnel-copy', type:'bonus',
+    id:'funnel-copy', type:'bump',
     title:'AI Funnel Copy Creation Agent',
-    desc:'Generate high-converting funnel copy with AI in minutes.',
-    bg:'bg-funnel', num:'âœ', lbl:'Copy',
+    desc:'Generate full funnel copy — landing pages, micro-offers, order bumps & VSL scripts — in minutes.',
+    bg:'bg-funnel', img:'', num:'', lbl:'',
     tiers:['basic','silver','gold'], bumpRequired:'funnel',
-    lessons:[]
+    lessons:[],
+    resources:[
+      {
+        name:'AI Funnel Copy Creation Agent (Custom GPT)',
+        desc:'Your always-on copywriting expert. Paste your offer, audience, and angle — get hook-driven landing-page copy, VSL scripts, email sequences, and ad creatives that convert. Built specifically for high-ticket coaching & service funnels.',
+        url:'https://chatgpt.com/g/g-hKwWF72vH-copywriting-expert'
+      },
+      {
+        name:'SeanGPT — Copywriting Coach & Consultant',
+        desc:"Trained on Sean's direct-response playbooks. Use it as a senior copy coach — paste your draft and it will rewrite your headlines, sharpen your hooks, fix your CTAs, and tell you exactly why a piece of copy isn't converting.",
+        url:'https://chatgpt.com/g/g-ZbDOdkbFb-seangpt-copywriting-coach-consultant'
+      }
+    ]
   },
   {
-    id:'ai-prompts', type:'bonus',
-    title:'AI Prompts That Build Your Offer',
-    desc:'The exact prompts to build, price and position your offer.',
-    bg:'bg-prompts', num:'âš¡', lbl:'Prompts',
+    id:'ai-prompts', type:'bump',
+    title:'AI Prompts That Build Your Offer For You',
+    desc:'Extract a profitable $1K-$18K offer, your ICP, hooks & angles — done by AI in under 2 hours.',
+    bg:'bg-prompts', img:'', num:'', lbl:'',
     tiers:['basic','silver','gold'], bumpRequired:'prompts',
-    lessons:[]
+    lessons:[],
+    resources:[
+      {
+        name:'AI Prompts That Build My Offer For Me',
+        desc:"The full plug-and-play prompt library (Google Doc). Walks AI through ICP discovery, painful-problem mining, dream-outcome mapping, pricing logic, and a finished offer stack. Copy-paste each prompt step by step and you'll have a sellable $1K-$18K offer by tomorrow.",
+        url:'https://docs.google.com/document/d/19lt_bYc9xBSqMwtVcSIBGX-Tngl_Mh6gf2iMqqbeElM/edit?usp=sharing'
+      },
+      {
+        name:'$100M Offer GPT',
+        desc:"Built on Alex Hormozi's $100M Offers framework. Helps you stack value, layer guarantees, eliminate risk, and price your offer so it feels impossible to say no. Best used after you have a rough offer idea — it'll bullet-proof it.",
+        url:'https://chatgpt.com/g/g-Y02w2vCKI-100m-offer'
+      },
+      {
+        name:'Grand Slam Offer — Customize Offer GPT',
+        desc:'A guided builder that walks you from a blank page to a complete Grand Slam Offer: dream outcome, perceived likelihood of achievement, time delay, and effort & sacrifice. Outputs your full offer in a ready-to-paste sales-page format.',
+        url:'https://chatgpt.com/g/g-691449609a4c8191b49469288d8c8ab7-customize-offer-gpt'
+      }
+    ]
   }
 ];
 
@@ -427,30 +465,31 @@ function render() {
 
 function renderDashboard() {
   const core = BLOCKS.filter(b => b.type==='core');
-  const bonuses = BLOCKS.filter(b => b.type==='bonus');
+  const bumps = BLOCKS.filter(b => b.type==='bump');
   const hasLocked = BLOCKS.some(b => !canAccess(b));
   return `
     <div class="welcome">
       <h1>Welcome back, ${user.firstName || 'there'} &#128075;</h1>
       <p>Pick a block below and start learning.</p>
     </div>
-    ${hasLocked ? `<div class="upgrade-bar"><div><h3>&#128274; Unlock More Content</h3><p>Upgrade your plan to access all blocks and bonuses.</p></div><a href="https://leadengine.admexo.com" class="up-btn">Upgrade Now &#8594;</a></div>` : ''}
+    ${hasLocked ? `<div class="upgrade-bar"><div><h3>&#128274; Unlock More Content</h3><p>Upgrade your plan to access all blocks and order bumps.</p></div><a href="https://leadengine.admexo.com" class="up-btn">Upgrade Now &#8594;</a></div>` : ''}
     <div class="sec-title">${STAR} Core Blocks</div>
     <div class="grid3">${core.map(b => cardHtml(b)).join('')}</div>
-    <div class="sec-title">${CROWN} Bonuses</div>
-    <div class="grid3">${bonuses.map(b => cardHtml(b)).join('')}</div>`;
+    <div class="sec-title">${CROWN} Order Bumps</div>
+    <p class="sec-sub">Premium order-bump tools. Unlocked instantly for buyers &#8212; or grab them now for the same one-time price you&#8217;d pay at checkout.</p>
+    <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>`;
 }
 
 function cardHtml(b) {
   const ok = canAccess(b);
   const imgTag = b.img ? '<img src="' + b.img + '" alt="' + b.title + '" loading="lazy">' : '';
   const fallback = b.img ? '' : '<svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#661fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="position:relative;z-index:1;opacity:.75"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
-  const badge = ok ? (b.type==='bonus' ? '<span class="card-badge">BONUS</span>' : '') : '<span class="card-badge locked-badge">&#128274; Locked</span>';
+  const badge = ok ? (b.type==='bump' ? '<span class="card-badge">BUMP</span>' : '') : '<span class="card-badge locked-badge">&#128274; Locked</span>';
   const ctaText = ok ? 'Open block &#8594;' : 'Upgrade to unlock';
   return '<div class="card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
     '<div class="card-thumb ' + b.bg + '">' + imgTag + fallback + badge + '</div>' +
     '<div class="card-body">' +
-    '<div class="card-title' + (ok && b.type==='bonus' ? ' amber' : '') + '">' + b.title + '</div>' +
+    '<div class="card-title' + (ok && b.type==='bump' ? ' amber' : '') + '">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
     '<div class="card-cta' + (ok ? '' : ' dim') + '">' + ctaText + (ok ? ' ' + ARROW : '') + '</div>' +
     '</div></div>';
@@ -459,6 +498,26 @@ function cardHtml(b) {
 function renderBlock() {
   const b = BLOCKS.find(x => x.id === state.blockId);
   if (!b) return '<p style="padding:40px;color:#6b7280">Block not found.</p>';
+
+  if (b.type === 'bump') {
+    const resources = b.resources || [];
+    return `
+      <div class="block-header">
+        <div class="block-crumb">${EXT_SVG} Order Bump</div>
+        <h1 class="block-title">${b.title}</h1>
+        <p class="block-sub">${b.desc}</p>
+        <div class="folder-count">${EXT_SVG} ${resources.length} Resources</div>
+      </div>
+      <div class="bump-resources">
+        ${resources.map(r => `
+          <div class="bump-res-card">
+            <div class="bump-res-name">${r.name}</div>
+            <p class="bump-res-desc">${r.desc || ''}</p>
+            <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="bump-res-btn">${EXT_SVG} Open resource</a>
+          </div>`).join('')}
+      </div>`;
+  }
+
   const lessons = b.lessons || [];
   return `
     <div class="block-header">
@@ -467,7 +526,7 @@ function renderBlock() {
       <p class="block-sub">${b.desc}</p>
       <div class="folder-count">${FOLDER_SVG} ${lessons.length} Folders</div>
     </div>
-    ${lessons.length === 0 ? '<p class="coming-soon">Content coming soon â€” links will be added here.</p>' : ''}
+    ${lessons.length === 0 ? '<p class="coming-soon">Content coming soon &#8212; links will be added here.</p>' : ''}
     <div class="folder-grid">
       ${lessons.map(l => `
         <div class="folder-card" data-nav="lesson" data-block="${b.id}" data-lesson="${l.id}">
@@ -476,7 +535,6 @@ function renderBlock() {
         </div>`).join('')}
     </div>`;
 }
-
 function renderLesson() {
   const b = BLOCKS.find(x => x.id === state.blockId);
   const l = b?.lessons?.find(x => x.id === state.lessonId);
