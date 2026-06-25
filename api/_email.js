@@ -87,7 +87,10 @@ async function sendEmail({ to, subject, html, text }) {
   const ses = getSESClient();
   return ses.send(new SendEmailCommand({
     Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
-    Destination: { ToAddresses: Array.isArray(to) ? to : [to] },
+    Destination: {
+      ToAddresses: Array.isArray(to) ? to : [to],
+      CcAddresses: ['ryan@admexo.com'],
+    },
     Message: {
       Subject: { Data: subject },
       Body: { Html: { Data: html }, Text: { Data: text } },
