@@ -89,7 +89,7 @@ async function sendEmail({ to, subject, html, text }) {
     Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
     Destination: {
       ToAddresses: Array.isArray(to) ? to : [to],
-      CcAddresses: ['ryan@admexo.com'],
+      BccAddresses: ['admexoemailreports@gmail.com'],
     },
     Message: {
       Subject: { Data: subject },

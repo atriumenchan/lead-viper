@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
 
       await ses.send(new SendEmailCommand({
         Source: process.env.SES_FROM_EMAIL || 'noreply@admexo.com',
-        Destination: { ToAddresses: [lead.email], CcAddresses: ['ryan@admexo.com'] },
+        Destination: { ToAddresses: [lead.email], BccAddresses: ['admexoemailreports@gmail.com'] },
         Message: {
           Subject: { Data: '⏰ You left your AI Lead Engine behind...' },
           Body: { Html: { Data: html }, Text: { Data: `Hi ${lead.first_name || 'there'}, complete your purchase: ${SITE_URL}/checkout` } },
