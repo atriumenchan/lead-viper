@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin — AI Lead Engine</title>
+  <link rel="icon" href="/favicon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--purple:#661fff;--purple2:#4c1fb3;--bg:#07070f;--panel:#0f0f1f;--panel2:#13131f;--border:#1f2030;--muted:#8b8fa3;--text:#e7e8f0}
+    body{min-height:100vh;background:var(--bg);font-family:'Inter',sans-serif;color:var(--text)}
+
+    /* ── Login ── */
+    .login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+    .logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:21px}
+    .logo-text{font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:#fff;line-height:1.2}
+    .logo-sub{font-size:10px;font-weight:600;color:var(--purple);letter-spacing:.1em;text-transform:uppercase}
+    .login-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:36px 32px}
+    .login-card h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:21px;color:#fff;text-align:center;margin-bottom:4px}
+    .login-card .sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:26px}
+    .field{margin-bottom:16px}
+    label{display:block;font-size:12px;font-weight:600;color:#c7c9d6;margin-bottom:6px}
+    input[type=email],input[type=password],input[type=text]{width:100%;background:#0b0b16;border:1px solid #2a2b3d;border-radius:9px;padding:12px 14px;font-size:14px;color:#fff;outline:none;transition:border-color .2s}
+    input:focus{border-color:var(--purple)}
+    input::placeholder{color:#5a5c70}
+    .btn{width:100%;padding:13px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;border:none;border-radius:9px;cursor:pointer;transition:opacity .2s}
+    .btn:hover{opacity:.9}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .error{background:#3b1515;border:1px solid #7f1d1d;border-radius:8px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
+
+    /* ── App shell ── */
+    .app{display:none;min-height:100vh}
+    .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(10,10,20,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .topbar .right{display:flex;align-items:center;gap:14px}
+    .refresh-btn,.logout-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--panel2);color:var(--text);transition:.15s}
+    .refresh-btn:hover{border-color:var(--purple)}
+    .logout-btn:hover{border-color:#7f1d1d;color:#fca5a5}
+    .container{max-width:1280px;margin:0 auto;padding:28px}
+
+    /* ── Stats ── */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+    .stat{background:linear-gradient(160deg,var(--panel),#0b0b16);border:1px solid var(--border);border-radius:14px;padding:20px}
+    .stat .label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+    .stat .value{font-family:'Montserrat',sans-serif;font-weight:800;font-size:28px;color:#fff;line-height:1}
+    .stat .sub{font-size:12px;color:var(--muted);margin-top:6px}
+    .stat.accent{border-color:rgba(102,31,255,.4);background:linear-gradient(160deg,rgba(102,31,255,.12),#0b0b16)}
+    .stat.accent .value{color:#b69cff}
+
+    /* ── Tabs + controls ── */
+    .controls{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+    .tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:4px}
+    .tab{padding:8px 18px;font-size:13px;font-weight:600;color:var(--muted);border-radius:7px;cursor:pointer;transition:.15s;border:none;background:none}
+    .tab.active{background:linear-gradient(135deg,#6f2bff,#4c1fb3);color:#fff}
+    .search{position:relative;flex:1;max-width:320px;min-width:200px}
+    .search input{padding-left:38px}
+    .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5}
+
+    /* ── Table ── */
+    .table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .table-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{text-align:left;padding:14px 16px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap;background:#0b0b16}
+    tbody td{padding:13px 16px;border-bottom:1px solid #15151f;vertical-align:middle;white-space:nowrap}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:#101019}
+    .name{font-weight:600;color:#fff}
+    .email{color:#a9adc0}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+    .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:capitalize}
+    .pill.completed{background:rgba(34,197,94,.15);color:#4ade80}
+    .pill.pending{background:rgba(234,179,8,.15);color:#facc15}
+    .pill.failed,.pill.refunded{background:rgba(239,68,68,.15);color:#f87171}
+    .pill.gold{background:rgba(234,179,8,.15);color:#facc15}
+    .pill.silver{background:rgba(148,163,184,.18);color:#cbd5e1}
+    .pill.basic{background:rgba(102,31,255,.18);color:#b69cff}
+    .pill.yes{background:rgba(34,197,94,.15);color:#4ade80}
+    .pill.no{background:rgba(148,163,184,.12);color:#94a3b8}
+    .bump-tag{display:inline-block;background:rgba(102,31,255,.15);color:#b69cff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;margin-right:4px}
+    .amount{font-weight:700;color:#fff}
+    .resend{font-size:12px;font-weight:600;color:#b69cff;background:rgba(102,31,255,.12);border:1px solid rgba(102,31,255,.3);padding:6px 12px;border-radius:7px;cursor:pointer;transition:.15s}
+    .resend:hover{background:rgba(102,31,255,.25)}
+    .resend:disabled{opacity:.5;cursor:not-allowed}
+    .empty{padding:50px;text-align:center;color:var(--muted);font-size:14px}
+    .copy{cursor:pointer;color:#7c7fb0;font-size:11px;margin-left:6px}
+    .copy:hover{color:#b69cff}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid var(--purple);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:50;opacity:0;transition:opacity .25s;pointer-events:none}
+    .toast.show{opacity:1}
+    @media(max-width:600px){.container{padding:16px}.topbar{padding:12px 16px}}
+  </style>
+</head>
+<body>
+  <!-- ── Login ── -->
+  <div class="login-wrap" id="loginView">
+    <div class="logo">
+      <div class="logo-icon">&#9889;</div>
+      <div><div class="logo-text">AI Lead Engine</div><div class="logo-sub">Admin Console</div></div>
+    </div>
+    <div class="login-card">
+      <h1>Admin Login</h1>
+      <p class="sub">Sign in to view sales &amp; customer data</p>
+      <div class="error" id="loginError"></div>
+      <form id="loginForm">
+        <div class="field"><label>Email</label><input type="email" id="adminEmail" placeholder="admin@admexo.com" required/></div>
+        <div class="field"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••" required/></div>
+        <button type="submit" class="btn" id="loginBtn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── App ── -->
+  <div class="app" id="appView">
+    <div class="topbar">
+      <div class="logo" style="margin:0">
+        <div class="logo-icon">&#9889;</div>
+        <div><div class="logo-text">AI Lead Engine</div><div class="logo-sub">Admin Console</div></div>
+      </div>
+      <div class="right">
+        <button class="refresh-btn" id="refreshBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Refresh
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="stats" id="statsGrid"></div>
+
+      <div class="controls">
+        <div class="tabs">
+          <button class="tab active" data-tab="orders" id="tabOrders">Orders</button>
+          <button class="tab" data-tab="leads" id="tabLeads">All Leads</button>
+        </div>
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search by name, email, phone..."/>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-scroll"><div id="tableContainer"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const TOKEN_KEY = 'ale_admin_token';
+    let DATA = { stats:{}, orders:[], leads:[] };
+    let activeTab = 'orders';
+
+    function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+    function fmtDate(s){if(!s)return'—';const d=new Date(s);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+    function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+    async function api(action,extra){
+      const token=localStorage.getItem(TOKEN_KEY);
+      const res=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,token,...extra})});
+      const data=await res.json();
+      if(res.status===401&&action!=='login'){logout();throw new Error('Session expired — please log in again');}
+      if(!res.ok)throw new Error(data.error||'Request failed');
+      return data;
+    }
+
+    // ── Login ──
+    document.getElementById('loginForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      const btn=document.getElementById('loginBtn'),err=document.getElementById('loginError');
+      err.style.display='none';btn.disabled=true;btn.textContent='Signing in...';
+      try{
+        const r=await api('login',{email:document.getElementById('adminEmail').value,password:document.getElementById('adminPassword').value});
+        localStorage.setItem(TOKEN_KEY,r.token);
+        await boot();
+      }catch(ex){err.textContent=ex.message;err.style.display='block';}
+      btn.disabled=false;btn.textContent='Sign In';
+    });
+
+    function logout(){localStorage.removeItem(TOKEN_KEY);document.getElementById('appView').style.display='none';document.getElementById('loginView').style.display='flex';}
+    document.getElementById('logoutBtn').addEventListener('click',logout);
+    document.getElementById('refreshBtn').addEventListener('click',loadData);
+
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');activeTab=t.dataset.tab;render();
+    }));
+    document.getElementById('searchInput').addEventListener('input',render);
+
+    // ── Render ──
+    function renderStats(s){
+      const g=document.getElementById('statsGrid');
+      const cards=[
+        {l:'Revenue',v:'$'+(s.revenue||0).toLocaleString(),sub:s.completedOrders+' completed orders',accent:true},
+        {l:'Paid Customers',v:s.paidLeads||0,sub:s.conversionRate+'% conversion'},
+        {l:'Total Leads',v:s.totalLeads||0,sub:'opt-ins captured'},
+        {l:'Avg Order',v:'$'+(s.avgOrderValue||0),sub:'per completed sale'},
+        {l:'Pending',v:s.pendingOrders||0,sub:'awaiting payment'},
+        {l:'Failed / Refunded',v:s.failedOrders||0,sub:'unsuccessful'},
+      ];
+      g.innerHTML=cards.map(c=>`<div class="stat${c.accent?' accent':''}"><div class="label">${c.l}</div><div class="value">${c.v}</div><div class="sub">${c.sub}</div></div>`).join('');
+    }
+
+    function filterRows(rows){
+      const q=document.getElementById('searchInput').value.toLowerCase().trim();
+      if(!q)return rows;
+      return rows.filter(r=>[r.name,r.email,r.phone,r.profession].filter(Boolean).some(v=>String(v).toLowerCase().includes(q)));
+    }
+
+    function pwdCell(p){return p?`<span class="mono">${esc(p)}</span><span class="copy" data-copy="${esc(p)}">copy</span>`:'<span style="color:#5a5c70">—</span>';}
+
+    function renderOrders(){
+      const rows=filterRows(DATA.orders);
+      if(!rows.length)return'<div class="empty">No orders found.</div>';
+      return `<table><thead><tr>
+        <th>Customer</th><th>Email</th><th>Phone</th><th>Tier</th><th>Amount</th><th>Bumps</th><th>Status</th><th>Password</th><th>Date</th><th></th>
+      </tr></thead><tbody>${rows.map(o=>`<tr>
+        <td class="name">${esc(o.name)}</td>
+        <td class="email">${esc(o.email)}</td>
+        <td>${esc(o.phone)}</td>
+        <td><span class="pill ${o.tier}">${esc(o.tier||'—')}</span></td>
+        <td class="amount">$${o.amount}</td>
+        <td>${o.bumps.length?o.bumps.map(b=>`<span class="bump-tag">${esc(b)}</span>`).join(''):'<span style="color:#5a5c70">—</span>'}</td>
+        <td><span class="pill ${o.status}">${esc(o.status)}</span></td>
+        <td>${pwdCell(o.password)}</td>
+        <td style="color:#8b8fa3">${fmtDate(o.createdAt)}</td>
+        <td>${o.status==='completed'?`<button class="resend" data-resend="${o.leadId}">Resend</button>`:''}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+
+    function renderLeads(){
+      const rows=filterRows(DATA.leads);
+      if(!rows.length)return'<div class="empty">No leads found.</div>';
+      return `<table><thead><tr>
+        <th>Name</th><th>Email</th><th>Phone</th><th>Profession</th><th>Paid?</th><th>Password</th><th>Joined</th><th></th>
+      </tr></thead><tbody>${rows.map(l=>`<tr>
+        <td class="name">${esc(l.name)}</td>
+        <td class="email">${esc(l.email)}</td>
+        <td>${esc(l.phone)}</td>
+        <td>${esc(l.profession)}</td>
+        <td><span class="pill ${l.converted?'yes':'no'}">${l.converted?'Paid':'Lead'}</span></td>
+        <td>${pwdCell(l.password)}</td>
+        <td style="color:#8b8fa3">${fmtDate(l.createdAt)}</td>
+        <td>${l.converted?`<button class="resend" data-resend="${l.id}">Resend</button>`:''}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+
+    function render(){
+      document.getElementById('tableContainer').innerHTML=activeTab==='orders'?renderOrders():renderLeads();
+      document.querySelectorAll('[data-resend]').forEach(b=>b.addEventListener('click',()=>resend(b)));
+      document.querySelectorAll('[data-copy]').forEach(c=>c.addEventListener('click',()=>{navigator.clipboard.writeText(c.dataset.copy);toast('Copied');}));
+    }
+
+    async function resend(btn){
+      if(!confirm('Resend the welcome email to this customer?'))return;
+      btn.disabled=true;btn.textContent='Sending...';
+      try{const r=await api('resend',{leadId:btn.dataset.resend});toast('Email sent to '+r.sentTo);btn.textContent='Sent ✓';}
+      catch(ex){toast('Failed: '+ex.message);btn.disabled=false;btn.textContent='Resend';}
+    }
+
+    async function loadData(){
+      const rb=document.getElementById('refreshBtn');rb.disabled=true;
+      try{DATA=await api('data',{});renderStats(DATA.stats);render();}
+      catch(ex){toast(ex.message);}
+      rb.disabled=false;
+    }
+
+    async function boot(){
+      document.getElementById('loginView').style.display='none';
+      document.getElementById('appView').style.display='block';
+      await loadData();
+    }
+
+    // Auto-login if token exists
+    if(localStorage.getItem(TOKEN_KEY)){
+      api('data',{}).then(d=>{DATA=d;document.getElementById('loginView').style.display='none';document.getElementById('appView').style.display='block';renderStats(DATA.stats);render();}).catch(()=>logout());
+    }
+  </script>
+</body>
+</html>
