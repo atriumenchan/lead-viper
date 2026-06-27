@@ -22,6 +22,16 @@ const DAY = 24 * 60 * 60 * 1000;
 const STAGE_AFTER_DAYS = { 0: 1, 1: 3, 2: 6 };
 const MAX_REMINDERS = 3;
 
+// Never email internal or obvious test addresses.
+function isInternalOrTest(email) {
+  const e = String(email || '').toLowerCase().trim();
+  if (!e.includes('@')) return true;
+  const [local, domain] = e.split('@');
+  if (domain === 'admexo.com' || domain === 'example.com') return true;
+  if (/^(test|testuser|user|demo|qa|sample)\d*$/.test(local)) return true;
+  return false;
+}
+
 module.exports = async function handler(req, res) {
   // Optional security: protect the endpoint if CRON_SECRET is configured.
   const secret = process.env.CRON_SECRET;
@@ -72,6 +82,7 @@ module.exports = async function handler(req, res) {
   const previews = [];
 
   for (const lead of leads) {
+    if (isInternalOrTest(lead.email)) continue;
     const alreadySent = lead.reminders_sent || 0;
     const ageDays = (now - new Date(lead.created_at).getTime()) / DAY;
     const requiredAge = STAGE_AFTER_DAYS[alreadySent];
