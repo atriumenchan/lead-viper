@@ -58,6 +58,18 @@
     .search input{padding-left:38px}
     .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5}
 
+    /* ── Filter bar ── */
+    .filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px 16px;background:var(--panel);border:1px solid var(--border);border-radius:12px}
+    .fgroup{display:flex;align-items:center;gap:7px}
+    .fgroup label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0}
+    .fgroup select{background:#0b0b16;border:1px solid #2a2b3d;border-radius:8px;color:var(--text);font-size:13px;font-weight:600;padding:8px 30px 8px 12px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8fa3' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+    .fgroup select:focus{border-color:var(--purple)}
+    .fgroup.hidden{display:none}
+    .result-count{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+    .result-count b{color:#b69cff}
+    .clear-filters{font-size:12px;font-weight:600;color:#fca5a5;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);padding:7px 12px;border-radius:8px;cursor:pointer;transition:.15s}
+    .clear-filters:hover{background:rgba(239,68,68,.2)}
+
     /* ── Table ── */
     .table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden}
     .table-scroll{overflow-x:auto}
@@ -143,6 +155,63 @@
         </div>
       </div>
 
+      <div class="filterbar" id="filterbar">
+        <div class="fgroup" id="fgStatus">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="all">All</option>
+            <option value="completed">Completed (paid)</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed / Refunded</option>
+          </select>
+        </div>
+        <div class="fgroup" id="fgTier">
+          <label>Tier</label>
+          <select id="fTier">
+            <option value="all">All tiers</option>
+            <option value="basic">Basic</option>
+            <option value="silver">Silver</option>
+            <option value="gold">Gold</option>
+          </select>
+        </div>
+        <div class="fgroup" id="fgBumps">
+          <label>Bumps</label>
+          <select id="fBumps">
+            <option value="all">Any</option>
+            <option value="with">With order bumps</option>
+            <option value="without">No bumps</option>
+          </select>
+        </div>
+        <div class="fgroup" id="fgSegment">
+          <label>Show</label>
+          <select id="fSegment">
+            <option value="all">All leads</option>
+            <option value="paid">Paid customers</option>
+            <option value="unpaid">Not converted</option>
+          </select>
+        </div>
+        <div class="fgroup" id="fgRange">
+          <label>Joined</label>
+          <select id="fRange">
+            <option value="all">All time</option>
+            <option value="1">Last 24 hours</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Sort</label>
+          <select id="fSort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="amount_desc">Amount high&rarr;low</option>
+            <option value="amount_asc">Amount low&rarr;high</option>
+          </select>
+        </div>
+        <span class="result-count" id="resultCount"></span>
+        <button class="clear-filters" id="clearFilters">Clear</button>
+      </div>
+
       <div class="table-wrap">
         <div class="table-scroll"><div id="tableContainer"></div></div>
       </div>
@@ -187,9 +256,29 @@
 
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
       document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');activeTab=t.dataset.tab;render();
+      t.classList.add('active');activeTab=t.dataset.tab;updateFilterVisibility();render();
     }));
     document.getElementById('searchInput').addEventListener('input',render);
+    ['fStatus','fTier','fBumps','fSegment','fRange','fSort'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+    document.getElementById('clearFilters').addEventListener('click',()=>{
+      ['fStatus','fTier','fBumps','fSegment','fRange'].forEach(id=>document.getElementById(id).value='all');
+      document.getElementById('fSort').value='newest';
+      document.getElementById('searchInput').value='';
+      render();
+    });
+
+    // Show only the filter groups relevant to the active tab.
+    function updateFilterVisibility(){
+      const isOrders=activeTab==='orders';
+      document.getElementById('fgStatus').classList.toggle('hidden',!isOrders);
+      document.getElementById('fgTier').classList.toggle('hidden',!isOrders);
+      document.getElementById('fgBumps').classList.toggle('hidden',!isOrders);
+      document.getElementById('fgSegment').classList.toggle('hidden',isOrders);
+      // amount sort only makes sense for orders
+      const sort=document.getElementById('fSort');
+      sort.querySelectorAll('option[value^="amount"]').forEach(o=>o.style.display=isOrders?'':'none');
+      if(!isOrders && sort.value.startsWith('amount')) sort.value='newest';
+    }
 
     // ── Render ──
     function renderStats(s){
@@ -205,17 +294,55 @@
       g.innerHTML=cards.map(c=>`<div class="stat${c.accent?' accent':''}"><div class="label">${c.l}</div><div class="value">${c.v}</div><div class="sub">${c.sub}</div></div>`).join('');
     }
 
-    function filterRows(rows){
+    function applyFilters(rows,kind){
       const q=document.getElementById('searchInput').value.toLowerCase().trim();
-      if(!q)return rows;
-      return rows.filter(r=>[r.name,r.email,r.phone,r.profession].filter(Boolean).some(v=>String(v).toLowerCase().includes(q)));
+      const range=document.getElementById('fRange').value;
+      const sort=document.getElementById('fSort').value;
+      let out=rows.slice();
+
+      // text search
+      if(q) out=out.filter(r=>[r.name,r.email,r.phone,r.profession].filter(Boolean).some(v=>String(v).toLowerCase().includes(q)));
+
+      // date range
+      if(range!=='all'){
+        const cutoff=Date.now()-Number(range)*864e5;
+        out=out.filter(r=>new Date(r.createdAt).getTime()>=cutoff);
+      }
+
+      if(kind==='orders'){
+        const status=document.getElementById('fStatus').value;
+        const tier=document.getElementById('fTier').value;
+        const bumps=document.getElementById('fBumps').value;
+        if(status!=='all') out=out.filter(o=>status==='failed'?(o.status==='failed'||o.status==='refunded'):o.status===status);
+        if(tier!=='all') out=out.filter(o=>o.tier===tier);
+        if(bumps==='with') out=out.filter(o=>o.bumps&&o.bumps.length>0);
+        if(bumps==='without') out=out.filter(o=>!o.bumps||o.bumps.length===0);
+      }else{
+        const seg=document.getElementById('fSegment').value;
+        if(seg==='paid') out=out.filter(l=>l.converted);
+        if(seg==='unpaid') out=out.filter(l=>!l.converted);
+      }
+
+      // sort
+      out.sort((a,b)=>{
+        if(sort==='amount_desc') return (b.amount||0)-(a.amount||0);
+        if(sort==='amount_asc') return (a.amount||0)-(b.amount||0);
+        const ta=new Date(a.createdAt).getTime(), tb=new Date(b.createdAt).getTime();
+        return sort==='oldest'?ta-tb:tb-ta;
+      });
+      return out;
+    }
+
+    function setCount(shown,total){
+      document.getElementById('resultCount').innerHTML=`Showing <b>${shown}</b> of ${total}`;
     }
 
     function pwdCell(p){return p?`<span class="mono">${esc(p)}</span><span class="copy" data-copy="${esc(p)}">copy</span>`:'<span style="color:#5a5c70">—</span>';}
 
     function renderOrders(){
-      const rows=filterRows(DATA.orders);
-      if(!rows.length)return'<div class="empty">No orders found.</div>';
+      const rows=applyFilters(DATA.orders,'orders');
+      setCount(rows.length,DATA.orders.length);
+      if(!rows.length)return'<div class="empty">No orders match these filters.</div>';
       return `<table><thead><tr>
         <th>Customer</th><th>Email</th><th>Phone</th><th>Tier</th><th>Amount</th><th>Bumps</th><th>Status</th><th>Password</th><th>Date</th><th></th>
       </tr></thead><tbody>${rows.map(o=>`<tr>
@@ -233,8 +360,9 @@
     }
 
     function renderLeads(){
-      const rows=filterRows(DATA.leads);
-      if(!rows.length)return'<div class="empty">No leads found.</div>';
+      const rows=applyFilters(DATA.leads,'leads');
+      setCount(rows.length,DATA.leads.length);
+      if(!rows.length)return'<div class="empty">No leads match these filters.</div>';
       return `<table><thead><tr>
         <th>Name</th><th>Email</th><th>Phone</th><th>Profession</th><th>Paid?</th><th>Password</th><th>Joined</th><th></th>
       </tr></thead><tbody>${rows.map(l=>`<tr>
@@ -272,12 +400,13 @@
     async function boot(){
       document.getElementById('loginView').style.display='none';
       document.getElementById('appView').style.display='block';
+      updateFilterVisibility();
       await loadData();
     }
 
     // Auto-login if token exists
     if(localStorage.getItem(TOKEN_KEY)){
-      api('data',{}).then(d=>{DATA=d;document.getElementById('loginView').style.display='none';document.getElementById('appView').style.display='block';renderStats(DATA.stats);render();}).catch(()=>logout());
+      api('data',{}).then(d=>{DATA=d;document.getElementById('loginView').style.display='none';document.getElementById('appView').style.display='block';updateFilterVisibility();renderStats(DATA.stats);render();}).catch(()=>logout());
     }
   </script>
 </body>
