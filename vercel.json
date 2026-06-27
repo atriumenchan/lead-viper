@@ -2,5 +2,8 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/((?!api/)(?!assets/)(?!favicon)(?!access)(?!dashboard)(?!admin).*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/remind", "schedule": "0 14 * * *" }
   ]
 }
