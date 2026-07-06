@@ -8,7 +8,7 @@ const BRAND = {
   purpleDark: '#4c1fb3',
   ink: '#1a1033',
   site: 'https://leadengine.admexo.com',
-  calendly: 'https://calendly.com/admexoofficial/30min?month=2026-06',
+  calendly: 'https://tidycal.com/1kgnz9d/ai-lead-engine-bonus-growth-strategy-call',
 };
 
 function getSESClient() {
