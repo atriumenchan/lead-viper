@@ -26,6 +26,7 @@ function rateLimited(ip) {
 const str = (v, max = 300) => String(v ?? '').trim().slice(0, max);
 
 module.exports = async function handler(req, res) {
+  try {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const body = req.body || {};
   const action = body.action;
@@ -146,4 +147,8 @@ module.exports = async function handler(req, res) {
   }
 
   return res.status(400).json({ error: 'Unknown action' });
+  } catch (err) {
+    console.error('[roadmap] unhandled error:', err);
+    return res.status(500).json({ error: err.message || 'Internal server error' });
+  }
 };
