@@ -58,29 +58,29 @@ module.exports = async function handler(req, res) {
     };
 
     const id = crypto.randomBytes(8).toString('hex');
-    const delayMin = Math.max(0, Number(getSettings().roadmapDelayMin) || 0);
-    const readyAt = new Date(Date.now() + delayMin * 60000).toISOString();
+    const now = new Date().toISOString();
+
+    // Generate the plan immediately so the user never waits
+    const plan = generatePlan(input);
 
     await saveRoadmap({
       id,
       input,
-      plan: null,
+      plan,
       enrichment: null,
-      status: 'processing',
-      createdAt: new Date().toISOString(),
-      readyAt,
+      status: 'ready',
+      createdAt: now,
+      readyAt: now,
     });
 
+    // Fire async enrichment in background if configured (enhances the plan later)
     const apiKey = process.env.DEEPSEEK_API_KEY;
     if (input.website && apiKey) {
       const { enrichRoadmapAsync } = require('../lib/enricher');
       enrichRoadmapAsync(id, apiKey).catch(() => {});
-    } else {
-      const plan = generatePlan(input);
-      await updateRoadmap(id, { plan, status: 'ready', readyAt: new Date().toISOString() });
     }
 
-    return res.json({ ok: true, id, readyAt, status: input.website && apiKey ? 'processing' : 'ready' });
+    return res.json({ ok: true, id, readyAt: now, status: 'ready' });
   }
 
   // ── get (public, by id) ────────────────────────────────────────────────────
