@@ -97,6 +97,15 @@
     .lc-hr{border:none;border-top:1px solid #1a1a2e;margin:14px 0}
     .lesson-body{font-size:14px;color:#d1d5db;line-height:1.8;margin-bottom:8px}
 
+    /* -- Roadmap CTA banner -- */
+    .roadmap-bar{background:linear-gradient(135deg,#0d0a1f,#110d2a);border:1px solid rgba(102,31,255,.5);border-radius:12px;padding:22px 26px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .roadmap-bar-left{display:flex;align-items:center;gap:14px}
+    .roadmap-bar-icon{width:44px;height:44px;background:linear-gradient(135deg,#6f2bff,#4c1fb3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .roadmap-bar h3{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:3px}
+    .roadmap-bar p{font-size:13px;color:#9ca3af;line-height:1.4}
+    .roadmap-btn{background:linear-gradient(135deg,#6f2bff,#4c1fb3);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;padding:10px 22px;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;transition:opacity .2s}
+    .roadmap-btn:hover{opacity:.85}
+
     /* -- Bump block resource cards -- */
     .bump-resources{display:flex;flex-direction:column;gap:14px;max-width:720px}
     .bump-res-card{background:#0c0c1a;border:1px solid #1a1a2e;border-radius:10px;padding:20px 22px}
@@ -471,6 +480,16 @@ function renderDashboard() {
     <div class="welcome">
       <h1>Welcome back, ${user.firstName || 'there'} &#128075;</h1>
       <p>Pick a block below and start learning.</p>
+    </div>
+    <div class="roadmap-bar">
+      <div class="roadmap-bar-left">
+        <div class="roadmap-bar-icon">&#128640;</div>
+        <div>
+          <h3>Get Your Personalised AI Business Roadmap</h3>
+          <p>Fill out a quick form &mdash; we&rsquo;ll build a full 21-day AI growth plan for your business.</p>
+        </div>
+      </div>
+      <a href="/roadmap" class="roadmap-btn">&#9881; Build My Roadmap &#8594;</a>
     </div>
     ${hasLocked ? `<div class="upgrade-bar"><div><h3>&#128274; Unlock More Content</h3><p>Upgrade your plan to access all blocks and order bumps.</p></div><a href="https://leadengine.admexo.com" class="up-btn">Upgrade Now &#8594;</a></div>` : ''}
     <div class="sec-title">${STAR} Core Blocks</div>
