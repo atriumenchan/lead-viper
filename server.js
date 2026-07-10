@@ -4,8 +4,17 @@ require('dotenv').config();
 const express = require('express');
 const path    = require('path');
 const fs      = require('fs');
+const crypto  = require('crypto');
 const Stripe  = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
+
+// ── leadengine additions ───────────────────────────────────────────────────────
+const adminHandler   = require('./api/admin');
+const roadmapHandler = require('./api/roadmap');
+const uploadHandler  = require('./api/upload');
+const { requireAdmin, verifyToken, getAdminConfig, signToken } = require('./lib/auth');
+const { getFilePath } = require('./lib/db');
+const { LIVE }        = require('./lib/store');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const PORT        = process.env.PORT || 3001;
@@ -23,9 +32,13 @@ if (!STRIPE_SECRET_KEY)         console.warn('WARNING: STRIPE_SECRET_KEY not set
 if (!SUPABASE_URL)              console.warn('WARNING: SUPABASE_URL not set');
 if (!SUPABASE_SERVICE_ROLE_KEY) console.warn('WARNING: SUPABASE_SERVICE_ROLE_KEY not set');
 
-// ── Clients ───────────────────────────────────────────────────────────────────
-const stripe   = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2024-11-20.acacia' });
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+// ── Clients (guarded against missing env vars) ───────────────────────────────
+const stripe   = STRIPE_SECRET_KEY
+  ? new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2024-11-20.acacia' })
+  : null;
+const supabase = (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+  : null;
 
 // ── Pricing maps ─────────────────────────────────────────────────────────────
 const BASE_PRICES = { 3: 'basic', 9: 'silver', 15: 'gold' };
@@ -82,9 +95,10 @@ const LOG_ORDER_REPLACE =
   'async function d(){}export{d as f,l}';
 
 // HTML injection: load Supabase CDN + create client before app bundle
-const HTML_INJECT =
-  `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>\n` +
-  `<script>window.__supabase=supabase.createClient("${SUPABASE_URL}","${SUPABASE_ANON_KEY}")</script>\n`;
+const HTML_INJECT = (SUPABASE_URL && SUPABASE_ANON_KEY)
+  ? `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>\n` +
+    `<script>window.__supabase=supabase.createClient("${SUPABASE_URL}","${SUPABASE_ANON_KEY}")</script>\n`
+  : '';
 
 const patchCache = new Map();
 
@@ -129,14 +143,73 @@ function getPatchedContent(absPath) {
 // ── Express app ───────────────────────────────────────────────────────────────
 const app = express();
 
-// Stripe webhook needs raw body — must be registered BEFORE express.json()
+// Stripe webhook MUST receive raw body — register before express.json()
 app.post('/api/webhook', express.raw({ type: '*/*' }), handleWebhook);
 
-app.use(express.json());
+app.use(express.json({ limit: '18mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.disable('x-powered-by');
+
+// ── Security headers ──────────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  next();
+});
+
+// ── Cookie parser ─────────────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  const raw = req.headers.cookie || '';
+  req.cookies = {};
+  raw.split(';').forEach((c) => {
+    const [k, ...v] = c.trim().split('=');
+    if (k) req.cookies[k.trim()] = decodeURIComponent(v.join('='));
+  });
+  next();
+});
+
+// ── authGuard (admin routes) ──────────────────────────────────────────────────
+function authGuard(req, res, next) {
+  const token = req.cookies?.token || req.query.token;
+  if (token && verifyToken(token, getAdminConfig().secret)) return next();
+  if (req.path.startsWith('/api/')) return res.status(401).json({ error: 'Unauthorized' });
+  return res.redirect(`/login?to=${encodeURIComponent(req.originalUrl)}`);
+}
+
+// ── Admin API (leadengine) ────────────────────────────────────────────────────
+app.post('/api/admin',   (req, res) => adminHandler(req, res));
+app.post('/api/roadmap', (req, res) => roadmapHandler(req, res));
+app.post('/api/upload',  (req, res) => uploadHandler(req, res));
+
+app.get('/api/file/:id', (req, res) => {
+  if (!requireAdmin(req.query.token)) return res.status(401).json({ error: 'Unauthorized' });
+  const f = getFilePath(req.params.id);
+  if (!f) return res.status(404).json({ error: 'File not found' });
+  return res.download(f.path, f.meta.name);
+});
+
+// ── Admin login ───────────────────────────────────────────────────────────────
+app.post('/api/login', (req, res) => {
+  const cfg      = getAdminConfig();
+  const email    = (req.body.email    || '').toLowerCase().trim();
+  const password = (req.body.password || '').trim();
+  if (email !== cfg.email || password !== cfg.password) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+  const token = signToken(cfg.secret);
+  res.cookie('token', token, {
+    httpOnly: true, sameSite: 'lax',
+    maxAge: 12 * 60 * 60 * 1000,
+    secure: req.protocol === 'https',
+  });
+  return res.json({ ok: true, token });
+});
 
 // ── POST /api/create-checkout ─────────────────────────────────────────────────
 app.post('/api/create-checkout', async (req, res) => {
+  if (!stripe)   return res.status(503).json({ error: 'Stripe not configured' });
+  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { price, email, firstName, phone } = req.body;
 
@@ -256,6 +329,7 @@ app.post('/api/log-order', async (req, res) => {
 
 // ── POST /api/leads ───────────────────────────────────────────────────────────
 app.post('/api/leads', async (req, res) => {
+  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
   try {
     const { email, firstName, first_name, phone, mobile } = req.body;
     const nameVal  = firstName || first_name || '';
@@ -280,8 +354,59 @@ app.post('/api/leads', async (req, res) => {
   }
 });
 
+// ── Member dashboard auth ────────────────────────────────────────────────────
+app.post('/api/dashboard-auth', async (req, res) => {
+  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
+  try {
+    const email    = (req.body.email    || '').toLowerCase().trim();
+    const password = (req.body.password || '').trim();
+    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+
+    const { data: lead, error } = await supabase
+      .from('leads')
+      .select('id, first_name, email, access_password, converted')
+      .eq('email', email)
+      .single();
+
+    if (error || !lead)          return res.status(401).json({ error: 'Invalid email or password' });
+    if (!lead.converted)         return res.status(401).json({ error: 'No active membership found' });
+    if (!lead.access_password || lead.access_password !== password)
+                                 return res.status(401).json({ error: 'Invalid email or password' });
+
+    const { data: order } = await supabase
+      .from('orders')
+      .select('tier, bump_funnel_copy, bump_ai_prompts')
+      .eq('lead_id', lead.id)
+      .eq('status', 'completed')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    return res.json({
+      email:       lead.email,
+      firstName:   lead.first_name || '',
+      converted:   true,
+      tier:        order?.tier             || 'basic',
+      bumpFunnel:  order?.bump_funnel_copy || false,
+      bumpPrompts: order?.bump_ai_prompts  || false,
+    });
+  } catch (err) { return res.status(500).json({ error: err.message }); }
+});
+
+// ── Page routes ───────────────────────────────────────────────────────────────
+app.get('/home',   (req, res) => res.sendFile(path.join(__dirname, 'public', 'home.html')));
+app.get('/login',  (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+app.get('/access', (req, res) => res.sendFile(path.join(__dirname, 'public', 'access.html')));
+app.get('/admin',   authGuard, (req, res) => res.sendFile(path.join(__dirname, 'public', 'control.html')));
+app.get('/roadmap', authGuard, (req, res) => res.sendFile(path.join(__dirname, 'public', 'roadmap.html')));
+
+// Static assets bypass patching for speed
+app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+
 // ── POST /api/webhook (Stripe) ────────────────────────────────────────────────
 async function handleWebhook(req, res) {
+  if (!stripe)   return res.status(503).json({ error: 'Stripe not configured' });
+  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
   const sig = req.headers['stripe-signature'];
 
   if (!sig) return res.status(400).json({ error: 'Missing stripe-signature header' });
@@ -329,9 +454,10 @@ async function handleWebhook(req, res) {
           .select('lead_id')
           .single();
 
-        // Mark lead as converted
         if (updatedOrder?.lead_id) {
-          await supabase.from('leads').update({ converted: true }).eq('id', updatedOrder.lead_id);
+          const accessPassword = crypto.randomBytes(4).toString('hex').toUpperCase();
+          await supabase.from('leads').update({ converted: true, access_password: accessPassword }).eq('id', updatedOrder.lead_id);
+          console.log(`[webhook] access_password set for lead ${updatedOrder.lead_id}`);
         }
 
         console.log(`[webhook] payment completed — session ${session.id} | ${session.customer_email}`);
@@ -423,12 +549,11 @@ app.get('*', (req, res) => {
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log('\n========================================');
-    console.log(` AI Lead Engine backend`);
+    console.log(' AI Lead Engine — Unified Server');
     console.log(` http://localhost:${PORT}`);
-    console.log('========================================');
-    console.log(` Frontend : ${FRONTEND_DIR}`);
-    console.log(` Supabase : ${SUPABASE_URL}`);
-    console.log(` Stripe   : ${STRIPE_SECRET_KEY.startsWith('sk_live') ? 'LIVE' : 'TEST'} mode`);
+    console.log(`  Supabase : ${SUPABASE_URL ? 'connected' : 'not configured'}`);
+    console.log(`  Stripe   : ${STRIPE_SECRET_KEY ? (STRIPE_SECRET_KEY.startsWith('sk_live') ? 'LIVE' : 'TEST') : 'not configured'}`);
+    console.log(`  Data     : ${LIVE ? 'Supabase' : 'Demo mode'}`);
     console.log('========================================\n');
   });
 }

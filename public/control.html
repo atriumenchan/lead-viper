@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Lead Engine — Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+
+  <!-- ══════════ LOGIN ══════════ -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-panel">
+      <div class="login-glow"></div>
+      <div class="login-head">
+        <div class="login-logo">✈</div>
+        <h1>CONTROL CENTER</h1>
+        <p class="login-sub">AI LEAD ENGINE · FLIGHT DECK ACCESS</p>
+      </div>
+      <form id="login-form" autocomplete="off">
+        <label>OPERATOR ID</label>
+        <input type="email" id="login-email" placeholder="admin@admexo.com" required />
+        <label>ACCESS CODE</label>
+        <input type="password" id="login-password" placeholder="••••••••••••" required />
+        <button type="submit" id="login-btn">INITIATE SESSION</button>
+        <div id="login-error" class="login-error"></div>
+      </form>
+      <div class="login-foot">
+        <span class="blink">●</span> SECURE CHANNEL · HMAC-SIGNED SESSION · 12H TTL
+      </div>
+    </div>
+    <a class="roadmap-cta" href="/roadmap">
+      <span class="cta-spark">⚡</span>
+      <span class="cta-main">GET YOUR PERSONALIZED ROADMAP RIGHT AWAY</span>
+      <span class="cta-sub">GIVE US YOUR INFO — OUR ENGINE + TEAM BUILD YOUR 21-DAY PLAN · FREE · INSTANT</span>
+    </a>
+  </div>
+
+  <!-- ══════════ DASHBOARD ══════════ -->
+  <div id="dashboard" class="dashboard hidden">
+
+    <!-- Top status bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-logo">✈</span>
+        <span class="topbar-title">AI LEAD ENGINE</span>
+        <span class="topbar-badge" id="mode-badge">—</span>
+      </div>
+      <div class="topbar-right">
+        <button class="tb-btn" id="refresh-btn" title="Refresh data">⟳ SYNC</button>
+        <button class="tb-btn tb-btn-danger" id="logout-btn">EJECT ⏏</button>
+      </div>
+    </header>
+
+    <main class="deck">
+
+      <!-- Row 0: stats strip -->
+      <section class="row" id="stats-row">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-label">ROADMAPS</div><div class="stat-value" id="stat-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">NEW</div><div class="stat-value" id="stat-new">0</div></div>
+          <div class="stat-card"><div class="stat-label">READY</div><div class="stat-value" id="stat-ready">0</div></div>
+          <div class="stat-card"><div class="stat-label">PROCESSING</div><div class="stat-value" id="stat-processing">0</div></div>
+        </div>
+      </section>
+
+      <!-- Row 0: mission command (CTA → countdown → personalized roadmap) -->
+      <section class="row">
+        <div class="panel mission-panel" id="mission-panel">
+          <div class="panel-title">MISSION COMMAND · YOUR 21-DAY ROADMAP</div>
+          <div id="mission-body" class="mission-body">
+            <div class="mission-loading">CHECKING MISSION STATUS…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 0b: roadmap detail viewer (shown when admin selects a submission) -->
+      <section class="row hidden" id="row-detail">
+        <div class="panel detail-panel">
+          <div class="panel-title">
+            <span>ROADMAP DETAIL</span>
+            <span class="detail-sub" id="detail-sub">Select a plan to preview</span>
+            <a class="tb-btn" id="detail-open" href="#" target="_blank">OPEN FULL PLAN ↗</a>
+            <button class="tb-btn" id="detail-close">CLOSE</button>
+          </div>
+          <div class="detail-tabs" id="detail-tabs">
+            <button class="on" data-dtab="overview">OVERVIEW</button>
+            <button data-dtab="emails">EMAILS</button>
+            <button data-dtab="ads">ADS</button>
+            <button data-dtab="offer">OFFER</button>
+            <button data-dtab="competitor">COMPETITOR</button>
+            <button data-dtab="geo">GEO</button>
+          </div>
+          <div class="detail-body" id="detail-body"></div>
+        </div>
+      </section>
+
+      <!-- Row 0c: enrichment tools (email campaign + creative studio) -->
+      <section class="row row-enrich hidden" id="row-enrich">
+        <div class="panel email-campaign-panel">
+          <div class="panel-title">📧 EMAIL CAMPAIGN · OUTREACH STUDIO</div>
+          <div id="email-campaign-body">
+            <div class="enrich-placeholder">Run enrichment to generate email copies for this business.</div>
+          </div>
+        </div>
+
+        <div class="panel creative-panel">
+          <div class="panel-title">🎨 CREATIVE STUDIO · MARKETING ASSETS</div>
+          <div id="creative-body">
+            <div class="enrich-placeholder">Run enrichment to generate image prompts and marketing assets.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 0b2: ICP profile + GEO audit score -->
+      <section class="row row-icpgeo hidden" id="row-icpgeo">
+        <div class="panel icp-panel">
+          <div class="panel-title">🎯 IDEAL CLIENT PROFILE · ICP</div>
+          <div id="icp-body">
+            <div class="enrich-placeholder">Run enrichment to generate an ICP for this business.</div>
+          </div>
+        </div>
+
+        <div class="panel geo-panel">
+          <div class="panel-title">📊 GEO AUDIT · AI VISIBILITY SCORE</div>
+          <div id="geo-body">
+            <div class="enrich-placeholder">Run enrichment to generate a GEO audit score.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 0c: lead database from maps scraper -->
+      <section class="row row-leadsdb hidden" id="row-leadsdb">
+        <div class="panel table-panel">
+          <div class="panel-title">
+            🗺 LEAD DATABASE · GOOGLE MAPS EXTRACT
+            <span class="count-badge" id="leadsdb-count">0</span>
+            <input class="tbl-search" id="leadsdb-search" placeholder="SEARCH…" />
+            <button class="tb-btn" id="leadsdb-export">EXPORT CSV</button>
+          </div>
+          <div class="tbl-scroll" style="max-height:300px">
+            <table>
+              <thead><tr><th>NAME</th><th>PHONE</th><th>WEBSITE</th><th>RATING</th><th>REVIEWS</th><th>ADDRESS</th></tr></thead>
+              <tbody id="leadsdb-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 1: Roadmap requests (full width) -->
+      <section class="row">
+        <div class="panel table-panel">
+          <div class="panel-title">
+            ROADMAP REQUESTS <span class="count-badge" id="rm-count">0</span>
+            <input class="tbl-search" id="rm-search" placeholder="SEARCH…" />
+            <select class="tbl-filter" id="rm-filter">
+              <option value="">ALL</option>
+              <option value="new">NEW</option>
+              <option value="contacted">CONTACTED</option>
+              <option value="converted">CONVERTED</option>
+            </select>
+          </div>
+          <div class="tbl-scroll">
+            <table>
+              <thead><tr><th>TIME</th><th>NAME</th><th>BUSINESS</th><th>NICHE</th><th>GOAL</th><th>STATUS</th><th>ACTIONS</th></tr></thead>
+              <tbody id="rm-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 2: Settings (full width) -->
+      <section class="row">
+        <div class="panel settings-panel">
+          <div class="panel-title">ROADMAP CONFIG · SETTINGS</div>
+          <div class="setting-row">
+            <div><b>DEMO MODE</b><small>Seeded demo data. Turn OFF to show only real data.</small></div>
+            <button class="toggle" id="demo-toggle"><span class="knob"></span></button>
+          </div>
+          <div class="setting-row">
+            <div><b>AUTO-SYNC INTERVAL</b><small>How often the dashboard refreshes.</small></div>
+            <select id="refresh-select" class="tbl-filter">
+              <option value="10">10S</option>
+              <option value="30">30S</option>
+              <option value="60">60S</option>
+              <option value="120">2MIN</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <div><b>ROADMAP DELIVERY DELAY</b><small>Countdown before a member's plan unlocks.</small></div>
+            <select id="delay-select" class="tbl-filter">
+              <option value="0">INSTANT</option>
+              <option value="5">5 MIN</option>
+              <option value="30">30 MIN</option>
+              <option value="60">1 HOUR</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <div><b>ROADMAP PAGE</b><small>Customer-facing plan generator.</small></div>
+            <a class="tb-btn" href="/roadmap" target="_blank">OPEN ↗</a>
+          </div>
+          <div class="settings-note" id="settings-note"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="deckfoot">
+      AI LEAD ENGINE CONTROL CENTER · <span id="foot-mode">—</span> · AUTO-SYNC 30S
+    </footer>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

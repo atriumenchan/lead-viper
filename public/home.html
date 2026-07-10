@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Lead Engine — Build your 21-day lead generation roadmap</title>
+  <meta name="description" content="Get a personalized 21-day marketing roadmap, email scripts, ad creatives, GEO audit and competitor analysis powered by DeepSeek." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07070f; --bg-2: #0f0f1f; --border: #1f2030;
+      --text: #e7e8f0; --muted: #8b8fa3; --muted-2: #5a5c70;
+      --purple: #661fff; --purple-2: #4c1fb3; --purple-glow: rgba(102,31,255,.35);
+      --cyan: #8b5cf6; --amber: #f5b83d; --red: #ff4d5e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; font-size: 16px; }
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7,7,15,.85); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #6f2bff, #4c1fb3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff;
+    }
+    .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px; color: #fff; }
+    .logo-sub { font-size: 10px; font-weight: 600; color: var(--purple); letter-spacing: .1em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 10px; }
+    .nav-link { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); transition: all .2s; }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.pill { color: #fff; background: linear-gradient(135deg, var(--purple), var(--purple-2)); }
+
+    /* Hero */
+    .hero { padding: 90px 0 70px; text-align: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(102,31,255,.12); border: 1px solid rgba(102,31,255,.35);
+      color: var(--purple); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: 8px 14px; border-radius: 50px; margin-bottom: 24px;
+    }
+    .hero h1 { font-size: clamp(34px, 6vw, 58px); line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+    .hero h1 span { color: var(--purple); }
+    .hero p { max-width: 640px; margin: 0 auto 32px; font-size: 18px; color: var(--muted); }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-btn {
+      display: inline-block; padding: 16px 28px; border-radius: 10px;
+      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: .5px;
+      transition: all .2s;
+    }
+    .cta-primary { background: linear-gradient(135deg, var(--purple), var(--purple-2)); color: #fff; box-shadow: 0 0 30px rgba(102,31,255,.35); }
+    .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(102,31,255,.5); }
+    .cta-secondary { background: var(--bg-2); border: 1px solid var(--border); color: var(--text); }
+    .cta-secondary:hover { border-color: var(--purple); color: var(--purple); }
+    .hero-trust { margin-top: 24px; font-size: 13px; color: var(--muted-2); }
+
+    /* Sections */
+    .section { padding: 70px 0; }
+    .section-title { text-align: center; font-size: 30px; margin-bottom: 12px; }
+    .section-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 40px; font-size: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; padding: 28px; }
+    .card-icon { font-size: 28px; margin-bottom: 14px; }
+    .card h3 { font-size: 18px; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+    .how-list { display: flex; flex-direction: column; gap: 18px; max-width: 720px; margin: 0 auto; }
+    .how-step { display: flex; gap: 18px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+    .how-num { width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%; background: rgba(102,31,255,.15); border: 1px solid rgba(102,31,255,.3); color: var(--purple); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 800; }
+    .how-step h4 { font-size: 16px; margin-bottom: 4px; }
+    .how-step p { font-size: 14px; color: var(--muted); }
+
+    .final-cta { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+
+    .footer { padding: 36px 0; text-align: center; font-size: 13px; color: var(--muted-2); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding: 60px 0 50px; }
+      .section { padding: 50px 0; }
+      .how-step { flex-direction: column; text-align: center; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <div class="logo-text">AI Lead Engine</div>
+          <div class="logo-sub">DeepSeek-powered growth</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/roadmap" class="nav-link">Get my roadmap</a>
+        <a href="/login" class="nav-link pill">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">Built with DeepSeek AI</div>
+      <h1>Your 21-day lead generation <span>roadmap</span> in 2 minutes.</h1>
+      <p>Answer a few questions. Our AI scrapes your website, audits your GEO presence, analyzes your competitors and builds a full execution plan: email scripts, ad creatives, lead magnets, and daily tasks.</p>
+      <div class="cta-row">
+        <a href="/roadmap" class="cta-btn cta-primary">⚡ Generate my free roadmap</a>
+        <a href="/login" class="cta-btn cta-secondary">Admin dashboard</a>
+      </div>
+      <div class="hero-trust">No credit card · Instant plan · Powered by 1,000+ campaign data points</div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Everything the engine builds for you</h2>
+      <p class="section-sub">DeepSeek is used to its full potential: every section below is generated from your website and business answers.</p>
+      <div class="grid-3">
+        <div class="card"><div class="card-icon">🗓</div><h3>21-day mission</h3><p>Daily tasks, weekly focus, milestones and checkboxes so you never wonder what to do next.</p></div>
+        <div class="card"><div class="card-icon">🎯</div><h3>Ideal client profile</h3><p>Demographics, pain points, buying triggers and where your leads hang out online.</p></div>
+        <div class="card"><div class="card-icon">📧</div><h3>Email scripts</h3><p>Cold outreach, follow-up, nurture and offer sequences ready to copy and send.</p></div>
+        <div class="card"><div class="card-icon">🖼</div><h3>Ad creatives</h3><p>Platform-specific headlines, body copy, CTAs and AI image prompts for DALL-E and Midjourney.</p></div>
+        <div class="card"><div class="card-icon">🏆</div><h3>Offer &amp; pricing</h3><p>Core offer, order bump, urgency tactics and objection handling for higher conversions.</p></div>
+        <div class="card"><div class="card-icon">🗺</div><h3>GEO audit</h3><p>GEO (Generative Engine Optimization) score with strengths, weaknesses and priority fixes.</p></div>
+        <div class="card"><div class="card-icon">📊</div><h3>Metrics tracker</h3><p>Track leads, cost-per-lead, conversion and revenue targets with daily targets.</p></div>
+        <div class="card"><div class="card-icon">🎁</div><h3>Lead magnets</h3><p>Download, checklist and resource ideas with titles, hooks and delivery methods.</p></div>
+        <div class="card"><div class="card-icon">🚀</div><h3>90-day extension</h3><p>What to do after the first 21 days to scale the system and hire or automate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--bg-2);">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-sub">Three steps from a blank page to a ready-to-run campaign.</p>
+      <div class="how-list">
+        <div class="how-step"><div class="how-num">1</div><div><h4>Tell us about your business</h4><p>Share your website, niche, revenue goal, channels and biggest challenge.</p></div></div>
+        <div class="how-step"><div class="how-num">2</div><div><h4>DeepSeek analyzes everything</h4><p>We scrape your site, run a GEO audit, study positioning and build the full plan.</p></div></div>
+        <div class="how-step"><div class="how-num">3</div><div><h4>Get your execution plan</h4><p>Open your roadmap, export leads, copy emails and start the daily mission.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section final-cta">
+    <div class="container">
+      <h2 class="section-title">Ready to stop guessing and start executing?</h2>
+      <p class="section-sub">Your first roadmap is free, built instantly and yours to keep.</p>
+      <div class="cta-row">
+        <a href="/roadmap" class="cta-btn cta-primary">⚡ Generate my free roadmap</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">AI Lead Engine · Built with DeepSeek · <a href="/login" style="color: var(--muted);">Admin</a></div>
+  </footer>
+
+</body>
+</html>

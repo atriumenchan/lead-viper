@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Your Personalized 21-Day Roadmap — AI Lead Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/roadmap.css" />
+</head>
+<body>
+
+  <!-- ══════════ HERO / FORM WIZARD ══════════ -->
+  <div id="wizard-screen">
+    <div class="stars"></div>
+    <header class="rm-hero">
+      <div class="rm-badge">✈ AI LEAD ENGINE · FLIGHT PLANNING SYSTEM</div>
+      <h1>GET YOUR PERSONALIZED<br /><span class="glow">21-DAY ROADMAP</span><br />RIGHT AWAY</h1>
+      <p class="rm-sub">Give us your intel — our engine builds your complete mission plan in seconds:<br />
+      day-by-day action plan · email scripts · ad creatives · exact lead targets. All personalized to <b>your</b> business.</p>
+    </header>
+
+    <div class="wizard" id="wizard">
+      <div class="wiz-progress">
+        <div class="wiz-step active" data-s="1"><span>01</span>IDENTITY</div>
+        <div class="wiz-line"></div>
+        <div class="wiz-step" data-s="2"><span>02</span>MISSION</div>
+        <div class="wiz-line"></div>
+        <div class="wiz-step" data-s="3"><span>03</span>TARGETS</div>
+        <div class="wiz-line"></div>
+        <div class="wiz-step" data-s="4"><span>04</span>LAUNCH</div>
+      </div>
+
+      <form id="rm-form" autocomplete="off">
+        <!-- STEP 1 -->
+        <fieldset class="wiz-panel" data-panel="1">
+          <legend>OPERATOR IDENTITY</legend>
+          <div class="grid2">
+            <div class="fld"><label>YOUR NAME *</label><input name="name" required placeholder="Jane Carter" /></div>
+            <div class="fld"><label>EMAIL *</label><input name="email" type="email" required placeholder="jane@company.com" /></div>
+            <div class="fld"><label>BUSINESS NAME *</label><input name="businessName" required placeholder="Carter Growth Co." /></div>
+            <div class="fld"><label>WEBSITE</label><input name="website" placeholder="https://yoursite.com" /></div>
+          </div>
+          <div class="wiz-nav"><span></span><button type="button" class="wiz-btn" data-next="2">NEXT ▸</button></div>
+        </fieldset>
+
+        <!-- STEP 2 -->
+        <fieldset class="wiz-panel hidden" data-panel="2">
+          <legend>MISSION PROFILE</legend>
+          <div class="fld"><label>WHAT KIND OF BUSINESS? *</label>
+            <div class="chipset" data-name="niche" data-single="1">
+              <button type="button" data-v="agency">MARKETING AGENCY</button>
+              <button type="button" data-v="coach">COACH / TRAINER</button>
+              <button type="button" data-v="consultant">CONSULTANT</button>
+              <button type="button" data-v="ecom">E-COMMERCE</button>
+              <button type="button" data-v="saas">SAAS</button>
+              <button type="button" data-v="realtor">REAL ESTATE</button>
+              <button type="button" data-v="local">LOCAL BUSINESS</button>
+              <button type="button" data-v="freelancer">FREELANCER</button>
+              <button type="button" data-v="other">OTHER</button>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="fld"><label>WHO DO YOU SERVE? (YOUR IDEAL CLIENT) *</label>
+              <input name="audience" required placeholder="e.g. dentists in Texas doing $50k+/mo" /></div>
+            <div class="fld"><label>WHAT DO YOU SELL? (YOUR OFFER) *</label>
+              <input name="offer" required placeholder="e.g. done-for-you Google Ads management" /></div>
+          </div>
+          <div class="wiz-nav"><button type="button" class="wiz-btn ghost" data-prev="1">◂ BACK</button><button type="button" class="wiz-btn" data-next="3">NEXT ▸</button></div>
+        </fieldset>
+
+        <!-- STEP 3 -->
+        <fieldset class="wiz-panel hidden" data-panel="3">
+          <legend>TARGET PARAMETERS</legend>
+          <div class="grid2">
+            <div class="fld"><label>PRICE OF YOUR OFFER (USD) *</label><input name="pricePoint" type="number" min="1" required placeholder="1500" /></div>
+            <div class="fld"><label>MONTHLY REVENUE GOAL (USD) *</label><input name="monthlyGoal" type="number" min="100" required placeholder="10000" /></div>
+          </div>
+          <div class="fld"><label>WHICH CHANNELS WILL YOU USE? (PICK UP TO 3)</label>
+            <div class="chipset" data-name="channels" data-max="3">
+              <button type="button" data-v="facebook">FACEBOOK ADS</button>
+              <button type="button" data-v="linkedin">LINKEDIN</button>
+              <button type="button" data-v="instagram">INSTAGRAM</button>
+              <button type="button" data-v="email">EMAIL</button>
+              <button type="button" data-v="outreach">COLD OUTREACH</button>
+              <button type="button" data-v="seo">SEO / GOOGLE</button>
+            </div>
+          </div>
+          <div class="fld"><label>BRAND TONE</label>
+            <div class="chipset" data-name="tone" data-single="1">
+              <button type="button" data-v="professional" class="on">PROFESSIONAL</button>
+              <button type="button" data-v="bold">BOLD</button>
+              <button type="button" data-v="friendly">FRIENDLY</button>
+            </div>
+          </div>
+          <div class="wiz-nav"><button type="button" class="wiz-btn ghost" data-prev="2">◂ BACK</button><button type="button" class="wiz-btn" data-next="4">NEXT ▸</button></div>
+        </fieldset>
+
+        <!-- STEP 4 -->
+        <fieldset class="wiz-panel hidden" data-panel="4">
+          <legend>FINAL CHECK</legend>
+          <div class="fld"><label>YOUR BIGGEST CHALLENGE RIGHT NOW (OPTIONAL)</label>
+            <textarea name="challenge" rows="3" placeholder="e.g. I get leads but they never book a call…"></textarea></div>
+          <div class="rm-note">⚡ Your plan generates instantly. Our team also reviews every submission and will reach out with a personalized upgrade path.</div>
+          <div class="wiz-nav">
+            <button type="button" class="wiz-btn ghost" data-prev="3">◂ BACK</button>
+            <button type="submit" class="wiz-btn launch" id="generate-btn">🚀 GENERATE MY ROADMAP</button>
+          </div>
+          <div id="rm-error" class="rm-error"></div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="rm-trust">NO CREDIT CARD · INSTANT GENERATION · BUILT FROM 1,000+ CAMPAIGN DATA POINTS</div>
+  </div>
+
+  <!-- ══════════ GENERATING ══════════ -->
+  <div id="gen-screen" class="hidden">
+    <div class="gen-box">
+      <div class="gen-ring"></div>
+      <div class="gen-status" id="gen-status">ANALYZING YOUR BUSINESS…</div>
+    </div>
+  </div>
+
+  <!-- ══════════ COUNTDOWN ══════════ -->
+  <div id="wait-screen" class="hidden">
+    <div class="wait-box">
+      <div class="rm-badge">✈ SUBMISSION RECEIVED · PLAN IN PRODUCTION</div>
+      <h2>YOUR ROADMAP IS BEING<br /><span class="glow">BUILT BY AI + OUR ENGINE</span></h2>
+      <div class="wait-timer" id="wait-timer">--:--:--</div>
+      <p class="wait-sub">Our AI is scraping your website, analyzing your market, and generating a fully personalized 21-day plan.<br />
+      This takes up to 30 minutes. It unlocks automatically when ready — right here and on your dashboard.</p>
+      <div class="wait-actions">
+        <a class="wiz-btn" href="/">◈ GO TO MY DASHBOARD</a>
+      </div>
+      <div class="rm-trust">KEEP THIS URL — YOUR PLAN OPENS HERE THE MOMENT IT'S READY</div>
+    </div>
+  </div>
+
+  <!-- ══════════ PLAN ══════════ -->
+  <div id="plan-screen" class="hidden">
+    <header class="plan-top">
+      <div>
+        <div class="rm-badge">✈ MISSION PLAN GENERATED</div>
+        <h2 id="plan-title">YOUR 21-DAY FLIGHT PLAN</h2>
+        <p class="plan-positioning" id="plan-positioning"></p>
+      </div>
+      <div class="plan-actions">
+        <button class="wiz-btn" onclick="window.print()">⬇ DOWNLOAD PDF</button>
+        <button class="wiz-btn ghost" id="restart-btn">↺ NEW PLAN</button>
+      </div>
+    </header>
+
+    <!-- KPI strip -->
+    <section class="kpi-strip" id="kpi-strip"></section>
+
+    <!-- Tabs -->
+    <nav class="plan-tabs" id="plan-tabs">
+      <button class="on" data-tab="mission">21-DAY MISSION</button>
+      <button data-tab="strategy">STRATEGY</button>
+      <button data-tab="icp">TARGET PROFILE</button>
+      <button data-tab="emails">EMAIL SCRIPTS</button>
+      <button data-tab="ads">AD CREATIVES</button>
+      <button data-tab="magnets">LEAD MAGNETS</button>
+      <button data-tab="offer">OFFER &amp; PRICING</button>
+      <button data-tab="competitor">COMPETITOR</button>
+      <button data-tab="tracker">METRICS TRACKER</button>
+      <button data-tab="calendar">CONTENT CAL</button>
+      <button data-tab="ninetyday">90-DAY EXTENSION</button>
+      <button data-tab="risks">RISK MITIGATION</button>
+      <button data-tab="geo">GEO AUDIT</button>
+    </nav>
+
+    <section class="tab-body" id="tab-mission"></section>
+    <section class="tab-body hidden" id="tab-strategy"></section>
+    <section class="tab-body hidden" id="tab-icp"></section>
+    <section class="tab-body hidden" id="tab-emails"></section>
+    <section class="tab-body hidden" id="tab-ads"></section>
+    <section class="tab-body hidden" id="tab-magnets"></section>
+    <section class="tab-body hidden" id="tab-offer"></section>
+    <section class="tab-body hidden" id="tab-competitor"></section>
+    <section class="tab-body hidden" id="tab-tracker"></section>
+    <section class="tab-body hidden" id="tab-calendar"></section>
+    <section class="tab-body hidden" id="tab-ninetyday"></section>
+    <section class="tab-body hidden" id="tab-risks"></section>
+    <section class="tab-body hidden" id="tab-geo"></section>
+
+    <footer class="plan-foot">
+      AI LEAD ENGINE · PLAN ID <span id="plan-id">—</span> · SAVE THIS URL TO REOPEN YOUR PLAN
+    </footer>
+  </div>
+
+  <script src="/assets/roadmap.js"></script>
+</body>
+</html>
