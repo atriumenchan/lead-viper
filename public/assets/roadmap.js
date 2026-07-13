@@ -316,41 +316,152 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 function renderAds(plan) {
-  $('#tab-ads').innerHTML = `<div class="ads-grid">` + plan.ads.map((ad, i) => `
-    <div class="ad-card">
-      <div class="ad-style">CREATIVE ${i + 1} · ${esc(ad.style)}</div>
-      <canvas id="ad-cv-${i}"></canvas>
-      <div class="ad-copy">
-        <b>${esc(ad.headline)}</b>
-        ${esc(ad.primary)}
-        <br/><span class="cta">${esc(ad.cta).toUpperCase()}</span>
-      </div>
-      <div class="ad-dl"><button class="mini-btn" data-dl="${i}">⬇ DOWNLOAD PNG (1080×1080)</button>
-      <button class="mini-btn" data-copy-ad="${i}">⧉ COPY AD TEXT</button></div>
-    </div>`).join('') + `</div>`;
+  const PLATFORMS = ['Meta / Facebook', 'LinkedIn', 'Google'];
+  const STAGES   = ['Awareness', 'Consideration', 'Conversion'];
+  const STYLES   = ['Pain Point', 'Proof-First', 'Call-Out'];
 
-  // draw after fonts load
+  const filterBar = `<div class="ads-filter-bar">
+    <input class="ads-search" placeholder="Search creatives\u2026" id="ads-search-input" />
+    <div class="ads-filter-chips">
+      <button class="filter-chip active" data-filter="all">All</button>
+      ${STYLES.map((s, i) => `<button class="filter-chip" data-filter="${i}">${s}</button>`).join('')}
+    </div>
+  </div>`;
+
+  const cards = plan.ads.map((ad, i) => {
+    const num      = String(i + 1).padStart(2, '0');
+    const platform = PLATFORMS[i % PLATFORMS.length];
+    const stage    = STAGES[i % STAGES.length];
+    const style    = STYLES[i % STYLES.length];
+    return `<div class="ad-card" data-ad-index="${i}" data-style="${i}">
+      <div class="ad-preview-wrap">
+        <canvas id="ad-cv-${i}"></canvas>
+        <div class="ad-preview-overlay">
+          <button class="overlay-btn" data-preview="${i}">&#128065; Preview</button>
+        </div>
+      </div>
+      <div class="ad-meta">
+        <div class="ad-num">Creative ${esc(num)}</div>
+        <h3 class="ad-title">${esc(ad.style)}</h3>
+        <p class="ad-desc">${esc(ad.headline)}</p>
+        <div class="ad-badges">
+          <span class="ad-badge ad-badge-accent">${esc(style)}</span>
+          <span class="ad-badge">${esc(platform)}</span>
+          <span class="ad-badge ad-badge-ratio">1:1</span>
+          <span class="ad-badge">${esc(stage)}</span>
+        </div>
+      </div>
+      <div class="ad-actions">
+        <button class="ad-btn ad-btn-primary" data-dl="${i}">&#8595; Download PNG</button>
+        <div class="ad-btn-row">
+          <button class="ad-btn ad-btn-ghost" data-dl-story="${i}">&#8595; Story 9:16</button>
+          <button class="ad-btn ad-btn-ghost" data-copy-prompt="${i}">&#128203; Prompt</button>
+        </div>
+        <button class="ad-btn ad-btn-ghost" data-copy-ad="${i}">&#9998; Copy Ad Text</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  $('#tab-ads').innerHTML = filterBar + `<div class="ads-grid" id="ads-grid">${cards}</div>`;
+
+  /* ensure toast element exists */
+  if (!document.getElementById('ads-toast')) {
+    const t = document.createElement('div');
+    t.id = 'ads-toast'; t.className = 'ads-toast hidden';
+    document.body.appendChild(t);
+  }
+
+  /* draw canvas creatives after fonts are ready */
   const draw = () => plan.ads.forEach((ad, i) =>
     drawAdCreative(document.getElementById('ad-cv-' + i), ad, plan.business.name, AD_THEMES[i % AD_THEMES.length]));
   (document.fonts?.ready || Promise.resolve()).then(draw);
 
+  /* search */
+  document.getElementById('ads-search-input').addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    $$('#ads-grid .ad-card').forEach((card) => {
+      const idx = Number(card.dataset.adIndex);
+      const ad  = plan.ads[idx];
+      if (!ad) return;
+      card.style.display = `${ad.style} ${ad.headline} ${ad.primary}`.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+
+  /* click delegation */
   $('#tab-ads').addEventListener('click', async (e) => {
-    const dl = e.target.closest('[data-dl]');
+    /* filter chips */
+    const chip = e.target.closest('.filter-chip');
+    if (chip) {
+      $$('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const f = chip.dataset.filter;
+      $$('#ads-grid .ad-card').forEach(card => {
+        card.style.display = (f === 'all' || card.dataset.style === f) ? '' : 'none';
+      });
+      return;
+    }
+
+    /* download PNG 1080×1080 */
+    const dl = e.target.closest('[data-dl]:not([data-dl-story])');
     if (dl) {
       const cv = document.getElementById('ad-cv-' + dl.dataset.dl);
-      const a = document.createElement('a');
+      const a  = document.createElement('a');
       a.download = `${(plan.business.name || 'ad').replace(/\W+/g, '-')}-creative-${Number(dl.dataset.dl) + 1}.png`;
-      a.href = cv.toDataURL('image/png');
-      a.click();
+      a.href = cv.toDataURL('image/png'); a.click();
+      return;
     }
+
+    /* download Story 1080×1920 */
+    const dls = e.target.closest('[data-dl-story]');
+    if (dls) {
+      const idx  = Number(dls.dataset.dlStory);
+      const src  = document.getElementById('ad-cv-' + idx);
+      const sc   = document.createElement('canvas');
+      sc.width = 1080; sc.height = 1920;
+      const ctx  = sc.getContext('2d');
+      const th   = AD_THEMES[idx % AD_THEMES.length];
+      const g    = ctx.createLinearGradient(0, 0, 1080, 1920);
+      g.addColorStop(0, th.bg1); g.addColorStop(1, th.bg2);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 1080, 1920);
+      ctx.drawImage(src, 0, 420, 1080, 1080);
+      const a = document.createElement('a');
+      a.download = `${(plan.business.name || 'ad').replace(/\W+/g, '-')}-story-${idx + 1}.png`;
+      a.href = sc.toDataURL('image/png'); a.click();
+      return;
+    }
+
+    /* copy prompt */
+    const cp2 = e.target.closest('[data-copy-prompt]');
+    if (cp2) {
+      const ad = plan.ads[Number(cp2.dataset.copyPrompt)];
+      await navigator.clipboard.writeText(
+        `Create a ${ad.style} ad creative.\nHeadline: ${ad.headline}\nPrimary: ${ad.primary}\nCTA: ${ad.cta}`);
+      showAdsToast('Prompt copied');
+      const orig = cp2.textContent; cp2.textContent = '\u2713 Done';
+      setTimeout(() => (cp2.textContent = orig), 1500);
+      return;
+    }
+
+    /* copy ad text */
     const cp = e.target.closest('[data-copy-ad]');
     if (cp) {
       const ad = plan.ads[Number(cp.dataset.copyAd)];
-      await navigator.clipboard.writeText(`Headline: ${ad.headline}\n\nPrimary text: ${ad.primary}\n\nCTA: ${ad.cta}`);
-      cp.textContent = '✓ COPIED';
-      setTimeout(() => (cp.textContent = '⧉ COPY AD TEXT'), 1500);
+      await navigator.clipboard.writeText(
+        `Headline: ${ad.headline}\n\nPrimary text: ${ad.primary}\n\nCTA: ${ad.cta}`);
+      showAdsToast('Ad text copied');
+      const orig = cp.textContent; cp.textContent = '\u2713 Done';
+      setTimeout(() => (cp.textContent = orig), 1500);
     }
   });
+}
+
+function showAdsToast(msg) {
+  const t = document.getElementById('ads-toast');
+  if (!t) return;
+  t.textContent = '\u2713 ' + msg;
+  t.classList.remove('hidden');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.add('hidden'), 2200);
 }
 
 function renderMagnets(plan) {
