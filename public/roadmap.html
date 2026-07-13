@@ -21,12 +21,12 @@
           <div class="wiz-brand-icon">⚡</div>
           <div>
             <div class="wiz-brand-name">AI Lead Engine</div>
-            <div class="wiz-brand-sub">FLIGHT PLANNING SYSTEM</div>
+            <div class="wiz-brand-sub">GROWTH ROADMAP SYSTEM</div>
           </div>
         </div>
 
         <h2 class="wiz-headline">Your personalised <span class="wiz-hl-accent">21-day roadmap</span></h2>
-        <p class="wiz-desc">Give us your intel — the engine builds a complete mission plan in seconds: day-by-day actions, email scripts, ad creatives and exact lead targets.</p>
+        <p class="wiz-desc">Share your details — we build a complete growth roadmap in seconds: day-by-day actions, email scripts, ad creatives and exact lead targets.</p>
 
         <div class="wiz-steps-list">
           <div class="wiz-step active" data-s="1">
@@ -36,7 +36,7 @@
             </div>
             <div class="wiz-step-info">
               <div class="wiz-step-title">Identity</div>
-              <div class="wiz-step-sub">Who&rsquo;s flying this mission</div>
+              <div class="wiz-step-sub">Who you are</div>
             </div>
           </div>
           <div class="wiz-step" data-s="2">
@@ -45,7 +45,7 @@
               <div class="wiz-step-connector"></div>
             </div>
             <div class="wiz-step-info">
-              <div class="wiz-step-title">Mission</div>
+              <div class="wiz-step-title">Business</div>
               <div class="wiz-step-sub">Goals &amp; offer</div>
             </div>
           </div>
@@ -102,13 +102,13 @@
             <div class="info-box">&#8857; Everything you enter is used only to personalise your roadmap.</div>
             <div class="wiz-nav">
               <span></span>
-              <button type="button" class="wiz-btn" data-next="2">Continue &rarr; Mission</button>
+              <button type="button" class="wiz-btn" data-next="2">Continue &rarr; Business</button>
             </div>
           </fieldset>
 
           <!-- STEP 2 -->
           <fieldset class="wiz-panel hidden" data-panel="2">
-            <h3 class="panel-title">Mission profile</h3>
+            <h3 class="panel-title">Business profile</h3>
             <p class="panel-sub">Tell us about your business and who you serve.</p>
             <div class="fld"><label>What kind of business? <span class="req">*</span></label>
               <div class="chipset" data-name="niche" data-single="1">
@@ -128,7 +128,7 @@
               <div class="fld"><label>What do you sell? <span class="req">*</span></label><input name="offer" required placeholder="e.g. done-for-you Google Ads management" /></div>
             </div>
             <div class="wiz-nav">
-              <button type="button" class="wiz-btn ghost" data-prev="1">&#8592; Back to Identity</button>
+              <button type="button" class="wiz-btn ghost" data-prev="1">&#8592; Back</button>
               <button type="button" class="wiz-btn" data-next="3">Continue &rarr; Targets</button>
             </div>
           </fieldset>
@@ -159,7 +159,7 @@
               </div>
             </div>
             <div class="wiz-nav">
-              <button type="button" class="wiz-btn ghost" data-prev="2">&#8592; Back to Mission</button>
+              <button type="button" class="wiz-btn ghost" data-prev="2">&#8592; Back</button>
               <button type="button" class="wiz-btn" data-next="4">Continue &rarr; Launch</button>
             </div>
           </fieldset>
@@ -173,7 +173,7 @@
             <div class="info-box info-box-green">&#9889; Your plan generates instantly. Our team also reviews every submission and will reach out with a personalised upgrade path.</div>
             <div id="rm-error" class="rm-error"></div>
             <div class="wiz-nav">
-              <button type="button" class="wiz-btn ghost" data-prev="3">&#8592; Back to Targets</button>
+              <button type="button" class="wiz-btn ghost" data-prev="3">&#8592; Back</button>
               <button type="submit" class="wiz-btn launch" id="generate-btn">&#128640; Generate My Roadmap</button>
             </div>
           </fieldset>
@@ -194,7 +194,7 @@
   <!-- ══════════ COUNTDOWN ══════════ -->
   <div id="wait-screen" class="hidden">
     <div class="wait-box">
-      <div class="rm-badge">&#9992; SUBMISSION RECEIVED &middot; PLAN IN PRODUCTION</div>
+      <div class="rm-badge">&#10003; SUBMISSION RECEIVED &middot; PLAN IN PRODUCTION</div>
       <h2>Your roadmap is being<br /><span class="accent-green">built by AI + our engine</span></h2>
       <div class="wait-timer" id="wait-timer">--:--:--</div>
       <p class="wait-sub">Our AI is analyzing your market and generating a fully personalized 21-day plan. It unlocks automatically when ready &mdash; right here and on your dashboard.</p>
@@ -210,8 +210,8 @@
     <header class="plan-top">
       <div class="plan-top-left">
         <a class="plan-back-link" href="/dashboard">&#8592; Back to Dashboard</a>
-        <div class="rm-badge">&#9992; MISSION PLAN GENERATED</div>
-        <h2 id="plan-title">YOUR 21-DAY FLIGHT PLAN</h2>
+        <div class="rm-badge">&#10003; Roadmap Generated</div>
+        <h2 id="plan-title">YOUR 21-DAY GROWTH ROADMAP</h2>
         <p class="plan-positioning" id="plan-positioning"></p>
       </div>
       <div class="plan-actions">
@@ -223,7 +223,7 @@
     <section class="kpi-strip" id="kpi-strip"></section>
 
     <nav class="plan-tabs" id="plan-tabs">
-      <button class="on" data-tab="mission">21-Day Mission</button>
+      <button class="on" data-tab="mission">21-Day Plan</button>
       <button data-tab="strategy">Strategy</button>
       <button data-tab="icp">Target Profile</button>
       <button data-tab="emails">Email Scripts</button>

@@ -63,7 +63,7 @@ const GEN_MESSAGES = [
   'CALCULATING LEAD TARGETS…',
   'WRITING YOUR EMAIL SCRIPTS…',
   'DESIGNING AD CREATIVES…',
-  'ASSEMBLING 21-DAY MISSION PLAN…',
+  'BUILDING YOUR 21-DAY ROADMAP…',
 ];
 
 $('#rm-form').addEventListener('submit', async (e) => {
@@ -138,7 +138,7 @@ function renderPlan(plan, id) {
   window.scrollTo(0, 0);
 
   $('#plan-id').textContent = id;
-  $('#plan-title').textContent = `${(plan.business.name || 'YOUR').toUpperCase()} · 21-DAY FLIGHT PLAN`;
+  $('#plan-title').textContent = `${(plan.business.name || 'YOUR').toUpperCase()} · 21-DAY GROWTH ROADMAP`;
   $('#plan-positioning').textContent = plan.positioning;
 
   // KPI strip
@@ -177,7 +177,8 @@ function renderMission(plan) {
     if (d.phase !== phase) {
       phase = d.phase;
       const range = phase === 'FOUNDATION' ? 'DAYS 1–7' : phase === 'LAUNCH' ? 'DAYS 8–14' : 'DAYS 15–21';
-      html += `<div class="phase-head">PHASE · ${phase} · ${range}</div>`;
+      const phaseNum = phase === 'FOUNDATION' ? 1 : phase === 'LAUNCH' ? 2 : 3;
+      html += `<div class="phase-head">Phase ${phaseNum}: ${phase.charAt(0) + phase.slice(1).toLowerCase()} &mdash; ${range}</div>`;
     }
     html += `<div class="day-card ${done.has(d.day) ? 'done' : ''}" data-day="${d.day}">
       <div class="day-num"><input type="checkbox" class="day-check" ${done.has(d.day) ? 'checked' : ''} title="Mark day complete"/><b>${String(d.day).padStart(2, '0')}</b><small>DAY</small></div>
