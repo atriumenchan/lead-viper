@@ -332,32 +332,36 @@ function renderAds(plan) {
     const num      = String(i + 1).padStart(2, '0');
     const platform = PLATFORMS[i % PLATFORMS.length];
     const stage    = STAGES[i % STAGES.length];
-    const style    = STYLES[i % STYLES.length];
     return `<div class="ad-card" data-ad-index="${i}" data-style="${i}">
       <div class="ad-preview-wrap">
         <canvas id="ad-cv-${i}"></canvas>
+        <div class="ad-num-tag">Creative ${esc(num)}</div>
         <div class="ad-preview-overlay">
           <button class="overlay-btn" data-preview="${i}">&#128065; Preview</button>
         </div>
       </div>
-      <div class="ad-meta">
-        <div class="ad-num">Creative ${esc(num)}</div>
-        <h3 class="ad-title">${esc(ad.style)}</h3>
-        <p class="ad-desc">${esc(ad.headline)}</p>
-        <div class="ad-badges">
-          <span class="ad-badge ad-badge-accent">${esc(style)}</span>
-          <span class="ad-badge">${esc(platform)}</span>
-          <span class="ad-badge ad-badge-ratio">1:1</span>
-          <span class="ad-badge">${esc(stage)}</span>
+      <div class="ad-info">
+        <div class="ad-info-top">
+          <div class="ad-creative-label">Creative ${esc(num)}</div>
+          <h3 class="ad-style-name">${esc(ad.style)}</h3>
         </div>
-      </div>
-      <div class="ad-actions">
-        <button class="ad-btn ad-btn-primary" data-dl="${i}">&#8595; Download PNG</button>
-        <div class="ad-btn-row">
-          <button class="ad-btn ad-btn-ghost" data-dl-story="${i}">&#8595; Story 9:16</button>
-          <button class="ad-btn ad-btn-ghost" data-copy-prompt="${i}">&#128203; Prompt</button>
+        <div class="ad-chip-row">
+          <span class="ad-chip ad-chip-platform">${esc(platform)}</span>
+          <span class="ad-chip ad-chip-ratio">1:1</span>
+          <span class="ad-chip ad-chip-default">${esc(stage)}</span>
         </div>
-        <button class="ad-btn ad-btn-ghost" data-copy-ad="${i}">&#9998; Copy Ad Text</button>
+        <div class="ad-cta-strip">
+          <span class="ad-cta-strip-label">CTA</span>
+          <span class="ad-cta-strip-value">${esc(ad.cta)}</span>
+        </div>
+        <div class="ad-actions">
+          <button class="ad-btn ad-btn-primary" data-dl="${i}">&#8595; Download PNG</button>
+          <button class="ad-btn ad-btn-ghost" data-copy-ad="${i}">&#9998; Copy Text</button>
+        </div>
+        <div class="ad-secondary-actions">
+          <button class="ad-btn-sm" data-dl-story="${i}">&#8595; Story 9:16</button>
+          <button class="ad-btn-sm" data-copy-prompt="${i}">&#128203; Copy Prompt</button>
+        </div>
       </div>
     </div>`;
   }).join('');
