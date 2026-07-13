@@ -126,6 +126,8 @@ $('#rm-form').addEventListener('submit', async (e) => {
 });
 
 $('#restart-btn').addEventListener('click', () => {
+  localStorage.removeItem('member_rm_id');
+  localStorage.removeItem('member_rm_ready');
   history.replaceState(null, '', '/roadmap');
   location.reload();
 });
@@ -753,7 +755,12 @@ async function openPlan(id) {
       body: JSON.stringify({ action: 'get', id, token: adminToken || undefined }),
     });
     const data = await res.json();
-    if (!res.ok) return;
+    if (!res.ok) {
+      localStorage.removeItem('member_rm_id');
+      localStorage.removeItem('member_rm_ready');
+      history.replaceState(null, '', '/roadmap');
+      return;
+    }
     if (data.status === 'processing' || data.pending) {
       const readyAt = data.readyAt || new Date(Date.now() + 30 * 60000).toISOString();
       showCountdown(id, readyAt);
@@ -767,8 +774,12 @@ async function openPlan(id) {
   } catch { /* stay where we are */ }
 }
 
-/* ── reopen saved plan via ?id= ──────────────────────────────────── */
+/* ── reopen saved plan via ?id= or localStorage fallback ─────────── */
 (function init() {
-  const id = new URLSearchParams(location.search).get('id');
-  if (id) openPlan(id);
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id') || localStorage.getItem('member_rm_id');
+  if (id) {
+    if (!params.get('id')) history.replaceState(null, '', '/roadmap?id=' + id);
+    openPlan(id);
+  }
 })();
