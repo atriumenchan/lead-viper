@@ -13,6 +13,10 @@ function showStep(n) {
     s.classList.toggle('active', num === n);
     s.classList.toggle('done', num < n);
   });
+  const lbl = document.getElementById('wiz-step-label');
+  if (lbl) lbl.textContent = 'STEP ' + n + ' OF 4';
+  const bar = document.getElementById('wiz-bar-fill');
+  if (bar) bar.style.width = (n * 25) + '%';
 }
 
 document.addEventListener('click', (e) => {
