@@ -11,165 +11,231 @@
 </head>
 <body>
 
-  <!-- ══════════ HERO / FORM WIZARD ══════════ -->
+  <!-- ══════════ WIZARD ══════════ -->
   <div id="wizard-screen">
-    <div class="stars"></div>
-    <header class="rm-hero">
-      <div class="rm-badge">✈ AI LEAD ENGINE · FLIGHT PLANNING SYSTEM</div>
-      <h1>GET YOUR PERSONALIZED<br /><span class="glow">21-DAY ROADMAP</span><br />RIGHT AWAY</h1>
-      <p class="rm-sub">Give us your intel — our engine builds your complete mission plan in seconds:<br />
-      day-by-day action plan · email scripts · ad creatives · exact lead targets. All personalized to <b>your</b> business.</p>
-    </header>
+    <div class="wiz-layout">
 
-    <div class="wizard" id="wizard">
-      <div class="wiz-progress">
-        <div class="wiz-step active" data-s="1"><span>01</span>IDENTITY</div>
-        <div class="wiz-line"></div>
-        <div class="wiz-step" data-s="2"><span>02</span>MISSION</div>
-        <div class="wiz-line"></div>
-        <div class="wiz-step" data-s="3"><span>03</span>TARGETS</div>
-        <div class="wiz-line"></div>
-        <div class="wiz-step" data-s="4"><span>04</span>LAUNCH</div>
+      <!-- SIDEBAR -->
+      <aside class="wiz-sidebar">
+        <div class="wiz-brand">
+          <div class="wiz-brand-icon">⚡</div>
+          <div>
+            <div class="wiz-brand-name">AI Lead Engine</div>
+            <div class="wiz-brand-sub">FLIGHT PLANNING SYSTEM</div>
+          </div>
+        </div>
+
+        <h2 class="wiz-headline">Your personalised <span class="wiz-hl-accent">21-day roadmap</span></h2>
+        <p class="wiz-desc">Give us your intel — the engine builds a complete mission plan in seconds: day-by-day actions, email scripts, ad creatives and exact lead targets.</p>
+
+        <div class="wiz-steps-list">
+          <div class="wiz-step active" data-s="1">
+            <div class="wiz-step-left">
+              <div class="wiz-step-dot"><span>1</span></div>
+              <div class="wiz-step-connector"></div>
+            </div>
+            <div class="wiz-step-info">
+              <div class="wiz-step-title">Identity</div>
+              <div class="wiz-step-sub">Who&rsquo;s flying this mission</div>
+            </div>
+          </div>
+          <div class="wiz-step" data-s="2">
+            <div class="wiz-step-left">
+              <div class="wiz-step-dot"><span>2</span></div>
+              <div class="wiz-step-connector"></div>
+            </div>
+            <div class="wiz-step-info">
+              <div class="wiz-step-title">Mission</div>
+              <div class="wiz-step-sub">Goals &amp; offer</div>
+            </div>
+          </div>
+          <div class="wiz-step" data-s="3">
+            <div class="wiz-step-left">
+              <div class="wiz-step-dot"><span>3</span></div>
+              <div class="wiz-step-connector"></div>
+            </div>
+            <div class="wiz-step-info">
+              <div class="wiz-step-title">Targets</div>
+              <div class="wiz-step-sub">Who you want to reach</div>
+            </div>
+          </div>
+          <div class="wiz-step wiz-step-launch" data-s="4">
+            <div class="wiz-step-left">
+              <div class="wiz-step-dot"><span>4</span></div>
+            </div>
+            <div class="wiz-step-info">
+              <div class="wiz-step-title">Launch</div>
+              <div class="wiz-step-sub">Generate your plan</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiz-sidebar-actions">
+          <a class="back-to-dash" href="/dashboard">&#8592; Back to Dashboard</a>
+        </div>
+
+        <div class="wiz-sidebar-foot">NO CREDIT CARD &middot; INSTANT GENERATION<br />BUILT FROM 1,000+ CAMPAIGN DATA POINTS</div>
+      </aside>
+
+      <!-- MAIN FORM AREA -->
+      <div class="wiz-main">
+        <div class="wiz-top-bar">
+          <div class="wiz-top-bar-left">
+            <div class="wiz-step-label" id="wiz-step-label">STEP 1 OF 4</div>
+            <div class="wiz-bar-track"><div class="wiz-bar-fill" id="wiz-bar-fill" style="width:25%"></div></div>
+          </div>
+          <div class="wiz-est-time">&#126;2 min to complete</div>
+        </div>
+
+        <form id="rm-form" autocomplete="off">
+
+          <!-- STEP 1 -->
+          <fieldset class="wiz-panel" data-panel="1">
+            <h3 class="panel-title">Operator identity</h3>
+            <p class="panel-sub">Tell us who you are and where you operate.</p>
+            <div class="grid2">
+              <div class="fld"><label>Your name <span class="req">*</span></label><input name="name" required placeholder="Jane Carter" /></div>
+              <div class="fld"><label>Email <span class="req">*</span></label><input name="email" type="email" required placeholder="jane@company.com" /></div>
+              <div class="fld"><label>Business name <span class="req">*</span></label><input name="businessName" required placeholder="Carter Growth Co." /></div>
+              <div class="fld"><label>Website</label><input name="website" placeholder="https://yoursite.com" /></div>
+            </div>
+            <div class="info-box">&#8857; Everything you enter is used only to personalise your roadmap.</div>
+            <div class="wiz-nav">
+              <span></span>
+              <button type="button" class="wiz-btn" data-next="2">Continue &rarr; Mission</button>
+            </div>
+          </fieldset>
+
+          <!-- STEP 2 -->
+          <fieldset class="wiz-panel hidden" data-panel="2">
+            <h3 class="panel-title">Mission profile</h3>
+            <p class="panel-sub">Tell us about your business and who you serve.</p>
+            <div class="fld"><label>What kind of business? <span class="req">*</span></label>
+              <div class="chipset" data-name="niche" data-single="1">
+                <button type="button" data-v="agency">Marketing Agency</button>
+                <button type="button" data-v="coach">Coach / Trainer</button>
+                <button type="button" data-v="consultant">Consultant</button>
+                <button type="button" data-v="ecom">E-Commerce</button>
+                <button type="button" data-v="saas">SaaS</button>
+                <button type="button" data-v="realtor">Real Estate</button>
+                <button type="button" data-v="local">Local Business</button>
+                <button type="button" data-v="freelancer">Freelancer</button>
+                <button type="button" data-v="other">Other</button>
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="fld"><label>Who do you serve? <span class="req">*</span></label><input name="audience" required placeholder="e.g. dentists in Texas doing $50k+/mo" /></div>
+              <div class="fld"><label>What do you sell? <span class="req">*</span></label><input name="offer" required placeholder="e.g. done-for-you Google Ads management" /></div>
+            </div>
+            <div class="wiz-nav">
+              <button type="button" class="wiz-btn ghost" data-prev="1">&#8592; Back to Identity</button>
+              <button type="button" class="wiz-btn" data-next="3">Continue &rarr; Targets</button>
+            </div>
+          </fieldset>
+
+          <!-- STEP 3 -->
+          <fieldset class="wiz-panel hidden" data-panel="3">
+            <h3 class="panel-title">Target parameters</h3>
+            <p class="panel-sub">Set your goals and preferred outreach channels.</p>
+            <div class="grid2">
+              <div class="fld"><label>Price of your offer (USD) <span class="req">*</span></label><input name="pricePoint" type="number" min="1" required placeholder="1500" /></div>
+              <div class="fld"><label>Monthly revenue goal (USD) <span class="req">*</span></label><input name="monthlyGoal" type="number" min="100" required placeholder="10000" /></div>
+            </div>
+            <div class="fld"><label>Which channels will you use? (pick up to 3)</label>
+              <div class="chipset" data-name="channels" data-max="3">
+                <button type="button" data-v="facebook">Facebook Ads</button>
+                <button type="button" data-v="linkedin">LinkedIn</button>
+                <button type="button" data-v="instagram">Instagram</button>
+                <button type="button" data-v="email">Email</button>
+                <button type="button" data-v="outreach">Cold Outreach</button>
+                <button type="button" data-v="seo">SEO / Google</button>
+              </div>
+            </div>
+            <div class="fld"><label>Brand tone</label>
+              <div class="chipset" data-name="tone" data-single="1">
+                <button type="button" data-v="professional" class="on">Professional</button>
+                <button type="button" data-v="bold">Bold</button>
+                <button type="button" data-v="friendly">Friendly</button>
+              </div>
+            </div>
+            <div class="wiz-nav">
+              <button type="button" class="wiz-btn ghost" data-prev="2">&#8592; Back to Mission</button>
+              <button type="button" class="wiz-btn" data-next="4">Continue &rarr; Launch</button>
+            </div>
+          </fieldset>
+
+          <!-- STEP 4 -->
+          <fieldset class="wiz-panel hidden" data-panel="4">
+            <h3 class="panel-title">Final check</h3>
+            <p class="panel-sub">Almost there &mdash; your plan generates instantly.</p>
+            <div class="fld"><label>Your biggest challenge right now (optional)</label>
+              <textarea name="challenge" rows="4" placeholder="e.g. I get leads but they never book a call…"></textarea></div>
+            <div class="info-box info-box-green">&#9889; Your plan generates instantly. Our team also reviews every submission and will reach out with a personalised upgrade path.</div>
+            <div id="rm-error" class="rm-error"></div>
+            <div class="wiz-nav">
+              <button type="button" class="wiz-btn ghost" data-prev="3">&#8592; Back to Targets</button>
+              <button type="submit" class="wiz-btn launch" id="generate-btn">&#128640; Generate My Roadmap</button>
+            </div>
+          </fieldset>
+
+        </form>
       </div>
-
-      <form id="rm-form" autocomplete="off">
-        <!-- STEP 1 -->
-        <fieldset class="wiz-panel" data-panel="1">
-          <legend>OPERATOR IDENTITY</legend>
-          <div class="grid2">
-            <div class="fld"><label>YOUR NAME *</label><input name="name" required placeholder="Jane Carter" /></div>
-            <div class="fld"><label>EMAIL *</label><input name="email" type="email" required placeholder="jane@company.com" /></div>
-            <div class="fld"><label>BUSINESS NAME *</label><input name="businessName" required placeholder="Carter Growth Co." /></div>
-            <div class="fld"><label>WEBSITE</label><input name="website" placeholder="https://yoursite.com" /></div>
-          </div>
-          <div class="wiz-nav"><span></span><button type="button" class="wiz-btn" data-next="2">NEXT ▸</button></div>
-        </fieldset>
-
-        <!-- STEP 2 -->
-        <fieldset class="wiz-panel hidden" data-panel="2">
-          <legend>MISSION PROFILE</legend>
-          <div class="fld"><label>WHAT KIND OF BUSINESS? *</label>
-            <div class="chipset" data-name="niche" data-single="1">
-              <button type="button" data-v="agency">MARKETING AGENCY</button>
-              <button type="button" data-v="coach">COACH / TRAINER</button>
-              <button type="button" data-v="consultant">CONSULTANT</button>
-              <button type="button" data-v="ecom">E-COMMERCE</button>
-              <button type="button" data-v="saas">SAAS</button>
-              <button type="button" data-v="realtor">REAL ESTATE</button>
-              <button type="button" data-v="local">LOCAL BUSINESS</button>
-              <button type="button" data-v="freelancer">FREELANCER</button>
-              <button type="button" data-v="other">OTHER</button>
-            </div>
-          </div>
-          <div class="grid2">
-            <div class="fld"><label>WHO DO YOU SERVE? (YOUR IDEAL CLIENT) *</label>
-              <input name="audience" required placeholder="e.g. dentists in Texas doing $50k+/mo" /></div>
-            <div class="fld"><label>WHAT DO YOU SELL? (YOUR OFFER) *</label>
-              <input name="offer" required placeholder="e.g. done-for-you Google Ads management" /></div>
-          </div>
-          <div class="wiz-nav"><button type="button" class="wiz-btn ghost" data-prev="1">◂ BACK</button><button type="button" class="wiz-btn" data-next="3">NEXT ▸</button></div>
-        </fieldset>
-
-        <!-- STEP 3 -->
-        <fieldset class="wiz-panel hidden" data-panel="3">
-          <legend>TARGET PARAMETERS</legend>
-          <div class="grid2">
-            <div class="fld"><label>PRICE OF YOUR OFFER (USD) *</label><input name="pricePoint" type="number" min="1" required placeholder="1500" /></div>
-            <div class="fld"><label>MONTHLY REVENUE GOAL (USD) *</label><input name="monthlyGoal" type="number" min="100" required placeholder="10000" /></div>
-          </div>
-          <div class="fld"><label>WHICH CHANNELS WILL YOU USE? (PICK UP TO 3)</label>
-            <div class="chipset" data-name="channels" data-max="3">
-              <button type="button" data-v="facebook">FACEBOOK ADS</button>
-              <button type="button" data-v="linkedin">LINKEDIN</button>
-              <button type="button" data-v="instagram">INSTAGRAM</button>
-              <button type="button" data-v="email">EMAIL</button>
-              <button type="button" data-v="outreach">COLD OUTREACH</button>
-              <button type="button" data-v="seo">SEO / GOOGLE</button>
-            </div>
-          </div>
-          <div class="fld"><label>BRAND TONE</label>
-            <div class="chipset" data-name="tone" data-single="1">
-              <button type="button" data-v="professional" class="on">PROFESSIONAL</button>
-              <button type="button" data-v="bold">BOLD</button>
-              <button type="button" data-v="friendly">FRIENDLY</button>
-            </div>
-          </div>
-          <div class="wiz-nav"><button type="button" class="wiz-btn ghost" data-prev="2">◂ BACK</button><button type="button" class="wiz-btn" data-next="4">NEXT ▸</button></div>
-        </fieldset>
-
-        <!-- STEP 4 -->
-        <fieldset class="wiz-panel hidden" data-panel="4">
-          <legend>FINAL CHECK</legend>
-          <div class="fld"><label>YOUR BIGGEST CHALLENGE RIGHT NOW (OPTIONAL)</label>
-            <textarea name="challenge" rows="3" placeholder="e.g. I get leads but they never book a call…"></textarea></div>
-          <div class="rm-note">⚡ Your plan generates instantly. Our team also reviews every submission and will reach out with a personalized upgrade path.</div>
-          <div class="wiz-nav">
-            <button type="button" class="wiz-btn ghost" data-prev="3">◂ BACK</button>
-            <button type="submit" class="wiz-btn launch" id="generate-btn">🚀 GENERATE MY ROADMAP</button>
-          </div>
-          <div id="rm-error" class="rm-error"></div>
-        </fieldset>
-      </form>
     </div>
-
-    <div class="rm-trust">NO CREDIT CARD · INSTANT GENERATION · BUILT FROM 1,000+ CAMPAIGN DATA POINTS</div>
   </div>
 
   <!-- ══════════ GENERATING ══════════ -->
   <div id="gen-screen" class="hidden">
     <div class="gen-box">
       <div class="gen-ring"></div>
-      <div class="gen-status" id="gen-status">ANALYZING YOUR BUSINESS…</div>
+      <div class="gen-status" id="gen-status">Analyzing your business…</div>
     </div>
   </div>
 
   <!-- ══════════ COUNTDOWN ══════════ -->
   <div id="wait-screen" class="hidden">
     <div class="wait-box">
-      <div class="rm-badge">✈ SUBMISSION RECEIVED · PLAN IN PRODUCTION</div>
-      <h2>YOUR ROADMAP IS BEING<br /><span class="glow">BUILT BY AI + OUR ENGINE</span></h2>
+      <div class="rm-badge">&#9992; SUBMISSION RECEIVED &middot; PLAN IN PRODUCTION</div>
+      <h2>Your roadmap is being<br /><span class="accent-green">built by AI + our engine</span></h2>
       <div class="wait-timer" id="wait-timer">--:--:--</div>
-      <p class="wait-sub">Our AI is scraping your website, analyzing your market, and generating a fully personalized 21-day plan.<br />
-      It unlocks automatically when ready — right here and on your dashboard.</p>
+      <p class="wait-sub">Our AI is analyzing your market and generating a fully personalized 21-day plan. It unlocks automatically when ready &mdash; right here and on your dashboard.</p>
       <div class="wait-actions">
-        <a class="wiz-btn" href="/dashboard">◈ GO TO MY DASHBOARD</a>
+        <a class="wiz-btn" href="/dashboard">&#9672; Go to My Dashboard</a>
       </div>
-      <div class="rm-trust">KEEP THIS URL — YOUR PLAN OPENS HERE THE MOMENT IT'S READY</div>
+      <div class="wait-note">KEEP THIS URL &mdash; YOUR PLAN OPENS HERE THE MOMENT IT&rsquo;S READY</div>
     </div>
   </div>
 
   <!-- ══════════ PLAN ══════════ -->
   <div id="plan-screen" class="hidden">
     <header class="plan-top">
-      <div>
-        <div class="rm-badge">✈ MISSION PLAN GENERATED</div>
+      <div class="plan-top-left">
+        <a class="plan-back-link" href="/dashboard">&#8592; Back to Dashboard</a>
+        <div class="rm-badge">&#9992; MISSION PLAN GENERATED</div>
         <h2 id="plan-title">YOUR 21-DAY FLIGHT PLAN</h2>
         <p class="plan-positioning" id="plan-positioning"></p>
       </div>
       <div class="plan-actions">
-        <button class="wiz-btn" onclick="window.print()">⬇ DOWNLOAD PDF</button>
-        <button class="wiz-btn ghost" id="restart-btn">↺ NEW PLAN</button>
+        <button class="wiz-btn" onclick="window.print()">&#8595; Download PDF</button>
+        <button class="wiz-btn ghost" id="restart-btn">&#8635; New Plan</button>
       </div>
     </header>
 
-    <!-- KPI strip -->
     <section class="kpi-strip" id="kpi-strip"></section>
 
-    <!-- Tabs -->
     <nav class="plan-tabs" id="plan-tabs">
-      <button class="on" data-tab="mission">21-DAY MISSION</button>
-      <button data-tab="strategy">STRATEGY</button>
-      <button data-tab="icp">TARGET PROFILE</button>
-      <button data-tab="emails">EMAIL SCRIPTS</button>
-      <button data-tab="ads">AD CREATIVES</button>
-      <button data-tab="magnets">LEAD MAGNETS</button>
-      <button data-tab="offer">OFFER &amp; PRICING</button>
-      <button data-tab="competitor">COMPETITOR</button>
-      <button data-tab="tracker">METRICS TRACKER</button>
-      <button data-tab="calendar">CONTENT CAL</button>
-      <button data-tab="ninetyday">90-DAY EXTENSION</button>
-      <button data-tab="risks">RISK MITIGATION</button>
-      <button data-tab="geo">GEO AUDIT</button>
+      <button class="on" data-tab="mission">21-Day Mission</button>
+      <button data-tab="strategy">Strategy</button>
+      <button data-tab="icp">Target Profile</button>
+      <button data-tab="emails">Email Scripts</button>
+      <button data-tab="ads">Ad Creatives</button>
+      <button data-tab="magnets">Lead Magnets</button>
+      <button data-tab="offer">Offer &amp; Pricing</button>
+      <button data-tab="competitor">Competitor</button>
+      <button data-tab="tracker">Metrics Tracker</button>
+      <button data-tab="calendar">Content Cal</button>
+      <button data-tab="ninetyday">90-Day Extension</button>
+      <button data-tab="risks">Risk Mitigation</button>
+      <button data-tab="geo">Geo Audit</button>
     </nav>
 
     <section class="tab-body" id="tab-mission"></section>
@@ -187,7 +253,7 @@
     <section class="tab-body hidden" id="tab-geo"></section>
 
     <footer class="plan-foot">
-      AI LEAD ENGINE · PLAN ID <span id="plan-id">—</span> · SAVE THIS URL TO REOPEN YOUR PLAN
+      AI LEAD ENGINE &middot; PLAN ID <span id="plan-id">&mdash;</span> &middot; SAVE THIS URL TO REOPEN YOUR PLAN
     </footer>
   </div>
 
