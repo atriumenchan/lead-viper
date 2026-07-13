@@ -207,16 +207,43 @@
 
   <!-- ══════════ PLAN ══════════ -->
   <div id="plan-screen" class="hidden">
-    <header class="plan-top">
-      <div class="plan-top-left">
+    <header class="plan-hero">
+      <!-- top navigation bar -->
+      <div class="plan-hero-topbar">
         <a class="plan-back-link" href="/dashboard">&#8592; Back to Dashboard</a>
-        <div class="rm-badge">&#10003; Roadmap Generated</div>
-        <h2 id="plan-title">YOUR 21-DAY GROWTH ROADMAP</h2>
-        <p class="plan-positioning" id="plan-positioning"></p>
+        <div class="plan-hero-actions">
+          <button class="btn-primary-hero" onclick="window.print()">&#8595; Download PDF</button>
+          <button class="btn-ghost-hero" id="restart-btn">&#8635; New Plan</button>
+        </div>
       </div>
-      <div class="plan-actions">
-        <button class="wiz-btn" onclick="window.print()">&#8595; Download PDF</button>
-        <button class="wiz-btn ghost" id="restart-btn">&#8635; New Plan</button>
+
+      <!-- hero body -->
+      <div class="plan-hero-body">
+        <div class="plan-hero-content">
+          <div class="plan-hero-badge">&#10003; Roadmap Generated</div>
+          <h2 class="plan-hero-title" id="plan-title">YOUR 21-DAY GROWTH ROADMAP</h2>
+          <p class="plan-hero-sub" id="plan-positioning"></p>
+          <div class="plan-hero-stats">
+            <div class="plan-hero-stat"><span class="phs-icon">&#128197;</span><span class="phs-label">21-Day Plan</span></div>
+            <div class="plan-hero-stat"><span class="phs-icon">&#127919;</span><span class="phs-label">Growth Strategy</span></div>
+            <div class="plan-hero-stat"><span class="phs-icon">&#9889;</span><span class="phs-label">AI Generated</span></div>
+            <div class="plan-hero-stat"><span class="phs-icon">&#128200;</span><span class="phs-label">Expected Results</span></div>
+          </div>
+        </div>
+
+        <!-- glassmorphism info card -->
+        <div class="plan-hero-glass">
+          <div class="phg-dot phg-dot-1"></div>
+          <div class="phg-dot phg-dot-2"></div>
+          <div class="phg-ring"></div>
+          <div class="phg-label">AI Lead Engine</div>
+          <div class="phg-sub">Growth Roadmap System</div>
+          <div class="phg-stats">
+            <div class="phg-stat">Total Days <span>21</span></div>
+            <div class="phg-stat">Phases <span>3</span></div>
+            <div class="phg-stat">AI-Powered <span>Yes</span></div>
+          </div>
+        </div>
       </div>
     </header>
 
