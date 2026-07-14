@@ -399,7 +399,6 @@ app.get('/login',  (req, res) => res.sendFile(path.join(__dirname, 'public', 'lo
 app.get('/access', (req, res) => res.sendFile(path.join(__dirname, 'public', 'access.html')));
 app.get('/admin',   authGuard, (req, res) => res.sendFile(path.join(__dirname, 'public', 'control.html')));
 app.get('/roadmap', (req, res) => res.sendFile(path.join(__dirname, 'public', 'roadmap.html')));
-app.get('/dfy-checkout', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dfy-checkout.html')));
 
 // Static assets bypass patching for speed
 app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
