@@ -73,6 +73,8 @@ module.exports = async function handler(req, res) {
           if (updatedOrder?.lead_id) {
             await supabase.from('leads').update({ converted: true }).eq('id', updatedOrder.lead_id);
 
+            if (session.metadata?.product === 'dfy-vault') break;
+
             const { data: lead } = await supabase.from('leads')
               .select('email, first_name, access_password')
               .eq('id', updatedOrder.lead_id)

@@ -12,6 +12,7 @@ const { createClient } = require('@supabase/supabase-js');
 const adminHandler   = require('./api/admin');
 const roadmapHandler = require('./api/roadmap');
 const uploadHandler  = require('./api/upload');
+const dfyCheckoutHandler = require('./api/create-dfy-checkout');
 const { requireAdmin, verifyToken, getAdminConfig, signToken } = require('./lib/auth');
 const { getFilePath } = require('./lib/db');
 const { LIVE }        = require('./lib/store');
@@ -181,6 +182,7 @@ function authGuard(req, res, next) {
 app.post('/api/admin',   (req, res) => adminHandler(req, res));
 app.post('/api/roadmap', (req, res) => roadmapHandler(req, res));
 app.post('/api/upload',  (req, res) => uploadHandler(req, res));
+app.post('/api/create-dfy-checkout', (req, res) => dfyCheckoutHandler(req, res));
 
 app.get('/api/file/:id', (req, res) => {
   if (!requireAdmin(req.query.token)) return res.status(401).json({ error: 'Unauthorized' });
@@ -281,7 +283,7 @@ app.post('/api/create-checkout', async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${SITE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${SITE_URL}/dfy-one-time?session_id={CHECKOUT_SESSION_ID}`, 
       cancel_url:  `${SITE_URL}/checkout`,
       customer_email: email,
       allow_promotion_codes: true,
@@ -399,6 +401,7 @@ app.get('/login',  (req, res) => res.sendFile(path.join(__dirname, 'public', 'lo
 app.get('/access', (req, res) => res.sendFile(path.join(__dirname, 'public', 'access.html')));
 app.get('/admin',   authGuard, (req, res) => res.sendFile(path.join(__dirname, 'public', 'control.html')));
 app.get('/roadmap', (req, res) => res.sendFile(path.join(__dirname, 'public', 'roadmap.html')));
+app.get('/dfy-checkout', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dfy-checkout.html')));
 
 // Static assets bypass patching for speed
 app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
@@ -454,7 +457,7 @@ async function handleWebhook(req, res) {
           .select('lead_id')
           .single();
 
-        if (updatedOrder?.lead_id) {
+        if (updatedOrder?.lead_id && session.metadata?.product !== 'dfy-vault') {
           const accessPassword = crypto.randomBytes(4).toString('hex').toUpperCase();
           await supabase.from('leads').update({ converted: true, access_password: accessPassword }).eq('id', updatedOrder.lead_id);
           console.log(`[webhook] access_password set for lead ${updatedOrder.lead_id}`);

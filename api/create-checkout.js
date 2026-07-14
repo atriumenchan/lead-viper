@@ -95,7 +95,7 @@ module.exports = async function handler(req, res) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${SITE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${SITE_URL}/dfy-one-time?session_id={CHECKOUT_SESSION_ID}`, 
       cancel_url:  `${SITE_URL}/checkout`,
       customer_email: email,
       allow_promotion_codes: true,
