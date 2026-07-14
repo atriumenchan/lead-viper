@@ -10,6 +10,10 @@ const TIER_NAMES  = {
   silver: 'AI Lead Engine — Silver (One-Time)',
   gold:   'AI Lead Engine — Gold (One-Time)',
 };
+const DFY_PRICES = {
+  27: 'DFY Vault Upgrade — Downsell',
+  49: 'DFY Vault Upgrade',
+};
 
 function inferTierAndBumps(priceUsd) {
   for (const [base, tier] of Object.entries(BASE_PRICES)) {
@@ -30,7 +34,7 @@ module.exports = async function handler(req, res) {
   const STRIPE_SECRET_KEY         = process.env.STRIPE_SECRET_KEY;
   const SUPABASE_URL              = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const SITE_URL                  = (process.env.SITE_URL || 'https://lead-engine.admexo.com').replace(/\/$/, '');
+  const SITE_URL                  = (process.env.SITE_URL || 'https://leadengine.admexo.com').replace(/\/$/, '');
 
   if (!STRIPE_SECRET_KEY) return res.status(500).json({ error: 'Stripe not configured' });
 
@@ -40,7 +44,56 @@ module.exports = async function handler(req, res) {
     : null;
 
   try {
-    const { price, email, firstName, phone } = req.body;
+    const { action, price, email, firstName, phone } = req.body;
+
+    // ── DFY vault upsell checkout ($27 or $49) ─────────────────────────────
+    if (action === 'dfy') {
+      const priceNum = Number(price);
+      const dfyName  = DFY_PRICES[priceNum];
+      if (!dfyName || !email || !firstName) {
+        return res.status(400).json({ error: 'Valid price (27 or 49), email and firstName are required' });
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+        return res.status(400).json({ error: 'Valid email is required' });
+      }
+
+      let leadId = null;
+      if (supabase) {
+        const { data: existing } = await supabase.from('leads')
+          .select('id').eq('email', email.trim().toLowerCase())
+          .order('created_at', { ascending: false }).limit(1).maybeSingle();
+        leadId = existing?.id || null;
+        if (!leadId) {
+          const { data: created } = await supabase.from('leads').insert({
+            first_name: firstName.trim().slice(0, 100), last_name: '', email: email.trim().toLowerCase(),
+            mobile: '', country_code: '+1', profession: 'DFY Vault customer', converted: true,
+          }).select('id').single();
+          leadId = created?.id || null;
+        }
+      }
+
+      const dfySession = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{ price_data: { currency: 'usd', product_data: { name: dfyName }, unit_amount: priceNum * 100 }, quantity: 1 }],
+        mode: 'payment',
+        success_url: `${SITE_URL}/book-a-call?dfy_session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:  `${SITE_URL}/dfy-checkout?price=${priceNum}`,
+        customer_email: email.trim().toLowerCase(),
+        allow_promotion_codes: true,
+        metadata: { product: 'dfy-vault', tier: `dfy-vault-${priceNum}`, first_name: firstName.trim(), lead_id: leadId || '' },
+      });
+
+      if (supabase && leadId) {
+        await supabase.from('orders').insert({
+          lead_id: leadId, stripe_session_id: dfySession.id,
+          tier: `dfy-vault-${priceNum}`, amount_cents: priceNum * 100,
+          bump_funnel_copy: false, bump_ai_prompts: false, status: 'pending',
+        });
+      }
+      return res.json({ url: dfySession.url });
+    }
+
+    // ── Main product checkout ───────────────────────────────────────────────
     if (!price || !email || !firstName) return res.status(400).json({ error: 'price, email and firstName are required' });
 
     const priceNum = Number(price);
@@ -49,34 +102,14 @@ module.exports = async function handler(req, res) {
     const { tier, bumpFunnel, bumpPrompts, baseCents } = inferTierAndBumps(priceNum);
     const totalCents = Math.round(priceNum * 100);
 
-    // ── Duplicate prevention (before Stripe call) ─────────────────────────
     let lead_id = null;
     if (supabase) {
-      // Check if ANY row for this email has converted=true (not just the latest)
-      const { data: convertedRows } = await supabase
-        .from('leads')
-        .select('id')
-        .eq('email', email)
-        .eq('converted', true)
-        .limit(1);
-
+      const { data: convertedRows } = await supabase.from('leads').select('id').eq('email', email).eq('converted', true).limit(1);
       if (convertedRows && convertedRows.length > 0) {
-        return res.status(409).json({
-          error: 'This email has already been used to purchase. Check your inbox for access details.',
-        });
+        return res.status(409).json({ error: 'This email has already been used to purchase. Check your inbox for access details.' });
       }
-
-      // Get latest unconverted lead to reuse (avoids duplicate rows)
-      const { data: existingLeads } = await supabase
-        .from('leads')
-        .select('id')
-        .eq('email', email)
-        .eq('converted', false)
-        .order('created_at', { ascending: false })
-        .limit(1);
-
+      const { data: existingLeads } = await supabase.from('leads').select('id').eq('email', email).eq('converted', false).order('created_at', { ascending: false }).limit(1);
       lead_id = existingLeads?.[0]?.id || null;
-
       if (!lead_id) {
         const { data: newLead, error: leadErr } = await supabase.from('leads').insert({
           first_name: firstName, last_name: '', email, mobile: phone || '', country_code: '+1', profession: 'Not specified', converted: false,
@@ -95,7 +128,7 @@ module.exports = async function handler(req, res) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${SITE_URL}/dfy-one-time?session_id={CHECKOUT_SESSION_ID}`, 
+      success_url: `${SITE_URL}/dfy-one-time?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${SITE_URL}/checkout`,
       customer_email: email,
       allow_promotion_codes: true,

@@ -60,7 +60,7 @@
       button.disabled = true;
       button.textContent = 'Opening secure payment…';
       try {
-        const response = await fetch('/api/create-dfy-checkout', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ price, firstName: form.firstName.value, email: form.email.value }) });
+        const response = await fetch('/api/create-checkout', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ action: 'dfy', price, firstName: form.firstName.value, email: form.email.value }) });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Checkout could not be started');
         location.href = data.url;
