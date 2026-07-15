@@ -2,6 +2,7 @@
 // Control Center API — action-based, mirrors ai-lead-backend/api/admin.js contract:
 //   POST { action:'login', email, password }  -> { ok, token }
 //   POST { action:'data',  token }            -> { ok, mode, stats, series, orders, leads, events }
+//   POST { action:'send-announcement', token, dry } -> { ok, sent, total, errors? }
 //
 // Env:
 //   ADMIN_EMAIL    (default: admin@admexo.com)
@@ -11,6 +12,7 @@
 const { fetchAll } = require('../lib/store');
 const { getAdminConfig, signToken, verifyToken } = require('../lib/auth');
 const { getSettings, setSettings, listRoadmaps } = require('../lib/db');
+const { sendEmail } = require('./_email');
 
 const TIER_LABELS = { basic: 'Basic', silver: 'Silver', gold: 'Gold' };
 const DAY = 86400000;
@@ -197,6 +199,72 @@ module.exports = async function handler(req, res) {
       leads: enrichedLeads.slice(0, 200),
       events: recentEvents,
     });
+  }
+
+  if (action === 'send-announcement') {
+    const { createClient } = require('@supabase/supabase-js');
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      return res.status(500).json({ error: 'Supabase not configured' });
+    }
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const SITE_URL = (process.env.SITE_URL || 'https://leadengine.admexo.com').replace(/\/$/, '');
+    const dashboardUrl = `${SITE_URL}/access`;
+    const dry = body.dry === true;
+
+    function excluded(email) {
+      const e = String(email || '').trim().toLowerCase();
+      if (!e || !e.includes('@')) return true;
+      const [local, domain] = e.split('@');
+      if (domain === 'admexo.com' || domain === 'example.com') return true;
+      return /^(test|testuser|user|demo|qa|sample)\d*$/.test(local);
+    }
+
+    function escapeHtml(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function buildAnnouncement(firstName) {
+      const name = firstName || 'there';
+      const subject = 'Two new resources are now available inside your AI Lead Engine';
+      const text = `Hi ${name},\n\nWe've added two valuable resources to your AI Lead Engine dashboard:\n\n1. Personalized 21 Leads in 21 Days Planner\n\nCreate a practical action plan based on your business, niche, offer, and current lead-generation goals.\n\n2. Landing Page and Funnel Template Library\n\nYou now have access to landing page, sales page, funnel, Elementor, and WordPress templates to help you build faster and avoid starting every page from a blank canvas.\n\nLog in here to access everything:\n${dashboardUrl}\n\nThese resources are included with your existing access. No additional payment is required.\n\nTo your success,\nTeam ADMEXO\nAI & Performance Marketing Experts`;
+      const html = `<!DOCTYPE html><html><body style="margin:0;padding:32px 12px;background:#f5f5f7"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #ececf0"><tr><td style="background:#7C3AED;padding:22px 32px;font:700 18px Arial;color:#fff">&#9889; AI Lead Engine</td></tr><tr><td style="padding:32px;font:15px/1.65 Arial;color:#222"><h1 style="font-size:22px;color:#1a1033">Two new resources are ready for you</h1><p>Hi ${escapeHtml(name)},</p><p>We've added two valuable resources to your AI Lead Engine dashboard:</p><h2 style="font-size:17px;color:#1a1033">1. Personalized 21 Leads in 21 Days Planner</h2><p>Create a practical action plan based on your business, niche, offer, and current lead-generation goals.</p><h2 style="font-size:17px;color:#1a1033">2. Landing Page and Funnel Template Library</h2><p>You now have access to landing page, sales page, funnel, Elementor, and WordPress templates to help you build faster and avoid starting every page from a blank canvas.</p><p style="text-align:center;margin:28px 0"><a href="${dashboardUrl}" style="display:inline-block;background:#7C3AED;color:#fff;text-decoration:none;font-weight:700;padding:14px 28px;border-radius:8px">Open My Dashboard &rarr;</a></p><p>These resources are included with your existing access. No additional payment is required.</p><p>To your success,<br><strong>Team ADMEXO</strong><br>AI &amp; Performance Marketing Experts</p></td></tr></table></td></tr></table></body></html>`;
+      return { subject, html, text };
+    }
+
+    const { data: orders, error: orderError } = await supabase.from('orders')
+      .select('lead_id').eq('status', 'completed').not('lead_id', 'is', null);
+    if (orderError) return res.status(500).json({ error: orderError.message });
+
+    const leadIds = [...new Set((orders || []).map(o => o.lead_id))];
+    if (!leadIds.length) return res.json({ ok: true, sent: 0, total: 0, message: 'No completed purchasers found.' });
+
+    const { data: leads, error: leadError } = await supabase.from('leads')
+      .select('email, first_name').in('id', leadIds);
+    if (leadError) return res.status(500).json({ error: leadError.message });
+
+    const recipients = [...new Map(
+      (leads || []).filter(l => !excluded(l.email)).map(l => [l.email.trim().toLowerCase(), l])
+    ).values()];
+
+    if (dry) {
+      return res.json({ ok: true, dryRun: true, total: recipients.length, recipients: recipients.map(l => l.email) });
+    }
+
+    let sent = 0;
+    const errors = [];
+    for (const lead of recipients) {
+      try {
+        const { subject, html, text } = buildAnnouncement(lead.first_name);
+        await sendEmail({ to: lead.email.trim().toLowerCase(), subject, html, text });
+        sent++;
+      } catch (err) {
+        errors.push({ email: lead.email, error: err.message });
+      }
+    }
+
+    return res.json({ ok: true, sent, total: recipients.length, errors: errors.length ? errors : undefined });
   }
 
   return res.status(400).json({ error: 'Unknown action' });
