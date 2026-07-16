@@ -20,20 +20,27 @@ module.exports = async function handler(req, res) {
   let tier = null;
   let bumpFunnel = false;
   let bumpPrompts = false;
+  let dfyVault = false;
 
   if (lead.converted) {
-    const { data: order } = await supabase.from('orders')
-      .select('tier, bump_funnel_copy, bump_ai_prompts')
+    const { data: orders } = await supabase.from('orders')
+      .select('tier, bump_funnel_copy, bump_ai_prompts, status')
       .eq('lead_id', lead.id)
-      .eq('status', 'completed')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+      .order('created_at', { ascending: false });
 
-    if (order) {
-      tier = order.tier;
-      bumpFunnel = order.bump_funnel_copy;
-      bumpPrompts = order.bump_ai_prompts;
+    const completed = (orders || []).filter(o => o.status === 'completed');
+
+    // DFY Vault upgrade ($27 or $49)
+    if (completed.some(o => o.tier && o.tier.startsWith('dfy-vault'))) {
+      dfyVault = true;
+    }
+
+    // Main product order
+    const mainOrder = completed.find(o => o.tier && !o.tier.startsWith('dfy-vault'));
+    if (mainOrder) {
+      tier = mainOrder.tier;
+      bumpFunnel = mainOrder.bump_funnel_copy;
+      bumpPrompts = mainOrder.bump_ai_prompts;
     }
   }
 
@@ -44,6 +51,7 @@ module.exports = async function handler(req, res) {
     tier,
     bumpFunnel,
     bumpPrompts,
+    dfyVault,
     converted: lead.converted,
   });
 };

@@ -130,11 +130,8 @@
     .coach-list li::before{content:'\2014\0020';color:var(--text-muted)}
     .more-text{font-size:16px;color:var(--text-secondary);margin-bottom:28px}
     .res-title{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:6px;margin-bottom:16px}
-    .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;text-decoration:none;transition:var(--transition)}
-    .resource-card:hover{border-color:var(--border-hover);background:var(--bg-elevated)}
     .res-icon{width:44px;height:44px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-muted)}
-    .res-info .res-name{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
-    .res-info .res-url{font-size:13px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+    .res-info .res-name{font-size:15px;font-weight:600;color:var(--text-primary)}
     .coming-soon{font-size:15px;color:var(--text-muted);font-style:italic}
     .lc-h2{font-weight:600;font-size:18px;color:var(--text-primary);margin:24px 0 8px;padding-top:4px}
     .lc-p{font-size:16px;color:var(--text-secondary);line-height:1.8;margin:4px 0}
@@ -152,6 +149,27 @@
     .bump-res-desc{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:20px}
     .bump-res-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:12px 24px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:44px}
     .bump-res-btn:hover{background:var(--accent-hover)}
+
+    /* ── Vault section ── */
+    .vault-section{margin-top:24px}
+    .vault-header{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .vault-header-left{flex:1;min-width:280px}
+    .vault-header h2{font-weight:700;font-size:24px;color:var(--text-primary);margin-bottom:8px}
+    .vault-header p{font-size:15px;color:var(--text-secondary);line-height:1.55}
+    .vault-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
+    .vault-count{font-size:14px;font-weight:600;color:var(--text-muted);white-space:nowrap}
+    .vault-card-icon{width:100%;height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
+    .vault-card-icon svg{color:var(--text-muted);opacity:0.6}
+    .vault-badge-sm{position:absolute;top:12px;right:12px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
+    .vault-badge-sm.locked{background:var(--bg-app);color:var(--text-muted);border:1px solid var(--border);display:inline-flex;align-items:center;gap:4px}
+    .vault-card.locked .vault-card-icon{filter:grayscale(1) brightness(0.5)}
+
+    /* ── Resource card (lesson view) ── */
+    .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:var(--transition)}
+    .resource-card:hover{border-color:var(--border-hover);background:var(--bg-elevated)}
+    .res-open-btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:38px;white-space:nowrap;flex-shrink:0}
+    .res-open-btn:hover{background:var(--accent-hover)}
+    .resource-card .res-info{flex:1;min-width:0}
 
     /* ── Upgrade banner ── */
     .upgrade-bar{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:64px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -447,11 +465,11 @@ const BLOCKS = [
     ]
   },
   {
-    id:'template-library', type:'core',
-    title:'Landing Page & Funnel Template Library',
+    id:'template-library', type:'vault',
+    title:'Landing Pages & Funnel Templates',
     desc:'A large collection of landing page, sales page, funnel, Elementor, and WordPress templates.',
     img:'/images/template-library.jpg',
-    tiers:['basic','silver','gold'],
+    tiers:['basic','silver','gold'], vaultRequired:true,
     lessons:[
       { id:'sales-pages', title:'23 High-Level Sales Page Templates', resources:[{name:'Download Sales Page Templates',url:'https://drive.google.com/file/d/1owskw2PNZyJZSEsZHfKpVnDtO-vsl32s/view?usp=sharing'}] },
       { id:'landing-77', title:'77 High-Conversions Landing Pages', resources:[{name:'Download 77 Landing Page Templates',url:'https://drive.google.com/file/d/1dbo9TpQ5QC6NFHu8WK4Ayr0U2Cd0l17O/view?usp=sharing'}] },
@@ -466,11 +484,11 @@ const BLOCKS = [
     ]
   },
   {
-    id:'meta-ads-templates', type:'core',
+    id:'meta-ads-templates', type:'vault',
     title:'500+ Meta Ads Editable Templates',
     desc:'500+ ready-to-edit Canva ad templates across text-based, image-based, niche-specific and seasonal categories — open, swap your copy, publish.',
     img:'/images/meta-ads.jpg',
-    tiers:['basic','silver','gold'],
+    tiers:['basic','silver','gold'], vaultRequired:true,
     lessons:[
       { id:'text-based-ads', title:'Text Based Ad Templates',
         body:'A collection of text-driven Meta ad templates — bold typography, high-contrast layouts and scroll-stopping copy hooks. Perfect for offers that sell on words, not just visuals. Edit directly in Canva.',
@@ -497,6 +515,133 @@ const BLOCKS = [
         resources:[{name:'Open Digital Product Templates in Canva',url:'https://canva.link/a79czw2ocjkdtsq'}]
       }
     ]
+  },
+  // ── DFY VAULT FOLDERS
+  {
+    id:'ad-copies-vault', type:'vault',
+    title:'Ad Copies & Creatives Vault',
+    desc:'Ready-to-use ad copy frameworks, headline formulas, and creative angles tested across industries.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'ad-copy-1', title:'Direct Response Ad Copy Frameworks', resources:[] },
+      { id:'ad-copy-2', title:'Headline Formulas That Convert', resources:[] },
+      { id:'ad-copy-3', title:'Story-Based Ad Angles', resources:[] },
+      { id:'ad-copy-4', title:'Video Ad Script Templates', resources:[] },
+      { id:'ad-copy-5', title:'Carousel Ad Copy Templates', resources:[] },
+      { id:'ad-copy-6', title:'Retargeting Ad Copy Library', resources:[] },
+      { id:'ad-copy-7', title:'Industry-Specific Ad Swipes', resources:[] }
+    ]
+  },
+  {
+    id:'outreach-scripts', type:'vault',
+    title:'Outreach & Cold Email Scripts',
+    desc:'Proven cold outreach scripts and frameworks to book meetings with qualified prospects.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'cold-email-1', title:'Cold Email Scripts (5 Variations)', resources:[] },
+      { id:'cold-email-2', title:'LinkedIn Outreach Message Templates', resources:[] }
+    ]
+  },
+  {
+    id:'follow-up-sequences', type:'vault',
+    title:'Email Follow-Up Sequences',
+    desc:'Done-for-you email follow-up sequences that nurture leads and drive conversions.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'followup-1', title:'5-Part Nurture Sequence', resources:[] },
+      { id:'followup-2', title:'Re-Engagement Sequence', resources:[] }
+    ]
+  },
+  {
+    id:'n8n-workflows', type:'vault',
+    title:'n8n Automation Workflows',
+    desc:'Pre-built n8n automation workflows for lead capture, enrichment, and routing.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'n8n-1', title:'Lead Capture to CRM Automation', resources:[] }
+    ]
+  },
+  {
+    id:'ai-ads-model', type:'vault',
+    title:'1,000+ AI Ads To Model',
+    desc:'A curated swipe file of 1,000+ AI-generated ads across niches — study the patterns, model what works.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'ai-ads-1', title:'1,000+ AI Ads Swipe File', resources:[] }
+    ]
+  },
+  {
+    id:'ai-prompt-vault', type:'vault',
+    title:'AI Prompt Vault (Lead Gen Edition)',
+    desc:'A curated vault of AI prompts specifically for lead generation — ICP discovery, offer creation, ad copy, and more.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'prompt-1', title:'ICP & Avatar Discovery Prompts', resources:[] },
+      { id:'prompt-2', title:'Offer Creation & Pricing Prompts', resources:[] },
+      { id:'prompt-3', title:'Ad Copy & Creative Prompts', resources:[] }
+    ]
+  },
+  {
+    id:'crm-tracking', type:'vault',
+    title:'CRM, Tracking & Ads Targeting',
+    desc:'CRM setup guides, conversion tracking templates, and ads targeting frameworks.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'crm-1', title:'CRM Setup Guide (GoHighLevel)', resources:[] },
+      { id:'crm-2', title:'Conversion Tracking Setup Guide', resources:[] },
+      { id:'crm-3', title:'Ads Targeting Framework', resources:[] }
+    ]
+  },
+  {
+    id:'tripwire-funnels', type:'vault',
+    title:'Tripwire, Upsell & Booking Funnels',
+    desc:'Done-for-you funnel templates for tripwires, upsells, and appointment booking.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'tripwire-1', title:'Tripwire Funnel Templates', resources:[] },
+      { id:'tripwire-2', title:'Upsell Funnel Templates', resources:[] },
+      { id:'tripwire-3', title:'Booking & Appointment Funnels', resources:[] }
+    ]
+  },
+  {
+    id:'lead-scoring-bots', type:'vault',
+    title:'AI Lead Scoring & Qualification Bots',
+    desc:'AI-powered bots that score and qualify leads automatically — save hours of manual triage.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'scoring-1', title:'Lead Scoring Bot Setup Guide', resources:[] },
+      { id:'scoring-2', title:'Qualification Chatbot Templates', resources:[] }
+    ]
+  },
+  {
+    id:'linkedin-extension', type:'vault',
+    title:'LinkedIn Lead Hunter Chrome Extension',
+    desc:'Chrome extension to scrape and enrich LinkedIn leads at scale.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'li-ext-1', title:'LinkedIn Lead Hunter Extension', resources:[] }
+    ]
+  },
+  {
+    id:'content-closing', type:'vault',
+    title:'Content Calendar & Sales Closing Scripts',
+    desc:'Content calendar templates and sales closing scripts to convert more leads into clients.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'content-1', title:'90-Day Content Calendar Template', resources:[] },
+      { id:'content-2', title:'Sales Closing Script Library', resources:[] },
+      { id:'content-3', title:'Objection Handling Scripts', resources:[] }
+    ]
+  },
+  {
+    id:'vip-mastermind', type:'vault',
+    title:'VIP Mastermind + Live Strategy Calls',
+    desc:'Access to VIP mastermind community and live strategy calls with the ADMEXO team.',
+    img:'', tiers:['basic','silver','gold'], vaultRequired:true,
+    lessons:[
+      { id:'vip-1', title:'VIP Mastermind Community Access', resources:[] },
+      { id:'vip-2', title:'Live Strategy Call Booking', resources:[] }
+    ]
   }
 ];
 
@@ -509,6 +654,7 @@ function canAccess(block) {
   if (ul < ml) return false;
   if (block.bumpRequired === 'funnel' && !user.bumpFunnel) return false;
   if (block.bumpRequired === 'prompts' && !user.bumpPrompts) return false;
+  if (block.vaultRequired && !user.dfyVault) return false;
   return true;
 }
 
@@ -588,9 +734,12 @@ function render() {
 function renderDashboard() {
   const core = BLOCKS.filter(b => b.type==='core');
   const bumps = BLOCKS.filter(b => b.type==='bump');
+  const vault = BLOCKS.filter(b => b.type==='vault');
   const hasLocked = BLOCKS.some(b => !canAccess(b));
   const accessibleCore = core.filter(b => canAccess(b)).length;
   const accessibleBumps = bumps.filter(b => canAccess(b)).length;
+  const accessibleVault = vault.filter(b => canAccess(b)).length;
+  const vaultUnlocked = user.dfyVault;
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   const firstName = user.firstName || 'there';
@@ -627,7 +776,18 @@ function renderDashboard() {
       <div class="sec-title">Order Bumps</div>
       <p class="sec-desc">Premium add-on tools. Unlocked instantly for buyers — or grab them now for the same one-time price.</p>
     </div>
-    <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>`;
+    <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>
+    <div class="vault-section">
+      <div class="vault-header">
+        <div class="vault-header-left">
+          <div class="vault-badge">${vaultUnlocked ? 'Vault Unlocked' : 'Vault Locked'}</div>
+          <h2>Done-For-You Lead Gen Vault</h2>
+          <p>20+ ready-to-deploy assets grouped into 12 folders — landing pages, ad copies, automations, AI prompts, bots and more. ${vaultUnlocked ? 'All folders are unlocked for you.' : 'Unlock the full vault with the DFY upgrade.'}</p>
+        </div>
+        ${vaultUnlocked ? `<div class="vault-count">${accessibleVault} / ${vault.length} Unlocked</div>` : `<a href="https://leadengine.admexo.com/dfy-checkout" class="btn-primary">Unlock Vault ${ARROW}</a>`}
+      </div>
+      <div class="grid3">${vault.map(b => vaultCardHtml(b)).join('')}</div>
+    </div>`;
 }
 
 function cardHtml(b) {
@@ -653,6 +813,24 @@ function cardHtml(b) {
     '</div></div>';
 }
 
+function vaultCardHtml(b) {
+  const ok = canAccess(b);
+  const resourceCount = (b.lessons || []).length + (b.resources || []).length;
+  const thumb = b.img
+    ? '<div class="card-thumb"><img src="' + b.img + '" alt="' + b.title + '" loading="lazy"></div>'
+    : '<div class="vault-card-icon">' + FOLDER_SVG + '</div>';
+  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '<span class="vault-badge-sm locked">' + LOCK + ' Locked</span>';
+  const ctaText = ok ? 'Open folder' : 'Unlock to access';
+  return '<div class="card vault-card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
+    thumb + badge +
+    '<div class="card-body">' +
+    '<div class="card-title">' + b.title + '</div>' +
+    '<div class="card-desc">' + b.desc + '</div>' +
+    '<div class="card-meta"><span class="card-meta-item">' + resourceCount + ' resources</span></div>' +
+    '<div class="card-cta' + (ok ? '' : ' dim') + '">' + ctaText + (ok ? ' ' + ARROW : '') + '</div>' +
+    '</div></div>';
+}
+
 function renderBlock() {
   const b = BLOCKS.find(x => x.id === state.blockId);
   if (!b) return '<p style="padding:40px;color:var(--text-muted)">Block not found.</p>';
@@ -672,6 +850,26 @@ function renderBlock() {
             <div class="bump-res-name">${r.name}</div>
             <p class="bump-res-desc">${r.desc || ''}</p>
             <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="bump-res-btn">Open resource ${ARROW}</a>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  if (b.type === 'vault') {
+    const lessons = b.lessons || [];
+    const resourceCount = lessons.length + (b.resources || []).length;
+    return `
+      <div class="block-header">
+        <div class="block-crumb">DFY Vault</div>
+        <h1 class="block-title">${b.title}</h1>
+        <p class="block-sub">${b.desc}</p>
+        <div class="folder-count">${resourceCount} resources</div>
+      </div>
+      ${lessons.length === 0 ? '<p class="coming-soon">Resource links will be added here soon.</p>' : ''}
+      <div class="folder-grid">
+        ${lessons.map(l => `
+          <div class="folder-card" data-nav="lesson" data-block="${b.id}" data-lesson="${l.id}">
+            <div class="folder-icon">${FOLDER_SVG}</div>
+            <div class="folder-name">${l.title}</div>
           </div>`).join('')}
       </div>`;
   }
@@ -702,13 +900,13 @@ function renderLesson() {
   const resources = l.resources && l.resources.length > 0
     ? `<div class="res-title">Resources</div>
        ${l.resources.map(r => `
-        <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="resource-card">
+        <div class="resource-card">
           <div class="res-icon">${EXT_SVG}</div>
           <div class="res-info">
             <div class="res-name">${r.name}</div>
-            <div class="res-url">${r.url}</div>
           </div>
-        </a>`).join('')}`
+          <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="res-open-btn">Open ${ARROW}</a>
+        </div>`).join('')}`
     : `<div class="res-title">Resources</div><p class="coming-soon">Resource links will be added here soon.</p>`;
   return `
     <div class="lesson-wrap">
