@@ -84,7 +84,9 @@
     .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:var(--transition);display:flex;flex-direction:column;text-decoration:none;box-shadow:var(--shadow)}
     .card:hover{border-color:var(--border-hover);transform:translateY(4px);box-shadow:var(--shadow-hover)}
     .card:hover .card-thumb img{transform:scale(1.02)}
-    .card.locked{cursor:default;pointer-events:none}
+    .card.locked{cursor:default}
+    .card.locked .card-thumb,.card.locked .card-body{pointer-events:none}
+    .card.locked a.card-cta{pointer-events:auto;cursor:pointer}
     .card.locked .card-thumb img{filter:none}
     .card.locked .card-title{color:var(--text-primary)}
     .card.locked .card-desc{color:var(--text-secondary)}
@@ -820,13 +822,16 @@ function vaultCardHtml(b) {
     : '<div class="vault-card-icon">' + FOLDER_SVG + '</div>';
   const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '';
   const ctaText = ok ? 'Open folder' : 'Unlock to access';
-  return '<div class="card vault-card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
+  const cta = ok
+    ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
+    : '<a href="/dfy-checkout" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
+  return '<div class="card vault-card' + (ok ? '' : ' locked') + '">' +
     thumb + badge +
     '<div class="card-body">' +
     '<div class="card-title">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
     '<div class="card-meta"><span class="card-meta-item">' + resourceCount + ' resources</span></div>' +
-    '<div class="card-cta' + (ok ? '' : ' dim') + '">' + ctaText + (ok ? ' ' + ARROW : '') + '</div>' +
+    cta +
     '</div></div>';
 }
 
