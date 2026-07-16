@@ -113,7 +113,10 @@
 
     /* ── Block view ── */
     .block-header{margin-bottom:40px}
-    .block-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:12px}
+    .block-top{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+    .block-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;background:var(--bg-elevated);border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-xs);transition:var(--transition);min-height:40px;white-space:nowrap}
+    .block-back:hover{color:var(--text-primary);border-color:var(--border-hover);background:var(--bg-card)}
+    .block-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
     .block-title{font-weight:700;font-size:32px;margin-bottom:12px;color:var(--text-primary);line-height:1.25}
     .block-sub{font-size:16px;color:var(--text-secondary);margin-bottom:20px;line-height:1.55}
     .folder-count{font-size:14px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
@@ -125,7 +128,10 @@
 
     /* ── Lesson view ── */
     .lesson-wrap{max-width:800px}
-    .lesson-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:12px}
+    .lesson-top{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+    .lesson-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;background:var(--bg-elevated);border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-xs);transition:var(--transition);min-height:40px;white-space:nowrap}
+    .lesson-back:hover{color:var(--text-primary);border-color:var(--border-hover);background:var(--bg-card)}
+    .lesson-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
     .lesson-title{font-weight:700;font-size:32px;margin-bottom:12px;color:var(--text-primary);line-height:1.25}
     .lesson-sub{font-size:16px;color:var(--text-secondary);margin-bottom:32px;line-height:1.55}
     .lesson-body-plain{font-size:16px;color:var(--text-secondary);line-height:1.8;white-space:pre-wrap;margin-bottom:12px}
@@ -850,7 +856,10 @@ function renderBlock() {
     const resources = b.resources || [];
     return `
       <div class="block-header">
-        <div class="block-crumb">Order Bump</div>
+        <div class="block-top">
+          <button class="block-back" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+          <div class="block-crumb">Order Bump</div>
+        </div>
         <h1 class="block-title">${b.title}</h1>
         <p class="block-sub">${b.desc}</p>
         <div class="folder-count">${resources.length} Resources</div>
@@ -870,7 +879,10 @@ function renderBlock() {
     const resourceCount = lessons.length + (b.resources || []).length;
     return `
       <div class="block-header">
-        <div class="block-crumb">DFY Vault</div>
+        <div class="block-top">
+          <button class="block-back" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+          <div class="block-crumb">DFY Vault</div>
+        </div>
         <h1 class="block-title">${b.title}</h1>
         <p class="block-sub">${b.desc}</p>
         <div class="folder-count">${resourceCount} resources</div>
@@ -888,7 +900,10 @@ function renderBlock() {
   const lessons = b.lessons || [];
   return `
     <div class="block-header">
-      <div class="block-crumb">Course Module</div>
+      <div class="block-top">
+        <button class="block-back" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+        <div class="block-crumb">Course Module</div>
+      </div>
       <h1 class="block-title">${b.title}</h1>
       <p class="block-sub">${b.desc}</p>
       <div class="folder-count">${lessons.length} Lessons</div>
@@ -963,7 +978,10 @@ function renderLesson() {
     : `<div class="res-title">Resources</div><p class="coming-soon">Adding them soon.</p>`;
   return `
     <div class="lesson-wrap">
-      <div class="lesson-crumb">${b.title}</div>
+      <div class="lesson-top">
+        <button class="lesson-back" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+        <div class="lesson-crumb">${b.title}</div>
+      </div>
       <h1 class="lesson-title">${l.title}</h1>
       ${l.subtitle ? `<p class="lesson-sub">${l.subtitle}</p>` : ''}
       ${l.body ? `<div class="lesson-body">${md(l.body)}</div>` : ''}
