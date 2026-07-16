@@ -84,7 +84,7 @@
     .card{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:visible;cursor:pointer;transition:var(--transition);display:flex;flex-direction:column;text-decoration:none;box-shadow:var(--shadow)}
     .card:hover{border-color:var(--border-hover);transform:translateY(4px);box-shadow:var(--shadow-hover)}
     .card:hover .card-thumb img{transform:scale(1.02)}
-    .card.locked{cursor:default}
+    .card.locked{cursor:pointer}
     .card.locked .card-thumb,.card.locked .card-body{pointer-events:none}
     .card.locked a.card-cta{pointer-events:auto;cursor:pointer}
     .card.locked .card-thumb img{filter:none}
@@ -817,14 +817,16 @@ function cardHtml(b) {
   if (lessonCount) metaItems.push('<span class="card-meta-item">' + lessonCount + ' Lessons</span>');
   if (resourceCount) metaItems.push('<span class="card-meta-item">' + resourceCount + ' Resources</span>');
   const meta = metaItems.length ? '<div class="card-meta">' + metaItems.join('') + '</div>' : '';
-  return '<div class="card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
-    thumb + badge +
+  const cardInner = thumb + badge +
     '<div class="card-body">' +
     '<div class="card-title">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
     meta +
     '<div class="card-cta' + (ok ? '' : ' dim') + '">' + ctaText + (ok ? ' ' + ARROW : '') + '</div>' +
-    '</div></div>';
+    '</div>';
+  return ok
+    ? '<div class="card" data-nav="block" data-block="' + b.id + '">' + cardInner + '</div>'
+    : '<a href="https://leadengine.admexo.com" class="card locked" style="text-decoration:none">' + cardInner + '</a>';
 }
 
 function vaultCardHtml(b) {
@@ -838,14 +840,16 @@ function vaultCardHtml(b) {
   const cta = ok
     ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
     : '<a href="/dfy-checkout" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
-  return '<div class="card vault-card' + (ok ? '' : ' locked') + '">' +
-    thumb + badge +
+  const cardInner = thumb + badge +
     '<div class="card-body">' +
     '<div class="card-title">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
     '<div class="card-meta"><span class="card-meta-item">' + resourceCount + ' resources</span></div>' +
     cta +
-    '</div></div>';
+    '</div>';
+  return ok
+    ? '<div class="card vault-card" data-nav="block" data-block="' + b.id + '">' + cardInner + '</div>'
+    : '<a href="/dfy-checkout" class="card vault-card locked" style="text-decoration:none">' + cardInner + '</a>';
 }
 
 function renderBlock() {
