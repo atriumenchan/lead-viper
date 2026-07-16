@@ -848,7 +848,7 @@ function renderBlock() {
           <div class="bump-res-card">
             <div class="bump-res-name">${r.name}</div>
             <p class="bump-res-desc">${r.desc || ''}</p>
-            <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="bump-res-btn">Open resource ${ARROW}</a>
+            <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="bump-res-btn">${resBtnLabel(r.url)} ${ARROW}</a>
           </div>`).join('')}
       </div>`;
   }
@@ -890,6 +890,48 @@ function renderBlock() {
         </div>`).join('')}
     </div>`;
 }
+function resBtnLabel(url) {
+  try {
+    const u = new URL(url);
+    const h = u.hostname;
+    if (h.includes('drive.google.com') || h.includes('docs.google.com')) return 'Open in Google Drive';
+    if (h.includes('canva.com') || h.includes('canva.link')) return 'Open in Canva';
+    if (h.includes('notion.so') || h.includes('notion.site')) return 'Open in Notion';
+    if (h.includes('airtable.com')) return 'Open in Airtable';
+    if (h.includes('github.com') || h.includes('githubusercontent.com')) return 'Open in GitHub';
+    if (h.includes('youtube.com') || h.includes('youtu.be')) return 'Watch on YouTube';
+    if (h.includes('vimeo.com')) return 'Watch on Vimeo';
+    if (h.includes('dropbox.com')) return 'Open in Dropbox';
+    if (h.includes('onedrive.live.com') || h.includes('1drv.ms')) return 'Open in OneDrive';
+    if (h.includes('slack.com')) return 'Open in Slack';
+    if (h.includes('zoom.us')) return 'Join on Zoom';
+    if (h.includes('calendly.com')) return 'Book on Calendly';
+    if (h.includes('cal.com')) return 'Book a Call';
+    if (h.includes('discord.com') || h.includes('discord.gg')) return 'Open in Discord';
+    if (h.includes('telegram.org') || h.includes('t.me')) return 'Open in Telegram';
+    if (h.includes('whatsapp.com')) return 'Open in WhatsApp';
+    if (h.includes('linkedin.com')) return 'Open in LinkedIn';
+    if (h.includes('facebook.com')) return 'Open in Facebook';
+    if (h.includes('instagram.com')) return 'Open in Instagram';
+    if (h.includes('twitter.com') || h.includes('x.com')) return 'Open in X';
+    if (h.includes('tiktok.com')) return 'Open in TikTok';
+    if (h.includes('pinterest.com')) return 'Open in Pinterest';
+    if (h.includes('amazon.com') || h.includes('amzn.to')) return 'View on Amazon';
+    if (h.includes('gumroad.com')) return 'Get on Gumroad';
+    if (h.includes('gohighlevel.com') || h.includes('highlevel')) return 'Open in GoHighLevel';
+    if (h.includes('zapier.com')) return 'Open in Zapier';
+    if (h.includes('make.com') || h.includes('integromat.com')) return 'Open in Make';
+    if (h.includes('n8n.io') || h.includes('n8n.cloud')) return 'Open in n8n';
+    if (h.includes('chatgpt.com') || h.includes('openai.com')) return 'Open in ChatGPT';
+    if (h.includes('claude.ai') || h.includes('anthropic.com')) return 'Open in Claude';
+    if (h.includes('vercel.app') || h.includes('leadengine.admexo.com')) return 'Open Now';
+    if (h.includes('admexo.com')) return 'Open Now';
+    return 'Open Link';
+  } catch(e) {
+    return 'Open Now';
+  }
+}
+
 function renderLesson() {
   const b = BLOCKS.find(x => x.id === state.blockId);
   const l = b?.lessons?.find(x => x.id === state.lessonId);
@@ -904,7 +946,7 @@ function renderLesson() {
           <div class="res-info">
             <div class="res-name">${r.name}</div>
           </div>
-          <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="res-open-btn">Open ${ARROW}</a>
+          <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="res-open-btn">${resBtnLabel(r.url)} ${ARROW}</a>
         </div>`).join('')}`
     : `<div class="res-title">Resources</div><p class="coming-soon">Adding them soon.</p>`;
   return `
