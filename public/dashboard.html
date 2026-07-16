@@ -51,18 +51,18 @@
 
     /* ── Hero ── */
     .hero{margin-bottom:64px}
-    .hero-greeting{font-size:14px;font-weight:500;color:var(--text-muted);margin-bottom:8px}
+    .hero-greeting{font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px}
     .hero h1{font-weight:700;font-size:38px;line-height:1.25;color:var(--text-primary);margin-bottom:16px}
     .hero-sub{font-size:16px;color:var(--text-secondary);line-height:1.65;max-width:620px;margin-bottom:32px}
     .hero-stats{display:flex;gap:40px;flex-wrap:wrap}
     .hero-stat{display:flex;flex-direction:column;gap:4px}
     .hero-stat-num{font-weight:700;font-size:28px;color:var(--text-primary)}
-    .hero-stat-lbl{font-size:13px;font-weight:500;color:var(--text-muted)}
+    .hero-stat-lbl{font-size:13px;font-weight:600;color:var(--text-secondary)}
 
     /* ── Roadmap banner ── */
     .roadmap-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
     .roadmap-left{display:flex;align-items:center;gap:20px}
-    .roadmap-icon{width:48px;height:48px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary)}
+    .roadmap-icon{width:48px;height:48px;background:var(--accent);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
     .roadmap-card h3{font-weight:600;font-size:17px;color:var(--text-primary);margin-bottom:4px}
     .roadmap-card p{font-size:15px;color:var(--text-secondary);line-height:1.55}
 
@@ -85,59 +85,59 @@
     .card:hover{border-color:var(--border-hover);transform:translateY(4px);box-shadow:var(--shadow-hover)}
     .card:hover .card-thumb img{transform:scale(1.02)}
     .card.locked{cursor:default;pointer-events:none}
-    .card.locked .card-thumb img{filter:grayscale(1) brightness(0.5)}
-    .card.locked .card-title{color:var(--text-muted)}
-    .card.locked .card-desc{color:var(--text-disabled)}
+    .card.locked .card-thumb img{filter:none}
+    .card.locked .card-title{color:var(--text-primary)}
+    .card.locked .card-desc{color:var(--text-secondary)}
     .card-thumb{width:100%;height:220px;position:relative;overflow:hidden;background:var(--bg-elevated)}
     .card-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
 
     /* ── Card placeholder (no image) ── */
     .card-placeholder{width:100%;height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
-    .card-placeholder svg{color:var(--text-disabled);opacity:0.5}
+    .card-placeholder svg{color:var(--text-muted);opacity:1}
 
-    .card-badge{position:absolute;top:12px;right:12px;background:var(--bg-app);color:var(--text-muted);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;border:1px solid var(--border)}
-    .card-badge.locked-badge{color:var(--text-muted)}
+    .card-badge{position:absolute;top:12px;right:12px;background:var(--bg-app);color:var(--text-secondary);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;border:1px solid var(--border)}
+    .card-badge.locked-badge{color:var(--text-secondary)}
 
     .card-body{padding:24px;flex:1;display:flex;flex-direction:column}
     .card-title{font-weight:600;font-size:18px;color:var(--text-primary);margin-bottom:16px;line-height:1.35}
     .card-desc{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;flex:1}
     .card-meta{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
-    .card-meta-item{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:5px}
+    .card-meta-item{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
     .card-cta{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:10px 20px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:40px;align-self:flex-start}
     .card:hover .card-cta{background:var(--accent-hover)}
-    .card-cta.dim{background:var(--bg-elevated);color:var(--text-muted);cursor:default}
+    .card-cta.dim{background:var(--accent);color:#fff;cursor:default;opacity:1}
 
     /* ── Block view ── */
     .block-header{margin-bottom:40px}
-    .block-crumb{font-size:13px;font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:6px;margin-bottom:12px}
+    .block-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:12px}
     .block-title{font-weight:700;font-size:32px;margin-bottom:12px;color:var(--text-primary);line-height:1.25}
     .block-sub{font-size:16px;color:var(--text-secondary);margin-bottom:20px;line-height:1.55}
-    .folder-count{font-size:14px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+    .folder-count{font-size:14px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
     .folder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
     .folder-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:var(--transition)}
     .folder-card:hover{border-color:var(--border-hover);background:var(--bg-elevated)}
-    .folder-icon{width:40px;height:40px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-muted)}
-    .folder-name{font-size:15px;font-weight:500;color:var(--text-secondary);line-height:1.35}
+    .folder-icon{width:40px;height:40px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary)}
+    .folder-name{font-size:15px;font-weight:600;color:var(--text-primary);line-height:1.35}
 
     /* ── Lesson view ── */
     .lesson-wrap{max-width:800px}
-    .lesson-crumb{font-size:13px;font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:6px;margin-bottom:12px}
+    .lesson-crumb{font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:12px}
     .lesson-title{font-weight:700;font-size:32px;margin-bottom:12px;color:var(--text-primary);line-height:1.25}
     .lesson-sub{font-size:16px;color:var(--text-secondary);margin-bottom:32px;line-height:1.55}
     .lesson-body-plain{font-size:16px;color:var(--text-secondary);line-height:1.8;white-space:pre-wrap;margin-bottom:12px}
     .coach-list{margin:24px 0;padding:0;list-style:none;columns:2;gap:20px}
     .coach-list li{font-size:15px;color:var(--text-secondary);padding:3px 0}
-    .coach-list li::before{content:'\2014\0020';color:var(--text-muted)}
+    .coach-list li::before{content:'\2014\0020';color:var(--text-secondary)}
     .more-text{font-size:16px;color:var(--text-secondary);margin-bottom:28px}
-    .res-title{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:6px;margin-bottom:16px}
-    .res-icon{width:44px;height:44px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-muted)}
+    .res-title{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:16px}
+    .res-icon{width:44px;height:44px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-secondary)}
     .res-info .res-name{font-size:15px;font-weight:600;color:var(--text-primary)}
-    .coming-soon{font-size:15px;color:var(--text-muted);font-style:italic}
+    .coming-soon{font-size:15px;color:var(--text-secondary);font-style:italic}
     .lc-h2{font-weight:600;font-size:18px;color:var(--text-primary);margin:24px 0 8px;padding-top:4px}
     .lc-p{font-size:16px;color:var(--text-secondary);line-height:1.8;margin:4px 0}
-    .lc-bq{border-left:3px solid var(--text-muted);padding:12px 18px;background:var(--bg-surface);border-radius:0 var(--radius-xs) var(--radius-xs) 0;margin:8px 0;font-size:15px;color:var(--text-secondary);line-height:1.7;font-style:italic}
+    .lc-bq{border-left:3px solid var(--accent);padding:12px 18px;background:var(--bg-surface);border-radius:0 var(--radius-xs) var(--radius-xs) 0;margin:8px 0;font-size:15px;color:var(--text-secondary);line-height:1.7;font-style:italic}
     .lc-li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 20px;line-height:1.7;display:block;position:relative}
-    .lc-li::before{content:'\2022';color:var(--text-muted);position:absolute;left:0;font-size:18px}
+    .lc-li::before{content:'\2022';color:var(--text-secondary);position:absolute;left:0;font-size:18px}
     .lc-hr{border:none;border-top:1px solid var(--border);margin:20px 0}
     .lesson-body{font-size:16px;color:var(--text-secondary);line-height:1.8;margin-bottom:12px}
 
@@ -157,12 +157,11 @@
     .vault-header h2{font-weight:700;font-size:24px;color:var(--text-primary);margin-bottom:8px}
     .vault-header p{font-size:15px;color:var(--text-secondary);line-height:1.55}
     .vault-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
-    .vault-count{font-size:14px;font-weight:600;color:var(--text-muted);white-space:nowrap}
+    .vault-count{font-size:14px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
     .vault-card-icon{width:100%;height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
-    .vault-card-icon svg{color:var(--text-muted);opacity:0.6}
+    .vault-card-icon svg{color:var(--text-secondary);opacity:1}
     .vault-badge-sm{position:absolute;top:12px;right:12px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
-    .vault-badge-sm.locked{background:var(--bg-app);color:var(--text-muted);border:1px solid var(--border);display:inline-flex;align-items:center;gap:4px}
-    .vault-card.locked .vault-card-icon{filter:grayscale(1) brightness(0.5)}
+    .vault-card.locked .vault-card-icon{filter:none}
 
     /* ── Resource card (lesson view) ── */
     .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:var(--transition)}
@@ -819,7 +818,7 @@ function vaultCardHtml(b) {
   const thumb = b.img
     ? '<div class="card-thumb"><img src="' + b.img + '" alt="' + b.title + '" loading="lazy"></div>'
     : '<div class="vault-card-icon">' + FOLDER_SVG + '</div>';
-  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '<span class="vault-badge-sm locked">' + LOCK + ' Locked</span>';
+  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '';
   const ctaText = ok ? 'Open folder' : 'Unlock to access';
   return '<div class="card vault-card' + (ok ? '' : ' locked') + '" ' + (ok ? 'data-nav="block" data-block="' + b.id + '"' : '') + '>' +
     thumb + badge +
