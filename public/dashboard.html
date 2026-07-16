@@ -753,9 +753,9 @@ function renderDashboard() {
       <h1>Continue building your AI Growth Engine</h1>
       <p class="hero-sub">Your personalized lead generation system — AI agents, scripts, templates, and a 21-day plan tailored to your business.</p>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num">${core.length}</div><div class="hero-stat-lbl">Core Modules</div></div>
-        <div class="hero-stat"><div class="hero-stat-num">${bumps.length}</div><div class="hero-stat-lbl">Bonus Modules</div></div>
-        <div class="hero-stat"><div class="hero-stat-num">${accessibleCore + accessibleBumps}</div><div class="hero-stat-lbl">Unlocked</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">${core.length + bumps.length + vault.length}</div><div class="hero-stat-lbl">Total Modules</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">${accessibleCore + accessibleBumps + accessibleVault}</div><div class="hero-stat-lbl">Unlocked</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">${(core.length + bumps.length + vault.length) - (accessibleCore + accessibleBumps + accessibleVault)}</div><div class="hero-stat-lbl">Locked</div></div>
       </div>
     </div>
     <div class="bonus-roadmap">
