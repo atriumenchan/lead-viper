@@ -768,17 +768,6 @@ function renderDashboard() {
         <div class="hero-stat"><div class="hero-stat-num">${accessibleCore + accessibleBumps}</div><div class="hero-stat-lbl">Unlocked</div></div>
       </div>
     </div>
-    ${hasLocked ? `<div class="upgrade-bar"><div><h3>Unlock More Content</h3><p>Upgrade your plan to access all modules and order bumps.</p></div><a href="https://leadengine.admexo.com" class="btn-primary">Upgrade Now ${ARROW}</a></div>` : ''}
-    <div class="sec-header">
-      <div class="sec-title">Core Learning Modules</div>
-      <p class="sec-desc">Master the systems used to build predictable AI-powered growth.</p>
-    </div>
-    <div class="grid3">${core.map(b => cardHtml(b)).join('')}</div>
-    <div class="sec-header">
-      <div class="sec-title">Order Bumps</div>
-      <p class="sec-desc">Premium add-on tools. Unlocked instantly for buyers — or grab them now for the same one-time price.</p>
-    </div>
-    <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>
     <div class="bonus-roadmap">
       <div class="bonus-roadmap-glow"></div>
       <div class="bonus-roadmap-content">
@@ -791,6 +780,17 @@ function renderDashboard() {
           : '<a href="/dfy-checkout" class="bonus-btn">Unlock with Vault Upgrade ' + ARROW + '</a>'}
       </div>
     </div>
+    ${hasLocked ? `<div class="upgrade-bar"><div><h3>Unlock More Content</h3><p>Upgrade your plan to access all modules and order bumps.</p></div><a href="https://leadengine.admexo.com" class="btn-primary">Upgrade Now ${ARROW}</a></div>` : ''}
+    <div class="sec-header">
+      <div class="sec-title">Core Learning Modules</div>
+      <p class="sec-desc">Master the systems used to build predictable AI-powered growth.</p>
+    </div>
+    <div class="grid3">${core.map(b => cardHtml(b)).join('')}</div>
+    <div class="sec-header">
+      <div class="sec-title">Order Bumps</div>
+      <p class="sec-desc">Premium add-on tools. Unlocked instantly for buyers — or grab them now for the same one-time price.</p>
+    </div>
+    <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>
     <div class="vault-section">
       <div class="vault-header">
         <div class="vault-header-left">
