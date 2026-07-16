@@ -810,7 +810,7 @@ function cardHtml(b) {
   const badge = ok
     ? (b.type==='bump' ? '<span class="card-badge bump">BUMP</span>' : '<span class="card-badge unlocked">Unlocked</span>')
     : '<span class="card-badge locked-badge">Locked</span>';
-  const ctaText = ok ? 'Open module' : 'Upgrade to unlock';
+  const ctaText = ok ? 'Access now' : 'Upgrade to unlock';
   const lessonCount = (b.lessons || []).length;
   const resourceCount = (b.resources || []).length;
   const metaItems = [];
@@ -834,7 +834,7 @@ function vaultCardHtml(b) {
     ? '<div class="card-thumb"><img src="' + b.img + '" alt="' + b.title + '" loading="lazy"></div>'
     : '<div class="vault-card-icon">' + FOLDER_SVG + '</div>';
   const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '<span class="vault-badge-sm locked">Locked</span>';
-  const ctaText = ok ? 'Open folder' : 'Unlock to access';
+  const ctaText = ok ? 'Access now' : 'Unlock to access';
   const cta = ok
     ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
     : '<a href="/dfy-checkout" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
