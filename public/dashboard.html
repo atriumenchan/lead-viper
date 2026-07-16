@@ -173,7 +173,8 @@
     .vault-count{font-size:14px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
     .vault-card-icon{width:100%;height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
     .vault-card-icon svg{color:var(--text-secondary);opacity:1}
-    .vault-badge-sm{position:absolute;top:12px;right:12px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
+    .vault-badge-sm{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
+    .vault-badge-sm.locked{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
     .vault-card.locked .vault-card-icon{filter:none}
 
     /* ── Resource card (lesson view) ── */
@@ -794,7 +795,7 @@ function renderDashboard() {
       <div class="bonus-roadmap-glow"></div>
       <div class="bonus-roadmap-content">
         <div class="bonus-crown">${CROWN_SVG}</div>
-        <div class="bonus-label">Bonus Feature</div>
+        <div class="bonus-label">${vaultUnlocked ? 'Unlocked' : 'Locked'} · Bonus Feature</div>
         <h2 class="bonus-title">Your Personalised AI Business Roadmap</h2>
         <p class="bonus-desc">A custom 21-day AI growth plan built exclusively for your business — your niche, your offer, your goals. Answer a few questions and our AI engine crafts a step-by-step roadmap tailored to you.</p>
         ${vaultUnlocked
@@ -844,7 +845,7 @@ function vaultCardHtml(b) {
   const thumb = b.img
     ? '<div class="card-thumb"><img src="' + b.img + '" alt="' + b.title + '" loading="lazy"></div>'
     : '<div class="vault-card-icon">' + FOLDER_SVG + '</div>';
-  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '';
+  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '<span class="vault-badge-sm locked">Locked</span>';
   const ctaText = ok ? 'Open folder' : 'Unlock to access';
   const cta = ok
     ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
