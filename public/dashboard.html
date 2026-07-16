@@ -153,15 +153,15 @@
     .bump-res-btn:hover{background:var(--accent-hover)}
 
     /* ── Golden Bonus Roadmap Section ── */
-    .bonus-roadmap{position:relative;margin-bottom:64px;border-radius:var(--radius);overflow:hidden;background:linear-gradient(135deg,#1a1407 0%,#2d1f0a 40%,#3d2c12 100%);border:1px solid rgba(212,175,55,0.3);box-shadow:0 8px 32px rgba(212,175,55,0.1)}
-    .bonus-roadmap-glow{position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(212,175,55,0.12) 0%,transparent 60%);pointer-events:none}
+    .bonus-roadmap{position:relative;margin-bottom:64px;border-radius:var(--radius);overflow:hidden;background:#d4af37;border:1px solid #b8941f;box-shadow:0 8px 32px rgba(212,175,55,0.3)}
+    .bonus-roadmap-glow{display:none}
     .bonus-roadmap-content{position:relative;padding:48px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
-    .bonus-crown{color:#d4af37;filter:drop-shadow(0 2px 8px rgba(212,175,55,0.4))}
-    .bonus-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#d4af37;padding:4px 16px;border:1px solid rgba(212,175,55,0.4);border-radius:20px;background:rgba(212,175,55,0.08)}
-    .bonus-title{font-weight:700;font-size:28px;color:#f5e6c8;line-height:1.3;margin:4px 0;text-shadow:0 2px 12px rgba(212,175,55,0.2)}
-    .bonus-desc{font-size:16px;color:#c9b896;line-height:1.65;max-width:560px;margin-bottom:8px}
-    .bonus-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#d4af37 0%,#f0d97a 50%,#d4af37 100%);color:#1a1407;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;transition:all .3s ease;min-height:48px;border:1px solid rgba(212,175,55,0.6);box-shadow:0 4px 16px rgba(212,175,55,0.25);letter-spacing:.02em}
-    .bonus-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(212,175,55,0.4);background:linear-gradient(135deg,#f0d97a 0%,#ffd700 50%,#f0d97a 100%)}
+    .bonus-crown{color:#1a1407;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .bonus-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#1a1407;padding:4px 16px;border:1px solid rgba(26,20,7,0.3);border-radius:20px;background:rgba(26,20,7,0.06)}
+    .bonus-title{font-weight:700;font-size:28px;color:#1a1407;line-height:1.3;margin:4px 0}
+    .bonus-desc{font-size:16px;color:#3d2c12;line-height:1.65;max-width:560px;margin-bottom:8px}
+    .bonus-btn{display:inline-flex;align-items:center;gap:8px;background:#1a1407;color:#d4af37;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;transition:all .3s ease;min-height:48px;border:1px solid #1a1407;box-shadow:0 4px 16px rgba(0,0,0,0.2);letter-spacing:.02em}
+    .bonus-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.3);background:#2d1f0a}
 
     /* ── Vault section ── */
     .vault-section{margin-top:24px}
@@ -766,18 +766,6 @@ function renderDashboard() {
         <div class="hero-stat"><div class="hero-stat-num">${core.length}</div><div class="hero-stat-lbl">Core Modules</div></div>
         <div class="hero-stat"><div class="hero-stat-num">${bumps.length}</div><div class="hero-stat-lbl">Bonus Modules</div></div>
         <div class="hero-stat"><div class="hero-stat-num">${accessibleCore + accessibleBumps}</div><div class="hero-stat-lbl">Unlocked</div></div>
-      </div>
-    </div>
-    <div class="roadmap-card">
-      <div class="roadmap-left">
-        <div class="roadmap-icon">${ROADMAP_SVG}</div>
-        <div>
-          <h3>Get Your Personalised AI Business Roadmap</h3>
-          <p>Fill out a quick form and we'll build a full 21-day AI growth plan for your business.</p>
-        </div>
-      </div>
-      <div class="roadmap-btns">
-        <a href="/roadmap" class="btn-primary">Build My Roadmap ${ARROW}</a>
       </div>
     </div>
     ${hasLocked ? `<div class="upgrade-bar"><div><h3>Unlock More Content</h3><p>Upgrade your plan to access all modules and order bumps.</p></div><a href="https://leadengine.admexo.com" class="btn-primary">Upgrade Now ${ARROW}</a></div>` : ''}
