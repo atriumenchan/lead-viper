@@ -864,7 +864,7 @@ function renderBlock() {
         <p class="block-sub">${b.desc}</p>
         <div class="folder-count">${resourceCount} resources</div>
       </div>
-      ${lessons.length === 0 ? '<p class="coming-soon">Resource links will be added here soon.</p>' : ''}
+      ${lessons.length === 0 ? '<p class="coming-soon">Adding them soon.</p>' : ''}
       <div class="folder-grid">
         ${lessons.map(l => `
           <div class="folder-card" data-nav="lesson" data-block="${b.id}" data-lesson="${l.id}">
@@ -907,7 +907,7 @@ function renderLesson() {
           </div>
           <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="res-open-btn">Open ${ARROW}</a>
         </div>`).join('')}`
-    : `<div class="res-title">Resources</div><p class="coming-soon">Resource links will be added here soon.</p>`;
+    : `<div class="res-title">Resources</div><p class="coming-soon">Adding them soon.</p>`;
   return `
     <div class="lesson-wrap">
       <div class="lesson-crumb">${b.title}</div>
