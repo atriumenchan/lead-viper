@@ -152,6 +152,17 @@
     .bump-res-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:12px 24px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:44px}
     .bump-res-btn:hover{background:var(--accent-hover)}
 
+    /* ── Golden Bonus Roadmap Section ── */
+    .bonus-roadmap{position:relative;margin-bottom:64px;border-radius:var(--radius);overflow:hidden;background:linear-gradient(135deg,#1a1407 0%,#2d1f0a 40%,#3d2c12 100%);border:1px solid rgba(212,175,55,0.3);box-shadow:0 8px 32px rgba(212,175,55,0.1)}
+    .bonus-roadmap-glow{position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(212,175,55,0.12) 0%,transparent 60%);pointer-events:none}
+    .bonus-roadmap-content{position:relative;padding:48px 40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+    .bonus-crown{color:#d4af37;filter:drop-shadow(0 2px 8px rgba(212,175,55,0.4))}
+    .bonus-label{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#d4af37;padding:4px 16px;border:1px solid rgba(212,175,55,0.4);border-radius:20px;background:rgba(212,175,55,0.08)}
+    .bonus-title{font-weight:700;font-size:28px;color:#f5e6c8;line-height:1.3;margin:4px 0;text-shadow:0 2px 12px rgba(212,175,55,0.2)}
+    .bonus-desc{font-size:16px;color:#c9b896;line-height:1.65;max-width:560px;margin-bottom:8px}
+    .bonus-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#d4af37 0%,#f0d97a 50%,#d4af37 100%);color:#1a1407;font-size:16px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;transition:all .3s ease;min-height:48px;border:1px solid rgba(212,175,55,0.6);box-shadow:0 4px 16px rgba(212,175,55,0.25);letter-spacing:.02em}
+    .bonus-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(212,175,55,0.4);background:linear-gradient(135deg,#f0d97a 0%,#ffd700 50%,#f0d97a 100%)}
+
     /* ── Vault section ── */
     .vault-section{margin-top:24px}
     .vault-header{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
@@ -704,6 +715,7 @@ const PLAY = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor
 const DOWNLOAD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 const LOCK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
 const ROADMAP_SVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l4-4 4 4"/><path d="M2 17l4 4 4-4"/><path d="M6 3v18"/><path d="M14 7l4 4 4-4"/><path d="M18 21V11"/><path d="M14 7h8"/></svg>`;
+const CROWN_SVG = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l4 10h12l4-10-6 4-4-7-4 7-6-4z"/><circle cx="2" cy="7" r="1.5" fill="currentColor"/><circle cx="22" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="3" r="1.5" fill="currentColor"/></svg>`;
 
 // â”€â”€ RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function render() {
@@ -778,6 +790,18 @@ function renderDashboard() {
       <p class="sec-desc">Premium add-on tools. Unlocked instantly for buyers — or grab them now for the same one-time price.</p>
     </div>
     <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>
+    <div class="bonus-roadmap">
+      <div class="bonus-roadmap-glow"></div>
+      <div class="bonus-roadmap-content">
+        <div class="bonus-crown">${CROWN_SVG}</div>
+        <div class="bonus-label">Bonus Feature</div>
+        <h2 class="bonus-title">Your Personalised AI Business Roadmap</h2>
+        <p class="bonus-desc">A custom 21-day AI growth plan built exclusively for your business — your niche, your offer, your goals. Answer a few questions and our AI engine crafts a step-by-step roadmap tailored to you.</p>
+        ${vaultUnlocked
+          ? '<a href="/roadmap" class="bonus-btn">Build My Roadmap ' + ARROW + '</a>'
+          : '<a href="/dfy-checkout" class="bonus-btn">Unlock with Vault Upgrade ' + ARROW + '</a>'}
+      </div>
+    </div>
     <div class="vault-section">
       <div class="vault-header">
         <div class="vault-header-left">
