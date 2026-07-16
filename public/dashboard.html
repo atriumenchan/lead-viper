@@ -11,7 +11,7 @@
   <style>
     :root{
       --bg-app:#0F172A; --bg-surface:#172033; --bg-card:#1B2438; --bg-elevated:#212D46;
-      --text-primary:#F8FAFC; --text-secondary:#CBD5E1; --text-muted:#94A3B8; --text-disabled:#64748B;
+      --text-primary:#F8FAFC; --text-secondary:#E2E8F0; --text-muted:#94A3B8; --text-disabled:#64748B;
       --accent:#4F46E5; --accent-hover:#6366F1;
       --success:#22C55E; --warning:#F59E0B; --error:#EF4444;
       --border:rgba(255,255,255,0.08); --border-hover:rgba(79,70,229,0.45);
@@ -97,8 +97,10 @@
     .card-placeholder{width:100%;height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-bottom:1px solid var(--border)}
     .card-placeholder svg{color:var(--text-muted);opacity:1}
 
-    .card-badge{position:absolute;top:12px;right:12px;background:var(--bg-app);color:var(--text-secondary);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2;border:1px solid var(--border)}
-    .card-badge.locked-badge{color:var(--text-secondary)}
+    .card-badge{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;z-index:2}
+    .card-badge.unlocked{background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
+    .card-badge.locked-badge{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+    .card-badge.bump{background:rgba(79,70,229,0.15);color:#818cf8;border:1px solid rgba(79,70,229,0.3)}
 
     .card-body{padding:24px;flex:1;display:flex;flex-direction:column}
     .card-title{font-weight:600;font-size:18px;color:var(--text-primary);margin-bottom:16px;line-height:1.35}
@@ -799,7 +801,9 @@ function cardHtml(b) {
   const thumb = b.img
     ? '<div class="card-thumb"><img src="' + b.img + '" alt="' + b.title + '" loading="lazy"></div>'
     : '<div class="card-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>';
-  const badge = ok ? (b.type==='bump' ? '<span class="card-badge">BUMP</span>' : '') : '<span class="card-badge locked-badge">Locked</span>';
+  const badge = ok
+    ? (b.type==='bump' ? '<span class="card-badge bump">BUMP</span>' : '<span class="card-badge unlocked">Unlocked</span>')
+    : '<span class="card-badge locked-badge">Locked</span>';
   const ctaText = ok ? 'Open module' : 'Upgrade to unlock';
   const lessonCount = (b.lessons || []).length;
   const resourceCount = (b.resources || []).length;
