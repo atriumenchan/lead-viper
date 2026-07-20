@@ -64,6 +64,9 @@ module.exports = async function handler(req, res) {
       case 'checkout.session.completed': {
         const session = event.data.object;
         if (supabase) {
+          const SITE_URL = (process.env.SITE_URL || 'https://leadengine.admexo.com').replace(/\/$/, '');
+
+          // Primary path: match order by stripe_session_id
           const { data: updatedOrder } = await supabase.from('orders')
             .update({ status: 'completed', stripe_payment_intent_id: session.payment_intent || '', updated_at: new Date().toISOString() })
             .eq('stripe_session_id', session.id)
@@ -81,7 +84,6 @@ module.exports = async function handler(req, res) {
               .single();
 
             if (lead?.email) {
-              const SITE_URL = (process.env.SITE_URL || 'https://leadengine.admexo.com').replace(/\/$/, '');
               let password = lead.access_password;
               if (!password) {
                 password = crypto.randomBytes(4).toString('hex').toUpperCase();
@@ -101,6 +103,42 @@ module.exports = async function handler(req, res) {
               } catch (mailErr) {
                 console.error('[webhook] email failed:', mailErr.message);
               }
+            }
+          } else if (session.customer_email && session.metadata?.product !== 'dfy-vault') {
+            // Fallback: no order row matched — find lead by email and send anyway
+            console.warn(`[webhook] no order row for session ${session.id}, falling back to email lookup`);
+            const customerEmail = session.customer_email.toLowerCase().trim();
+            const { data: lead } = await supabase.from('leads')
+              .select('id, first_name, access_password')
+              .ilike('email', customerEmail)
+              .order('created_at', { ascending: false })
+              .limit(1)
+              .single();
+
+            if (lead) {
+              await supabase.from('leads').update({ converted: true }).eq('id', lead.id);
+              let password = lead.access_password;
+              if (!password) {
+                password = crypto.randomBytes(4).toString('hex').toUpperCase();
+                await supabase.from('leads').update({ access_password: password }).eq('id', lead.id);
+              }
+              const tier = session.metadata?.tier || 'basic';
+              try {
+                await sendPurchaseEmail({
+                  email: customerEmail,
+                  firstName: lead.first_name || 'there',
+                  tier,
+                  password,
+                  dashboardUrl: `${SITE_URL}/dashboard`,
+                  bumpFunnel: false,
+                  bumpPrompts: false,
+                });
+                console.log(`[webhook] fallback purchase email sent to ${customerEmail}`);
+              } catch (mailErr) {
+                console.error('[webhook] fallback email failed:', mailErr.message);
+              }
+            } else {
+              console.error(`[webhook] fallback failed — no lead found for email ${customerEmail}`);
             }
           }
         }

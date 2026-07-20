@@ -29,14 +29,21 @@ module.exports = async function handler(req, res) {
       .order('created_at', { ascending: false });
 
     const completed = (orders || []).filter(o => o.status === 'completed');
+    const allOrders = orders || [];
 
-    // DFY Vault upgrade ($27 or $49)
-    if (completed.some(o => o.tier && o.tier.startsWith('dfy-vault'))) {
+    // DFY Vault upgrade ($27 or $49) — check completed first, fall back to any order
+    if (
+      completed.some(o => o.tier && o.tier.startsWith('dfy-vault')) ||
+      allOrders.some(o => o.tier && o.tier.startsWith('dfy-vault'))
+    ) {
       dfyVault = true;
     }
 
-    // Main product order
-    const mainOrder = completed.find(o => o.tier && !o.tier.startsWith('dfy-vault'));
+    // Main product order — prefer completed, fall back to any order
+    // (guards against webhook delay/failure leaving order stuck in pending)
+    const mainOrder =
+      completed.find(o => o.tier && !o.tier.startsWith('dfy-vault')) ||
+      allOrders.find(o => o.tier && !o.tier.startsWith('dfy-vault'));
     if (mainOrder) {
       tier = mainOrder.tier;
       bumpFunnel = mainOrder.bump_funnel_copy;
