@@ -184,6 +184,8 @@
     .vault-card-icon-wrap{width:44px;height:44px;border-radius:12px;background:rgba(102,31,255,0.12);border:1px solid rgba(102,31,255,0.2);display:flex;align-items:center;justify-content:center;color:var(--accent)}
     .vault-badge-sm{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
     .vault-badge-sm.locked{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+    .vault-img-fallback{background:linear-gradient(135deg,#1a1033 0%,#0f0a20 100%) !important}
+    .vault-img-fallback img{display:none !important}
 
     /* ── Resource card (lesson view) ── */
     .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:var(--transition)}
@@ -832,13 +834,16 @@ function cardHtml(b) {
 function vaultCardHtml(b) {
   const ok = canAccess(b);
   const resourceCount = (b.lessons || []).length + (b.resources || []).length;
-  const badge = ok ? '<span class="vault-badge-sm">Unlocked</span>' : '<span class="vault-badge-sm locked">Locked</span>';
-  const header = '<div class="vault-card-header"><div class="vault-card-icon-wrap">' + FOLDER_SVG + '</div>' + badge + '</div>';
+  const badge = ok ? '<span class="card-badge unlocked">Unlocked</span>' : '<span class="card-badge locked-badge">Locked</span>';
+  const fallback = 'this.onerror=null;this.parentNode.classList.add(\'vault-img-fallback\')';
+  const thumb = b.img
+    ? '<div class="card-thumb">' + badge + '<img src="' + b.img + '" alt="' + b.title + '" loading="lazy" onerror="' + fallback + '"></div>'
+    : '<div class="card-thumb vault-img-fallback">' + badge + '</div>';
   const ctaText = ok ? 'Access now' : 'Unlock to access';
   const cta = ok
     ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
     : '<a href="/dfy-checkout" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
-  const cardInner = header +
+  const cardInner = thumb +
     '<div class="card-body">' +
     '<div class="card-title">' + b.title + '</div>' +
     '<div class="card-desc">' + b.desc + '</div>' +
