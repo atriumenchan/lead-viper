@@ -409,5 +409,11 @@
       api('data',{}).then(d=>{DATA=d;document.getElementById('loginView').style.display='none';document.getElementById('appView').style.display='block';updateFilterVisibility();renderStats(DATA.stats);render();}).catch(()=>logout());
     }
   </script>
+  
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

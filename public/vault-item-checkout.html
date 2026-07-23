@@ -231,9 +231,15 @@
       } catch (ex) {
         errEl.textContent = ex.message;
         btn.disabled = false;
-        document.getElementById('btnText').textContent = 'Complete Secure Checkout — $' + priceStr + ' →';
+        document.getElementById('btnText').textContent = 'Complete Secure Checkout — $' + priceStr + ' ��';
       }
     });
   </script>
+  
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
