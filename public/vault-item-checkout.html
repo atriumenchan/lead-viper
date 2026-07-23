@@ -13,6 +13,7 @@
       --bg-app:#0F172A; --bg-surface:#172033; --bg-card:#1B2438; --bg-elevated:#212D46;
       --text-primary:#F8FAFC; --text-secondary:#E2E8F0; --text-muted:#94A3B8;
       --accent:#4F46E5; --accent-hover:#6366F1;
+      --gold:#F5A623; --gold-soft:rgba(245,166,35,0.12); --gold-border:rgba(245,166,35,0.35);
       --success:#22C55E; --error:#EF4444;
       --border:rgba(255,255,255,0.08);
       --radius:18px; --radius-sm:12px; --radius-xs:8px;
@@ -29,29 +30,38 @@
     .thumb{width:100%;aspect-ratio:16/10;border-radius:var(--radius);background-size:cover;background-position:center;background-color:var(--bg-elevated);border:1px solid var(--border);position:relative;overflow:hidden}
     .thumb-badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;background:rgba(79,70,229,0.85);color:#fff;backdrop-filter:blur(4px)}
 
-    .price-tag{display:inline-flex;align-items:baseline;gap:6px;margin-top:24px}
-    .price-tag .amount{font-size:44px;font-weight:800;color:var(--text-primary)}
-    .price-tag .cents{font-size:20px;font-weight:700;color:var(--text-primary)}
-    .price-tag .note{font-size:14px;color:var(--text-muted);margin-left:8px}
+    .value-anchor{display:flex;align-items:baseline;gap:10px;margin-top:22px}
+    .value-anchor .label{font-size:13px;color:var(--text-muted)}
+    .value-anchor .strike{font-size:16px;font-weight:700;color:var(--text-muted);text-decoration:line-through}
 
-    .panel-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .panel-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
     h1{font-size:30px;font-weight:800;line-height:1.2;margin-bottom:14px;color:var(--text-primary)}
     .desc{font-size:15px;color:var(--text-secondary);line-height:1.65;margin-bottom:24px}
     .perks{list-style:none;margin-bottom:8px}
     .perks li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--text-secondary);padding:7px 0;line-height:1.5}
     .perks li svg{flex-shrink:0;margin-top:2px;color:var(--success)}
 
-    form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:28px}
+    .checkout-card{background:linear-gradient(160deg,rgba(245,166,35,0.06),rgba(23,32,51,0.4));border:1px solid var(--gold-border);border-radius:var(--radius);padding:28px;margin-top:28px;box-shadow:0 8px 32px rgba(245,166,35,0.06)}
+    .today-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+    .today-row .today-label{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary)}
+    .today-row .today-amount{font-size:36px;font-weight:800;color:var(--gold)}
+
     label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
     input{width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px 14px;font-size:15px;color:var(--text-primary);font-family:var(--font);margin-bottom:16px;outline:none;transition:border-color .2s}
-    input:focus{border-color:var(--accent)}
-    button{width:100%;background:var(--accent);color:#fff;font-size:16px;font-weight:700;padding:15px 20px;border:none;border-radius:var(--radius-xs);cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-    button:hover{background:var(--accent-hover)}
+    input:focus{border-color:var(--gold)}
+    button{width:100%;background:var(--gold);color:#1A1305;font-size:16px;font-weight:700;padding:15px 20px;border:none;border-radius:var(--radius-xs);cursor:pointer;transition:filter .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    button:hover{filter:brightness(1.08)}
     button:disabled{opacity:.6;cursor:not-allowed}
     .err{color:var(--error);font-size:13.5px;margin-top:10px;min-height:16px}
     .secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--text-muted);margin-top:16px}
-    .full-vault-cta{display:block;text-align:center;font-size:13.5px;color:var(--text-muted);margin-top:14px}
-    .full-vault-cta a{color:var(--accent);font-weight:600;text-decoration:none}
+
+    .guarantee-box{display:flex;gap:12px;align-items:flex-start;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-sm);padding:14px 16px;margin-top:20px}
+    .guarantee-box svg{flex-shrink:0;color:var(--success);margin-top:1px}
+    .guarantee-box .g-title{font-size:13.5px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+    .guarantee-box .g-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+
+    .full-vault-cta{display:block;text-align:center;font-size:13.5px;color:var(--text-muted);margin-top:18px}
+    .full-vault-cta a{color:var(--gold);font-weight:600;text-decoration:none}
     .full-vault-cta a:hover{text-decoration:underline}
     .fallback-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
   </style>
@@ -65,9 +75,9 @@
     <div class="grid">
       <div>
         <div class="thumb" id="thumb"></div>
-        <div class="price-tag">
-          <span class="amount" id="priceAmount">$5</span>
-          <span class="note">one-time · instant access</span>
+        <div class="value-anchor">
+          <span class="label">Full Vault Value</span>
+          <span class="strike">$49</span>
         </div>
       </div>
       <div>
@@ -80,20 +90,33 @@
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No subscription — pay once, keep forever</li>
         </ul>
 
-        <form id="checkoutForm">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" placeholder="Jane" required/>
-          <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="jane@company.com" required/>
-          <button type="submit" id="submitBtn">
-            <span id="btnText">Unlock for $5 →</span>
-          </button>
-          <div class="err" id="errMsg"></div>
-          <div class="secure-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            Secure checkout powered by Stripe
+        <div class="checkout-card">
+          <div class="today-row">
+            <span class="today-label">Today Only</span>
+            <span class="today-amount" id="priceAmount">$5</span>
           </div>
-        </form>
+          <form id="checkoutForm">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="Jane" required/>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="jane@company.com" required/>
+            <button type="submit" id="submitBtn">
+              <span id="btnText">Unlock for $5 →</span>
+            </button>
+            <div class="err" id="errMsg"></div>
+            <div class="secure-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              Secure checkout powered by Stripe
+            </div>
+          </form>
+          <div class="guarantee-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
+            <div>
+              <div class="g-title">30-Day Money-Back Guarantee</div>
+              <div class="g-desc">Not happy for any reason? Email us and we'll refund every cent.</div>
+            </div>
+          </div>
+        </div>
         <div class="full-vault-cta">Want everything instead? <a href="/dfy-checkout">Unlock the full DFY Vault →</a></div>
       </div>
     </div>
@@ -126,6 +149,15 @@
     if (!item) {
       document.getElementById('errMsg').textContent = 'Missing item — go back to the dashboard and try again.';
     }
+
+    // Auto-fill from the existing dashboard login session, if present
+    try {
+      const sessionUser = JSON.parse(localStorage.getItem('ailb_user') || sessionStorage.getItem('ailb_user') || 'null');
+      if (sessionUser) {
+        if (sessionUser.firstName) document.getElementById('firstName').value = sessionUser.firstName;
+        if (sessionUser.email) document.getElementById('email').value = sessionUser.email;
+      }
+    } catch (e) {}
 
     document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
       e.preventDefault();
