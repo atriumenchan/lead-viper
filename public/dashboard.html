@@ -180,12 +180,7 @@
     .vault-header p{font-size:15px;color:var(--text-secondary);line-height:1.55}
     .vault-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
     .vault-count{font-size:14px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
-    .vault-card-header{width:100%;height:88px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg-elevated) 0%,var(--bg-surface) 100%);border-radius:var(--radius) var(--radius) 0 0;flex-shrink:0}
-    .vault-card-icon-wrap{width:44px;height:44px;border-radius:12px;background:rgba(102,31,255,0.12);border:1px solid rgba(102,31,255,0.2);display:flex;align-items:center;justify-content:center;color:var(--accent)}
-    .vault-badge-sm{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase;z-index:2;background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
-    .vault-badge-sm.locked{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
-    .vault-img-fallback{background:linear-gradient(135deg,#1a1033 0%,#0f0a20 100%) !important}
-    .vault-img-fallback img{display:none !important}
+    .vault-thumb-bg{background-size:cover;background-position:center;background-color:var(--bg-elevated);background-repeat:no-repeat}
 
     /* ── Resource card (lesson view) ── */
     .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:var(--transition)}
@@ -667,7 +662,7 @@ function canAccess(block) {
   if (ul < ml) return false;
   if (block.bumpRequired === 'funnel' && !user.bumpFunnel) return false;
   if (block.bumpRequired === 'prompts' && !user.bumpPrompts) return false;
-  if (block.vaultRequired && !user.dfyVault) return false;
+  if (block.vaultRequired && !user.dfyVault && !(user.purchasedVaultItems || []).includes(block.id)) return false;
   return true;
 }
 
@@ -835,14 +830,16 @@ function vaultCardHtml(b) {
   const ok = canAccess(b);
   const resourceCount = (b.lessons || []).length + (b.resources || []).length;
   const badge = ok ? '<span class="card-badge unlocked">Unlocked</span>' : '<span class="card-badge locked-badge">Locked</span>';
-  const fallback = 'this.onerror=null;this.parentNode.classList.add(\'vault-img-fallback\')';
-  const thumb = b.img
-    ? '<div class="card-thumb">' + badge + '<img src="' + b.img + '" alt="' + b.title + '" loading="lazy" onerror="' + fallback + '"></div>'
-    : '<div class="card-thumb vault-img-fallback">' + badge + '</div>';
+  const bgStyle = b.img ? ' style="background-image:url(&quot;' + b.img + '&quot;)"' : '';
+  const thumb = '<div class="card-thumb vault-thumb-bg"' + bgStyle + '>' + badge + '</div>';
   const ctaText = ok ? 'Access now' : 'Unlock to access';
+  const checkoutUrl = '/vault-item-checkout?item=' + encodeURIComponent(b.id) +
+    '&title=' + encodeURIComponent(b.title) +
+    '&img=' + encodeURIComponent(b.img || '') +
+    '&desc=' + encodeURIComponent(b.desc || '');
   const cta = ok
     ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
-    : '<a href="/dfy-checkout" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
+    : '<a href="' + checkoutUrl + '" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
   const cardInner = thumb +
     '<div class="card-body">' +
     '<div class="card-title">' + b.title + '</div>' +
@@ -852,7 +849,7 @@ function vaultCardHtml(b) {
     '</div>';
   return ok
     ? '<div class="card vault-card" data-nav="block" data-block="' + b.id + '">' + cardInner + '</div>'
-    : '<a href="/dfy-checkout" class="card vault-card locked" style="text-decoration:none">' + cardInner + '</a>';
+    : '<a href="' + checkoutUrl + '" class="card vault-card locked" style="text-decoration:none">' + cardInner + '</a>';
 }
 
 function renderBlock() {

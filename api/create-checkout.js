@@ -93,6 +93,54 @@ module.exports = async function handler(req, res) {
       return res.json({ url: dfySession.url });
     }
 
+    // ── Single vault item checkout ($5) ─────────────────────────────────────
+    if (action === 'vault-item') {
+      const item = (req.body.item || '').trim();
+      const itemTitle = (req.body.itemTitle || 'Vault Resource').trim();
+      const priceNum = Number(price) || 5;
+      if (!item || !email || !firstName) {
+        return res.status(400).json({ error: 'item, email and firstName are required' });
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+        return res.status(400).json({ error: 'Valid email is required' });
+      }
+
+      let leadId = null;
+      if (supabase) {
+        const { data: existing } = await supabase.from('leads')
+          .select('id').eq('email', email.trim().toLowerCase())
+          .order('created_at', { ascending: false }).limit(1).maybeSingle();
+        leadId = existing?.id || null;
+        if (!leadId) {
+          const { data: created } = await supabase.from('leads').insert({
+            first_name: firstName.trim().slice(0, 100), last_name: '', email: email.trim().toLowerCase(),
+            mobile: '', country_code: '+1', profession: 'Vault item customer', converted: true,
+          }).select('id').single();
+          leadId = created?.id || null;
+        }
+      }
+
+      const itemSession = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{ price_data: { currency: 'usd', product_data: { name: itemTitle }, unit_amount: priceNum * 100 }, quantity: 1 }],
+        mode: 'payment',
+        success_url: `${SITE_URL}/dashboard?vault_unlocked=1`,
+        cancel_url:  `${SITE_URL}/vault-item-checkout?item=${encodeURIComponent(item)}`,
+        customer_email: email.trim().toLowerCase(),
+        allow_promotion_codes: true,
+        metadata: { product: 'vault-item', vault_item_id: item, tier: `vault-item-${item}`, first_name: firstName.trim(), lead_id: leadId || '' },
+      });
+
+      if (supabase && leadId) {
+        await supabase.from('orders').insert({
+          lead_id: leadId, stripe_session_id: itemSession.id,
+          tier: `vault-item-${item}`, amount_cents: priceNum * 100,
+          bump_funnel_copy: false, bump_ai_prompts: false, status: 'pending',
+        });
+      }
+      return res.json({ url: itemSession.url });
+    }
+
     // ── Main product checkout ───────────────────────────────────────────────
     if (!price || !email || !firstName) return res.status(400).json({ error: 'price, email and firstName are required' });
 

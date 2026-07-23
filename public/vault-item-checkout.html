@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Unlock Vault Resource — AI Lead Engine</title>
+  <link rel="icon" href="/favicon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg-app:#0F172A; --bg-surface:#172033; --bg-card:#1B2438; --bg-elevated:#212D46;
+      --text-primary:#F8FAFC; --text-secondary:#E2E8F0; --text-muted:#94A3B8;
+      --accent:#4F46E5; --accent-hover:#6366F1;
+      --success:#22C55E; --error:#EF4444;
+      --border:rgba(255,255,255,0.08);
+      --radius:18px; --radius-sm:12px; --radius-xs:8px;
+      --font:'Inter',system-ui,-apple-system,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:var(--bg-app);font-family:var(--font);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--text-muted);text-decoration:none;margin-bottom:32px}
+    .back-link:hover{color:var(--text-primary)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+    @media(max-width:760px){.grid{grid-template-columns:1fr;gap:28px}}
+
+    .thumb{width:100%;aspect-ratio:16/10;border-radius:var(--radius);background-size:cover;background-position:center;background-color:var(--bg-elevated);border:1px solid var(--border);position:relative;overflow:hidden}
+    .thumb-badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;background:rgba(79,70,229,0.85);color:#fff;backdrop-filter:blur(4px)}
+
+    .price-tag{display:inline-flex;align-items:baseline;gap:6px;margin-top:24px}
+    .price-tag .amount{font-size:44px;font-weight:800;color:var(--text-primary)}
+    .price-tag .cents{font-size:20px;font-weight:700;color:var(--text-primary)}
+    .price-tag .note{font-size:14px;color:var(--text-muted);margin-left:8px}
+
+    .panel-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    h1{font-size:30px;font-weight:800;line-height:1.2;margin-bottom:14px;color:var(--text-primary)}
+    .desc{font-size:15px;color:var(--text-secondary);line-height:1.65;margin-bottom:24px}
+    .perks{list-style:none;margin-bottom:8px}
+    .perks li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--text-secondary);padding:7px 0;line-height:1.5}
+    .perks li svg{flex-shrink:0;margin-top:2px;color:var(--success)}
+
+    form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-top:28px}
+    label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+    input{width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px 14px;font-size:15px;color:var(--text-primary);font-family:var(--font);margin-bottom:16px;outline:none;transition:border-color .2s}
+    input:focus{border-color:var(--accent)}
+    button{width:100%;background:var(--accent);color:#fff;font-size:16px;font-weight:700;padding:15px 20px;border:none;border-radius:var(--radius-xs);cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    button:hover{background:var(--accent-hover)}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .err{color:var(--error);font-size:13.5px;margin-top:10px;min-height:16px}
+    .secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--text-muted);margin-top:16px}
+    .full-vault-cta{display:block;text-align:center;font-size:13.5px;color:var(--text-muted);margin-top:14px}
+    .full-vault-cta a{color:var(--accent);font-weight:600;text-decoration:none}
+    .full-vault-cta a:hover{text-decoration:underline}
+    .fallback-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/dashboard" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Dashboard
+    </a>
+    <div class="grid">
+      <div>
+        <div class="thumb" id="thumb"></div>
+        <div class="price-tag">
+          <span class="amount" id="priceAmount">$5</span>
+          <span class="note">one-time · instant access</span>
+        </div>
+      </div>
+      <div>
+        <div class="panel-title">Unlock This Resource</div>
+        <h1 id="itemTitle">Vault Resource</h1>
+        <p class="desc" id="itemDesc">Get instant access to this single resource without buying the full vault.</p>
+        <ul class="perks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Instant access after checkout</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlocked directly on your existing dashboard</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No subscription — pay once, keep forever</li>
+        </ul>
+
+        <form id="checkoutForm">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Jane" required/>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@company.com" required/>
+          <button type="submit" id="submitBtn">
+            <span id="btnText">Unlock for $5 →</span>
+          </button>
+          <div class="err" id="errMsg"></div>
+          <div class="secure-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Secure checkout powered by Stripe
+          </div>
+        </form>
+        <div class="full-vault-cta">Want everything instead? <a href="/dfy-checkout">Unlock the full DFY Vault →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const item  = params.get('item') || '';
+    const title = params.get('title') || 'Vault Resource';
+    const img   = params.get('img') || '';
+    const desc  = params.get('desc') || 'Get instant access to this single resource without buying the full vault.';
+    const price = Number(params.get('price')) || 5;
+
+    document.getElementById('itemTitle').textContent = title;
+    document.getElementById('itemDesc').textContent = desc;
+    document.getElementById('priceAmount').textContent = '$' + price;
+    document.getElementById('btnText').textContent = 'Unlock for $' + price + ' →';
+
+    const thumbEl = document.getElementById('thumb');
+    if (img) {
+      thumbEl.style.backgroundImage = "url('" + img + "')";
+    } else {
+      thumbEl.innerHTML = '<div class="fallback-icon"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>';
+    }
+    const badge = document.createElement('div');
+    badge.className = 'thumb-badge';
+    badge.textContent = 'Vault Item';
+    thumbEl.appendChild(badge);
+
+    if (!item) {
+      document.getElementById('errMsg').textContent = 'Missing item — go back to the dashboard and try again.';
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('errMsg');
+      const btn = document.getElementById('submitBtn');
+      errEl.textContent = '';
+      const firstName = document.getElementById('firstName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!item) { errEl.textContent = 'Missing item reference.'; return; }
+      btn.disabled = true;
+      document.getElementById('btnText').textContent = 'Redirecting to checkout...';
+      try {
+        const res = await fetch('/api/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'vault-item', item, itemTitle: title, price, email, firstName })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Something went wrong');
+        window.location.href = data.url;
+      } catch (ex) {
+        errEl.textContent = ex.message;
+        btn.disabled = false;
+        document.getElementById('btnText').textContent = 'Unlock for $' + price + ' →';
+      }
+    });
+  </script>
+</body>
+</html>

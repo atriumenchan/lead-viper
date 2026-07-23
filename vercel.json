@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/((?!api/)(?!assets/)(?!favicon)(?!access)(?!dashboard)(?!admin)(?!login)(?!home)(?!roadmap)(?!control).*)", "destination": "/index.html" }
+    { "source": "/((?!api/)(?!assets/)(?!favicon)(?!access)(?!dashboard)(?!admin)(?!login)(?!home)(?!roadmap)(?!control)(?!vault-item-checkout).*)", "destination": "/index.html" }
   ],
   "crons": [
     { "path": "/api/remind", "schedule": "0 14 * * *" }

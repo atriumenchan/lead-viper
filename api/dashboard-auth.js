@@ -21,6 +21,7 @@ module.exports = async function handler(req, res) {
   let bumpFunnel = false;
   let bumpPrompts = false;
   let dfyVault = false;
+  let purchasedVaultItems = [];
 
   if (lead.converted) {
     const { data: orders } = await supabase.from('orders')
@@ -30,6 +31,7 @@ module.exports = async function handler(req, res) {
 
     const completed = (orders || []).filter(o => o.status === 'completed');
     const allOrders = orders || [];
+    const isSpecial = o => o.tier && (o.tier.startsWith('dfy-vault') || o.tier.startsWith('vault-item-'));
 
     // DFY Vault upgrade ($27 or $49) — check completed first, fall back to any order
     if (
@@ -39,11 +41,16 @@ module.exports = async function handler(req, res) {
       dfyVault = true;
     }
 
+    // Individually-purchased vault items ($5 each) — completed orders only
+    purchasedVaultItems = completed
+      .filter(o => o.tier && o.tier.startsWith('vault-item-'))
+      .map(o => o.tier.replace('vault-item-', ''));
+
     // Main product order — prefer completed, fall back to any order
     // (guards against webhook delay/failure leaving order stuck in pending)
     const mainOrder =
-      completed.find(o => o.tier && !o.tier.startsWith('dfy-vault')) ||
-      allOrders.find(o => o.tier && !o.tier.startsWith('dfy-vault'));
+      completed.find(o => !isSpecial(o)) ||
+      allOrders.find(o => !isSpecial(o));
     if (mainOrder) {
       tier = mainOrder.tier;
       bumpFunnel = mainOrder.bump_funnel_copy;
@@ -59,6 +66,7 @@ module.exports = async function handler(req, res) {
     bumpFunnel,
     bumpPrompts,
     dfyVault,
+    purchasedVaultItems,
     converted: lead.converted,
   });
 };

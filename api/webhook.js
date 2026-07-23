@@ -4,7 +4,7 @@ const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
 const { buildWelcomeEmail, sendEmail } = require('./_email');
 
-const TIER_LABELS = { basic: 'Basic', silver: 'Silver', gold: 'Gold' };
+const TIER_LABELS = { basic: 'Basic', silver: 'Silver', gold: 'Gold', 'vault-item': 'Vault Resource' };
 
 async function sendPurchaseEmail({ email, firstName, tier, password, dashboardUrl, bumpFunnel, bumpPrompts }) {
   const tierLabel = TIER_LABELS[tier] || tier;
@@ -77,6 +77,35 @@ module.exports = async function handler(req, res) {
             await supabase.from('leads').update({ converted: true }).eq('id', updatedOrder.lead_id);
 
             if (session.metadata?.product === 'dfy-vault') break;
+
+            if (session.metadata?.product === 'vault-item') {
+              const { data: vLead } = await supabase.from('leads')
+                .select('email, first_name, access_password')
+                .eq('id', updatedOrder.lead_id)
+                .single();
+              if (vLead?.email) {
+                let vPassword = vLead.access_password;
+                if (!vPassword) {
+                  vPassword = crypto.randomBytes(4).toString('hex').toUpperCase();
+                  await supabase.from('leads').update({ access_password: vPassword }).eq('id', updatedOrder.lead_id);
+                }
+                try {
+                  await sendPurchaseEmail({
+                    email: vLead.email,
+                    firstName: vLead.first_name || 'there',
+                    tier: 'vault-item',
+                    password: vPassword,
+                    dashboardUrl: `${SITE_URL}/dashboard`,
+                    bumpFunnel: false,
+                    bumpPrompts: false,
+                  });
+                  console.log(`[webhook] vault-item purchase email sent to ${vLead.email}`);
+                } catch (mailErr) {
+                  console.error('[webhook] vault-item email failed:', mailErr.message);
+                }
+              }
+              break;
+            }
 
             const { data: lead } = await supabase.from('leads')
               .select('email, first_name, access_password')
