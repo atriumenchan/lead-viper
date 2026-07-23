@@ -20,50 +20,71 @@
       --font:'Inter',system-ui,-apple-system,sans-serif;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{min-height:100vh;background:var(--bg-app);font-family:var(--font);color:var(--text-primary);-webkit-font-smoothing:antialiased}
-    .wrap{max-width:960px;margin:0 auto;padding:48px 24px 80px}
-    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--text-muted);text-decoration:none;margin-bottom:32px}
+    body{min-height:100vh;background:radial-gradient(ellipse at top,#1a1330 0%,var(--bg-app) 55%);font-family:var(--font);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1000px;margin:0 auto;padding:36px 24px 80px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--text-muted);text-decoration:none;margin-bottom:28px}
     .back-link:hover{color:var(--text-primary)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
-    @media(max-width:760px){.grid{grid-template-columns:1fr;gap:28px}}
 
-    .thumb{width:100%;aspect-ratio:16/10;border-radius:var(--radius);background-size:cover;background-position:center;background-color:var(--bg-elevated);border:1px solid var(--border);position:relative;overflow:hidden}
-    .thumb-badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;background:rgba(79,70,229,0.85);color:#fff;backdrop-filter:blur(4px)}
+    .top-header{text-align:center;margin-bottom:40px}
+    .top-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .top-title{font-size:28px;font-weight:800;line-height:1.3;color:var(--text-primary)}
+    .top-title .gold{color:var(--gold)}
+    @media(max-width:600px){.top-title{font-size:22px}}
 
-    .value-anchor{display:flex;align-items:baseline;gap:10px;margin-top:22px}
-    .value-anchor .label{font-size:13px;color:var(--text-muted)}
-    .value-anchor .strike{font-size:16px;font-weight:700;color:var(--text-muted);text-decoration:line-through}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+    @media(max-width:760px){.grid{grid-template-columns:1fr;gap:24px}}
 
-    .panel-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-    h1{font-size:30px;font-weight:800;line-height:1.2;margin-bottom:14px;color:var(--text-primary)}
-    .desc{font-size:15px;color:var(--text-secondary);line-height:1.65;margin-bottom:24px}
-    .perks{list-style:none;margin-bottom:8px}
-    .perks li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--text-secondary);padding:7px 0;line-height:1.5}
-    .perks li svg{flex-shrink:0;margin-top:2px;color:var(--success)}
-
-    .checkout-card{background:linear-gradient(160deg,rgba(245,166,35,0.06),rgba(23,32,51,0.4));border:1px solid var(--gold-border);border-radius:var(--radius);padding:28px;margin-top:28px;box-shadow:0 8px 32px rgba(245,166,35,0.06)}
-    .today-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-    .today-row .today-label{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary)}
-    .today-row .today-amount{font-size:36px;font-weight:800;color:var(--gold)}
-
+    /* Left: your details card */
+    .details-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+    .details-heading{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:18px}
     label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
     input{width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px 14px;font-size:15px;color:var(--text-primary);font-family:var(--font);margin-bottom:16px;outline:none;transition:border-color .2s}
     input:focus{border-color:var(--gold)}
-    button{width:100%;background:var(--gold);color:#1A1305;font-size:16px;font-weight:700;padding:15px 20px;border:none;border-radius:var(--radius-xs);cursor:pointer;transition:filter .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .delivery-note{font-size:12.5px;color:var(--text-muted);margin:-6px 0 22px}
+
+    .order-summary{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 18px 4px;margin-bottom:22px}
+    .os-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+    .os-row{display:flex;justify-content:space-between;font-size:14px;color:var(--text-secondary);padding-bottom:14px;margin-bottom:10px;border-bottom:1px solid var(--border)}
+    .os-total{display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:var(--text-primary);padding-bottom:14px}
+    .os-total .gold{color:var(--gold);font-size:17px}
+
+    .pay-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+    .pay-desc{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin-bottom:16px}
+    button{width:100%;background:linear-gradient(135deg,var(--gold),#e0891a);color:#1A1305;font-size:16px;font-weight:700;padding:15px 20px;border:none;border-radius:var(--radius-xs);cursor:pointer;transition:filter .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(245,166,35,0.25)}
     button:hover{filter:brightness(1.08)}
     button:disabled{opacity:.6;cursor:not-allowed}
-    .err{color:var(--error);font-size:13.5px;margin-top:10px;min-height:16px}
-    .secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;color:var(--text-muted);margin-top:16px}
+    .err{color:var(--error);font-size:13.5px;margin-top:10px;min-height:16px;text-align:center}
 
-    .guarantee-box{display:flex;gap:12px;align-items:flex-start;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-sm);padding:14px 16px;margin-top:20px}
-    .guarantee-box svg{flex-shrink:0;color:var(--success);margin-top:1px}
-    .guarantee-box .g-title{font-size:13.5px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
-    .guarantee-box .g-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+    .pay-icons{display:flex;gap:8px;justify-content:center;margin-top:16px}
+    .pay-icons span{background:#fff;color:#1a1a2e;font-size:10.5px;font-weight:800;padding:6px 10px;border-radius:5px;letter-spacing:.02em}
+    .ssl-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin-top:14px}
 
-    .full-vault-cta{display:block;text-align:center;font-size:13.5px;color:var(--text-muted);margin-top:18px}
+    .guarantee-seal{display:flex;flex-direction:column;align-items:center;justify-content:center;width:104px;height:104px;border-radius:50%;margin:26px auto 4px;background:radial-gradient(circle at 35% 30%,#2b7a3d,#1c5a2b);border:3px solid var(--gold);box-shadow:0 0 0 4px rgba(245,166,35,0.15),0 6px 16px rgba(0,0,0,0.3);text-align:center}
+    .guarantee-seal .gs-num{font-size:22px;font-weight:800;color:var(--gold);line-height:1}
+    .guarantee-seal .gs-txt{font-size:7.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#e8f5e9;line-height:1.2;padding:0 8px}
+
+    /* Right: preview + checklist */
+    .thumb{width:100%;aspect-ratio:16/10;border-radius:var(--radius);background-size:cover;background-position:center;background-color:var(--bg-elevated);border:1px solid var(--border);position:relative;overflow:hidden;margin-bottom:24px}
+    .thumb-badge{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;background:rgba(79,70,229,0.85);color:#fff;backdrop-filter:blur(4px)}
+    .fallback-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
+
+    .perks-card{background:linear-gradient(160deg,rgba(245,166,35,0.07),rgba(23,32,51,0.5));border:1px solid var(--gold-border);border-radius:var(--radius);padding:28px}
+    .perks-eyebrow{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .perks-card h2{font-size:20px;font-weight:800;line-height:1.3;color:var(--text-primary);margin-bottom:18px}
+    .perks{list-style:none;margin-bottom:8px}
+    .perks li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-secondary);padding:8px 0;line-height:1.5;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .perks li:last-child{border-bottom:none}
+    .perks li svg{flex-shrink:0;margin-top:1px;color:var(--success)}
+    .desc{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px}
+
+    .value-row{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);text-align:center}
+    .value-row .value-label{font-size:12.5px;color:var(--text-muted);margin-bottom:2px}
+    .value-row .value-strike{font-size:18px;font-weight:700;color:var(--text-muted);text-decoration:line-through;display:block;margin-bottom:6px}
+    .value-row .value-today{font-size:30px;font-weight:800;color:var(--gold)}
+
+    .full-vault-cta{display:block;text-align:center;font-size:13.5px;color:var(--text-muted);margin-top:22px}
     .full-vault-cta a{color:var(--gold);font-weight:600;text-decoration:none}
     .full-vault-cta a:hover{text-decoration:underline}
-    .fallback-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
   </style>
 </head>
 <body>
@@ -72,49 +93,71 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       Back to Dashboard
     </a>
+
+    <div class="top-header">
+      <div class="top-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Secure Item Checkout
+      </div>
+      <h1 class="top-title">Unlock <span id="headerItemTitle">This Resource</span> — <span class="gold" id="headerPrice">$5</span></h1>
+    </div>
+
     <div class="grid">
-      <div>
-        <div class="thumb" id="thumb"></div>
-        <div class="value-anchor">
-          <span class="label">Full Vault Value</span>
-          <span class="strike">$49</span>
+      <div class="details-card">
+        <div class="details-heading">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6 5 .4-3.8 3.2 1.2 4.9L12 13.7 7.7 16.1l1.2-4.9-3.8-3.2 5-.4z"/></svg>
+          Your Details
+        </div>
+        <form id="checkoutForm">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Jane" required/>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@company.com" required/>
+          <p class="delivery-note">Access is delivered instantly on your dashboard.</p>
+
+          <div class="order-summary">
+            <div class="os-title">Order Summary</div>
+            <div class="os-row"><span id="osItemName">Vault Resource</span><span id="osItemPrice">$5.00</span></div>
+            <div class="os-total"><span>Total Today</span><span class="gold" id="osTotal">$5.00</span></div>
+          </div>
+
+          <div class="pay-title">Pay Securely</div>
+          <p class="pay-desc">Pay safely with credit or debit card. You'll be redirected to complete your secure purchase.</p>
+          <button type="submit" id="submitBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <span id="btnText">Complete Secure Checkout — $5.00 →</span>
+          </button>
+          <div class="err" id="errMsg"></div>
+          <div class="pay-icons">
+            <span>VISA</span><span>MC</span><span>G Pay</span><span> Pay</span>
+          </div>
+          <div class="ssl-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Secure Payment · SSL Encrypted
+          </div>
+        </form>
+        <div class="guarantee-seal">
+          <div class="gs-num">30<span style="font-size:13px">d</span></div>
+          <div class="gs-txt">Money Back Guarantee</div>
         </div>
       </div>
-      <div>
-        <div class="panel-title">Unlock This Resource</div>
-        <h1 id="itemTitle">Vault Resource</h1>
-        <p class="desc" id="itemDesc">Get instant access to this single resource without buying the full vault.</p>
-        <ul class="perks">
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Instant access after checkout</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlocked directly on your existing dashboard</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No subscription — pay once, keep forever</li>
-        </ul>
 
-        <div class="checkout-card">
-          <div class="today-row">
-            <span class="today-label">Today Only</span>
-            <span class="today-amount" id="priceAmount">$5</span>
-          </div>
-          <form id="checkoutForm">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" placeholder="Jane" required/>
-            <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="jane@company.com" required/>
-            <button type="submit" id="submitBtn">
-              <span id="btnText">Unlock for $5 →</span>
-            </button>
-            <div class="err" id="errMsg"></div>
-            <div class="secure-note">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-              Secure checkout powered by Stripe
-            </div>
-          </form>
-          <div class="guarantee-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg>
-            <div>
-              <div class="g-title">30-Day Money-Back Guarantee</div>
-              <div class="g-desc">Not happy for any reason? Email us and we'll refund every cent.</div>
-            </div>
+      <div>
+        <div class="thumb" id="thumb"></div>
+        <div class="perks-card">
+          <div class="perks-eyebrow">Instant Access · Lifetime Updates</div>
+          <h2 id="itemTitle">Vault Resource</h2>
+          <p class="desc" id="itemDesc">Get instant access to this single resource without buying the full vault.</p>
+          <ul class="perks">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Instant access after checkout</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlocked directly on your existing dashboard</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No subscription — pay once, keep forever</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Lifetime updates included</li>
+          </ul>
+          <div class="value-row">
+            <div class="value-label">Full Vault Value</div>
+            <span class="value-strike">$49</span>
+            <div class="value-today" id="priceAmount">Today: $5</div>
           </div>
         </div>
         <div class="full-vault-cta">Want everything instead? <a href="/dfy-checkout">Unlock the full DFY Vault →</a></div>
@@ -130,10 +173,17 @@
     const desc  = params.get('desc') || 'Get instant access to this single resource without buying the full vault.';
     const price = Number(params.get('price')) || 5;
 
+    const priceStr = price.toFixed(2);
+
     document.getElementById('itemTitle').textContent = title;
     document.getElementById('itemDesc').textContent = desc;
-    document.getElementById('priceAmount').textContent = '$' + price;
-    document.getElementById('btnText').textContent = 'Unlock for $' + price + ' →';
+    document.getElementById('priceAmount').textContent = 'Today: $' + price;
+    document.getElementById('headerItemTitle').textContent = title;
+    document.getElementById('headerPrice').textContent = '$' + price;
+    document.getElementById('osItemName').textContent = title;
+    document.getElementById('osItemPrice').textContent = '$' + priceStr;
+    document.getElementById('osTotal').textContent = '$' + priceStr;
+    document.getElementById('btnText').textContent = 'Complete Secure Checkout — $' + priceStr + ' →';
 
     const thumbEl = document.getElementById('thumb');
     if (img) {
@@ -181,7 +231,7 @@
       } catch (ex) {
         errEl.textContent = ex.message;
         btn.disabled = false;
-        document.getElementById('btnText').textContent = 'Unlock for $' + price + ' →';
+        document.getElementById('btnText').textContent = 'Complete Secure Checkout — $' + priceStr + ' →';
       }
     });
   </script>
