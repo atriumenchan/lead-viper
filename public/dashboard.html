@@ -105,7 +105,6 @@
     .card-body{padding:24px;flex:1;display:flex;flex-direction:column}
     .card-title{font-weight:600;font-size:18px;color:var(--text-primary);margin-bottom:10px;line-height:1.35}
     .card-desc{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;flex:1;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-    .vault-card .card-desc{-webkit-line-clamp:2;line-clamp:2}
     .card-meta{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
     .card-meta-item{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
     .card-cta{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:10px 20px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:40px;align-self:flex-start}
@@ -172,15 +171,29 @@
     .bonus-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:12px 28px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:44px;border:none;letter-spacing:.01em}
     .bonus-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
 
-    /* ── Vault section ── */
-    .vault-section{margin-top:24px}
-    .vault-header{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-    .vault-header-left{flex:1;min-width:280px}
-    .vault-header h2{font-weight:700;font-size:24px;color:var(--text-primary);margin-bottom:8px}
-    .vault-header p{font-size:15px;color:var(--text-secondary);line-height:1.55}
-    .vault-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
-    .vault-count{font-size:14px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
-    .vault-thumb-bg{background-size:cover;background-position:center;background-color:var(--bg-elevated);background-repeat:no-repeat}
+    /* ── Vault section (fully self-contained, no shared classes with .card) ── */
+    .vlt-section{margin-top:24px}
+    .vlt-header{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .vlt-header-left{flex:1;min-width:280px}
+    .vlt-header h2{font-weight:700;font-size:24px;color:var(--text-primary);margin-bottom:8px}
+    .vlt-header p{font-size:15px;color:var(--text-secondary);line-height:1.55}
+    .vlt-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
+    .vlt-count{font-size:14px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
+
+    .vlt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:64px}
+    .vlt-card{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:var(--transition);display:flex;flex-direction:column;text-decoration:none;box-shadow:var(--shadow);height:100%}
+    .vlt-card:hover{border-color:var(--border-hover);transform:translateY(4px);box-shadow:var(--shadow-hover)}
+    .vlt-thumb{width:100%;height:220px;flex-shrink:0;position:relative;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:var(--bg-elevated);border-bottom:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0}
+    .vlt-badge-pill{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase;background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
+    .vlt-badge-pill.locked{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+    .vlt-body{padding:24px;flex:1;display:flex;flex-direction:column}
+    .vlt-title{font-weight:600;font-size:18px;color:var(--text-primary);margin-bottom:10px;line-height:1.35}
+    .vlt-desc{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;flex:1;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .vlt-meta{font-size:13px;color:var(--text-secondary);margin-bottom:20px}
+    .vlt-cta{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:10px 20px;border-radius:var(--radius-xs);transition:var(--transition);min-height:40px;align-self:flex-start}
+    .vlt-card:hover .vlt-cta{background:var(--accent-hover)}
+    @media(max-width:1200px){.vlt-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){.vlt-grid{grid-template-columns:1fr;gap:20px;margin-bottom:40px}.vlt-thumb{height:180px}}
 
     /* ── Resource card (lesson view) ── */
     .resource-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;transition:var(--transition)}
@@ -786,16 +799,16 @@ function renderDashboard() {
       <p class="sec-desc">Premium add-on tools. Unlocked instantly for buyers — or grab them now for the same one-time price.</p>
     </div>
     <div class="grid3">${bumps.map(b => cardHtml(b)).join('')}</div>
-    <div class="vault-section">
-      <div class="vault-header">
-        <div class="vault-header-left">
-          <div class="vault-badge">${vaultUnlocked ? 'Vault Unlocked' : 'Vault Locked'}</div>
+    <div class="vlt-section">
+      <div class="vlt-header">
+        <div class="vlt-header-left">
+          <div class="vlt-badge">${vaultUnlocked ? 'Vault Unlocked' : 'Vault Locked'}</div>
           <h2>Done-For-You Lead Gen Vault</h2>
           <p>20+ ready-to-deploy assets grouped into 12 folders — landing pages, ad copies, automations, AI prompts, bots and more. ${vaultUnlocked ? 'All folders are unlocked for you.' : 'Unlock the full vault with the DFY upgrade.'}</p>
         </div>
-        ${vaultUnlocked ? `<div class="vault-count">${accessibleVault} / ${vault.length} Unlocked</div>` : `<a href="https://leadengine.admexo.com/dfy-checkout" class="btn-primary">Unlock Vault ${ARROW}</a>`}
+        ${vaultUnlocked ? `<div class="vlt-count">${accessibleVault} / ${vault.length} Unlocked</div>` : `<a href="https://leadengine.admexo.com/dfy-checkout" class="btn-primary">Unlock Vault ${ARROW}</a>`}
       </div>
-      <div class="grid3">${vault.map(b => vaultCardHtml(b)).join('')}</div>
+      <div class="vlt-grid">${vault.map(b => vaultCardHtml(b)).join('')}</div>
     </div>`;
 }
 
@@ -829,27 +842,33 @@ function cardHtml(b) {
 function vaultCardHtml(b) {
   const ok = canAccess(b);
   const resourceCount = (b.lessons || []).length + (b.resources || []).length;
-  const badge = ok ? '<span class="card-badge unlocked">Unlocked</span>' : '<span class="card-badge locked-badge">Locked</span>';
-  const bgStyle = b.img ? ' style="background-image:url(&quot;' + b.img + '&quot;)"' : '';
-  const thumb = '<div class="card-thumb vault-thumb-bg"' + bgStyle + '>' + badge + '</div>';
+  const badgeHtml = ok
+    ? '<span class="vlt-badge-pill unlocked">Unlocked</span>'
+    : '<span class="vlt-badge-pill locked">Locked</span>';
+  const bgStyle = b.img ? ` style="background-image:url('${b.img}')"` : '';
   const ctaText = ok ? 'Access now' : 'Unlock to access';
   const checkoutUrl = '/vault-item-checkout?item=' + encodeURIComponent(b.id) +
     '&title=' + encodeURIComponent(b.title) +
     '&img=' + encodeURIComponent(b.img || '') +
     '&desc=' + encodeURIComponent(b.desc || '');
-  const cta = ok
-    ? '<div class="card-cta" data-nav="block" data-block="' + b.id + '">' + ctaText + ' ' + ARROW + '</div>'
-    : '<a href="' + checkoutUrl + '" class="card-cta">' + ctaText + ' ' + ARROW + '</a>';
-  const cardInner = thumb +
-    '<div class="card-body">' +
-    '<div class="card-title">' + b.title + '</div>' +
-    '<div class="card-desc">' + b.desc + '</div>' +
-    '<div class="card-meta"><span class="card-meta-item">' + resourceCount + ' resources</span></div>' +
-    cta +
-    '</div>';
-  return ok
-    ? '<div class="card vault-card" data-nav="block" data-block="' + b.id + '">' + cardInner + '</div>'
-    : '<a href="' + checkoutUrl + '" class="card vault-card locked" style="text-decoration:none">' + cardInner + '</a>';
+
+  // Note: the whole card body is wrapped in ONE clickable element (div or a).
+  // The CTA inside is always a <div> — never a nested <a> — since HTML does not
+  // allow an <a> inside another <a> (nesting corrupts the DOM in all browsers).
+  const innerHtml = `
+    <div class="vlt-thumb"${bgStyle}>${badgeHtml}</div>
+    <div class="vlt-body">
+      <div class="vlt-title">${b.title}</div>
+      <div class="vlt-desc">${b.desc}</div>
+      <div class="vlt-meta">${resourceCount} resources</div>
+      <div class="vlt-cta">${ctaText} ${ARROW}</div>
+    </div>
+  `;
+
+  if (ok) {
+    return `<div class="vlt-card" data-nav="block" data-block="${b.id}">${innerHtml}</div>`;
+  }
+  return `<a class="vlt-card vlt-card-locked" href="${checkoutUrl}">${innerHtml}</a>`;
 }
 
 function renderBlock() {
