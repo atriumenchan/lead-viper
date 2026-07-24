@@ -12,6 +12,7 @@ const { createClient } = require('@supabase/supabase-js');
 const adminHandler   = require('./api/admin');
 const roadmapHandler = require('./api/roadmap');
 const uploadHandler  = require('./api/upload');
+const chatbotHandler = require('./api/chatbot');
 const { requireAdmin, verifyToken, getAdminConfig, signToken } = require('./lib/auth');
 const { getFilePath } = require('./lib/db');
 const { LIVE }        = require('./lib/store');
@@ -181,6 +182,7 @@ function authGuard(req, res, next) {
 app.post('/api/admin',   (req, res) => adminHandler(req, res));
 app.post('/api/roadmap', (req, res) => roadmapHandler(req, res));
 app.post('/api/upload',  (req, res) => uploadHandler(req, res));
+app.post('/api/chatbot', (req, res) => chatbotHandler(req, res));
 
 app.get('/api/file/:id', (req, res) => {
   if (!requireAdmin(req.query.token)) return res.status(401).json({ error: 'Unauthorized' });
