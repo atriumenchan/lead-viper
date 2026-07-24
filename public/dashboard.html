@@ -160,13 +160,13 @@
     .bump-res-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:12px 24px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:44px}
     .bump-res-btn:hover{background:var(--accent-hover)}
 
-    /* ── Golden Bonus Roadmap Section ── */
-    .bonus-roadmap{position:relative;margin-bottom:64px;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(212,175,55,0.08),rgba(99,102,241,0.06));border:1px solid rgba(212,175,55,0.28);box-shadow:0 12px 30px rgba(0,0,0,0.22)}
-    .bonus-roadmap-glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:200px;height:120px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.09) 0%,transparent 70%);pointer-events:none}
-    .bonus-roadmap-content{position:relative;padding:30px 44px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
-    .bonus-crown{color:#d4af37;position:relative;z-index:1}
-    .bonus-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d4af37;padding:3px 12px;border:1px solid rgba(212,175,55,0.25);border-radius:16px;background:rgba(212,175,55,0.05)}
-    .bonus-title{font-weight:700;font-size:22px;color:var(--text-primary);line-height:1.3;margin:2px 0}
+    /* ── Premium Roadmap Section ── */
+    .premium-roadmap{position:relative;margin-bottom:64px;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(212,175,55,0.08),rgba(99,102,241,0.06));border:1px solid rgba(212,175,55,0.28);box-shadow:0 12px 30px rgba(0,0,0,0.22)}
+    .premium-roadmap-glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:200px;height:120px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.09) 0%,transparent 70%);pointer-events:none}
+    .premium-roadmap-content{position:relative;padding:30px 44px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .premium-crown{color:#d4af37;position:relative;z-index:1}
+    .premium-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#d4af37;padding:3px 12px;border:1px solid rgba(212,175,55,0.25);border-radius:16px;background:rgba(212,175,55,0.05)}
+    .premium-title{font-weight:700;font-size:22px;color:var(--text-primary);line-height:1.3;margin:2px 0}
     .bonus-desc{font-size:14px;color:var(--text-secondary);line-height:1.55;max-width:520px;margin-bottom:4px}
     .bonus-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:12px 28px;border-radius:var(--radius-xs);text-decoration:none;transition:var(--transition);min-height:44px;border:none;letter-spacing:.01em}
     .bonus-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
@@ -760,6 +760,7 @@ function renderDashboard() {
   const accessibleBumps = bumps.filter(b => canAccess(b)).length;
   const accessibleVault = vault.filter(b => canAccess(b)).length;
   const vaultUnlocked = user.dfyVault;
+  const roadmapUnlocked = T[user.tier] >= 2; // silver or gold (not $3 basic)
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   const firstName = user.firstName || 'there';
@@ -774,16 +775,16 @@ function renderDashboard() {
         <div class="hero-stat"><div class="hero-stat-num">${(core.length + bumps.length + vault.length) - (accessibleCore + accessibleBumps + accessibleVault)}</div><div class="hero-stat-lbl">Locked</div></div>
       </div>
     </div>
-    <div class="bonus-roadmap">
-      <div class="bonus-roadmap-glow"></div>
-      <div class="bonus-roadmap-content">
-        <div class="bonus-crown">${CROWN_SVG}</div>
-        <div class="bonus-label">${vaultUnlocked ? 'Unlocked' : 'Locked'} · Bonus Feature</div>
-        <h2 class="bonus-title">Your Personalised AI Business Roadmap</h2>
+    <div class="premium-roadmap">
+      <div class="premium-roadmap-glow"></div>
+      <div class="premium-roadmap-content">
+        <div class="premium-crown">${CROWN_SVG}</div>
+        <div class="premium-label">${roadmapUnlocked ? 'Unlocked' : 'Locked'} · Premium Feature</div>
+        <h2 class="premium-title">Your Personalised AI Business Roadmap</h2>
         <p class="bonus-desc">A custom 21-day AI growth plan built exclusively for your business — your niche, your offer, your goals. Answer a few questions and our AI engine crafts a step-by-step roadmap tailored to you.</p>
-        ${vaultUnlocked
+        ${roadmapUnlocked
           ? '<a href="/roadmap" class="bonus-btn">Build My Roadmap ' + ARROW + '</a>'
-          : '<a href="/dfy-checkout" class="bonus-btn">Unlock with Vault Upgrade ' + ARROW + '</a>'}
+          : '<a href="https://leadengine.admexo.com" class="bonus-btn">Upgrade to Access ' + ARROW + '</a>'}
       </div>
     </div>
     ${hasLocked ? `<div class="upgrade-bar"><div><h3>Unlock More Content</h3><p>Upgrade your plan to access all modules and order bumps.</p></div><a href="https://leadengine.admexo.com" class="btn-primary">Upgrade Now ${ARROW}</a></div>` : ''}
