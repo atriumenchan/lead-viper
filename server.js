@@ -9,10 +9,18 @@ const Stripe  = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 
 // ── leadengine additions ───────────────────────────────────────────────────────
-const adminHandler   = require('./api/admin');
-const roadmapHandler = require('./api/roadmap');
-const uploadHandler  = require('./api/upload');
-const chatbotHandler = require('./api/chatbot');
+const adminHandler      = require('./lib/routes/admin');
+const roadmapHandler    = require('./lib/routes/roadmap');
+const uploadHandler     = require('./lib/routes/upload');
+const chatbotHandler    = require('./lib/routes/chatbot');
+const checkoutHandler   = require('./lib/routes/create-checkout');
+const dashboardAuthHandler = require('./lib/routes/dashboard-auth');
+const leadsHandler      = require('./lib/routes/leads');
+const logOrderHandler   = require('./lib/routes/log-order');
+const loginHandler      = require('./lib/routes/login');
+const remindHandler     = require('./lib/routes/remind');
+const sendWelcomeHandler = require('./lib/routes/send-welcome');
+const webhookHandler    = require('./lib/routes/webhook');
 const { requireAdmin, verifyToken, getAdminConfig, signToken } = require('./lib/auth');
 const { getFilePath } = require('./lib/db');
 const { LIVE }        = require('./lib/store');
@@ -145,7 +153,7 @@ function getPatchedContent(absPath) {
 const app = express();
 
 // Stripe webhook MUST receive raw body — register before express.json()
-app.post('/api/webhook', express.raw({ type: '*/*' }), handleWebhook);
+app.post('/api/webhook', express.raw({ type: '*/*' }), (req, res) => webhookHandler(req, res));
 
 app.use(express.json({ limit: '18mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -178,221 +186,24 @@ function authGuard(req, res, next) {
   return res.redirect(`/login?to=${encodeURIComponent(req.originalUrl)}`);
 }
 
-// ── Admin API (leadengine) ────────────────────────────────────────────────────
-app.post('/api/admin',   (req, res) => adminHandler(req, res));
-app.post('/api/roadmap', (req, res) => roadmapHandler(req, res));
-app.post('/api/upload',  (req, res) => uploadHandler(req, res));
-app.post('/api/chatbot', (req, res) => chatbotHandler(req, res));
+// ── API routes ───────────────────────────────────────────────────────────────
+app.post('/api/admin',         (req, res) => adminHandler(req, res));
+app.post('/api/roadmap',       (req, res) => roadmapHandler(req, res));
+app.post('/api/upload',        (req, res) => uploadHandler(req, res));
+app.post('/api/chatbot',       (req, res) => chatbotHandler(req, res));
+app.post('/api/create-checkout', (req, res) => checkoutHandler(req, res));
+app.post('/api/dashboard-auth',  (req, res) => dashboardAuthHandler(req, res));
+app.post('/api/leads',         (req, res) => leadsHandler(req, res));
+app.post('/api/log-order',     (req, res) => logOrderHandler(req, res));
+app.post('/api/login',         (req, res) => loginHandler(req, res));
+app.get('/api/remind',         (req, res) => remindHandler(req, res));
+app.post('/api/send-welcome',  (req, res) => sendWelcomeHandler(req, res));
 
 app.get('/api/file/:id', (req, res) => {
   if (!requireAdmin(req.query.token)) return res.status(401).json({ error: 'Unauthorized' });
   const f = getFilePath(req.params.id);
   if (!f) return res.status(404).json({ error: 'File not found' });
   return res.download(f.path, f.meta.name);
-});
-
-// ── Admin login ───────────────────────────────────────────────────────────────
-app.post('/api/login', (req, res) => {
-  const cfg      = getAdminConfig();
-  const email    = (req.body.email    || '').toLowerCase().trim();
-  const password = (req.body.password || '').trim();
-  if (email !== cfg.email || password !== cfg.password) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-  const token = signToken(cfg.secret);
-  res.cookie('token', token, {
-    httpOnly: true, sameSite: 'lax',
-    maxAge: 12 * 60 * 60 * 1000,
-    secure: req.protocol === 'https',
-  });
-  return res.json({ ok: true, token });
-});
-
-// ── POST /api/create-checkout ─────────────────────────────────────────────────
-app.post('/api/create-checkout', async (req, res) => {
-  if (!stripe)   return res.status(503).json({ error: 'Stripe not configured' });
-  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
-  try {
-    const { price, email, firstName, phone } = req.body;
-
-    if (!price || !email || !firstName) {
-      return res.status(400).json({ error: 'price, email and firstName are required' });
-    }
-
-    const priceNum = Number(price);
-    if (isNaN(priceNum) || priceNum <= 0) {
-      return res.status(400).json({ error: 'Invalid price' });
-    }
-
-    const { tier, bumpFunnel, bumpPrompts, baseCents } = inferTierAndBumps(priceNum);
-    const totalCents = Math.round(priceNum * 100);
-
-    const lineItems = [
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: { name: TIER_NAMES[tier] || 'AI Lead Engine' },
-          unit_amount: baseCents,
-        },
-        quantity: 1,
-      },
-    ];
-
-    if (bumpFunnel) {
-      lineItems.push({
-        price_data: {
-          currency: 'usd',
-          product_data: { name: 'AI Funnel Copy Creation Agent (Order Bump)' },
-          unit_amount: BUMP1_CENTS,
-        },
-        quantity: 1,
-      });
-    }
-
-    if (bumpPrompts) {
-      lineItems.push({
-        price_data: {
-          currency: 'usd',
-          product_data: { name: 'AI Prompts That Build Your Offer (Order Bump)' },
-          unit_amount: BUMP2_CENTS,
-        },
-        quantity: 1,
-      });
-    }
-
-    // ── 1. Insert lead (matches existing schema: last_name, mobile, country_code, profession required) ──
-    let lead_id = null;
-    const { data: leadData, error: leadErr } = await supabase.from('leads').insert({
-      first_name:   firstName,
-      last_name:    '',
-      email,
-      mobile:       phone || '',
-      country_code: '+1',
-      profession:   'Not specified',
-      converted:    false,
-    }).select('id').single();
-
-    if (leadErr) {
-      console.error('[supabase] lead insert error:', leadErr.message);
-    } else {
-      lead_id = leadData.id;
-    }
-
-    // ── 2. Create Stripe Checkout Session ──
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: lineItems,
-      mode: 'payment',
-      success_url: `${SITE_URL}/dfy-one-time?session_id={CHECKOUT_SESSION_ID}`, 
-      cancel_url:  `${SITE_URL}/checkout`,
-      customer_email: email,
-      allow_promotion_codes: true,
-      metadata: {
-        tier,
-        first_name:       firstName,
-        phone:            phone || '',
-        bump_funnel_copy: bumpFunnel  ? 'true' : 'false',
-        bump_ai_prompts:  bumpPrompts ? 'true' : 'false',
-      },
-    });
-
-    // ── 3. Persist pending order (matches existing schema: lead_id FK required) ──
-    if (lead_id) {
-      const { error: dbErr } = await supabase.from('orders').insert({
-        lead_id,
-        stripe_session_id:  session.id,
-        tier,
-        amount_cents:       totalCents,
-        bump_funnel_copy:   bumpFunnel,
-        bump_ai_prompts:    bumpPrompts,
-        status:             'pending',
-      });
-      if (dbErr) console.error('[supabase] order insert error:', dbErr.message);
-    } else {
-      console.warn('[supabase] order not saved — lead insert failed');
-    }
-
-    return res.json({ url: session.url });
-  } catch (err) {
-    console.error('[checkout]', err.message);
-    return res.status(500).json({ error: err.message || 'Failed to create checkout session' });
-  }
-});
-
-// ── POST /api/log-order ───────────────────────────────────────────────────────
-app.post('/api/log-order', async (req, res) => {
-  try {
-    console.log('[log-order]', req.body);
-    return res.json({ ok: true });
-  } catch {
-    return res.json({ ok: true });
-  }
-});
-
-// ── POST /api/leads ───────────────────────────────────────────────────────────
-app.post('/api/leads', async (req, res) => {
-  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
-  try {
-    const { email, firstName, first_name, phone, mobile } = req.body;
-    const nameVal  = firstName || first_name || '';
-    const phoneVal = phone || mobile || '';
-
-    if (!email) return res.status(400).json({ error: 'email is required' });
-
-    const { data, error } = await supabase.from('leads').insert({
-      email,
-      first_name: nameVal,
-      phone:      phoneVal,
-    }).select('id').single();
-
-    if (error) {
-      console.error('[leads]', error.message);
-      return res.status(500).json({ error: 'Failed to save lead' });
-    }
-
-    return res.json({ success: true, lead_id: data.id });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-
-// ── Member dashboard auth ────────────────────────────────────────────────────
-app.post('/api/dashboard-auth', async (req, res) => {
-  if (!supabase) return res.status(503).json({ error: 'Database not configured' });
-  try {
-    const email    = (req.body.email    || '').toLowerCase().trim();
-    const password = (req.body.password || '').trim();
-    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
-
-    const { data: lead, error } = await supabase
-      .from('leads')
-      .select('id, first_name, email, access_password, converted')
-      .eq('email', email)
-      .single();
-
-    if (error || !lead)          return res.status(401).json({ error: 'Invalid email or password' });
-    if (!lead.converted)         return res.status(401).json({ error: 'No active membership found' });
-    if (!lead.access_password || lead.access_password !== password)
-                                 return res.status(401).json({ error: 'Invalid email or password' });
-
-    const { data: order } = await supabase
-      .from('orders')
-      .select('tier, bump_funnel_copy, bump_ai_prompts')
-      .eq('lead_id', lead.id)
-      .eq('status', 'completed')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-
-    return res.json({
-      email:       lead.email,
-      firstName:   lead.first_name || '',
-      converted:   true,
-      tier:        order?.tier             || 'basic',
-      bumpFunnel:  order?.bump_funnel_copy || false,
-      bumpPrompts: order?.bump_ai_prompts  || false,
-    });
-  } catch (err) { return res.status(500).json({ error: err.message }); }
 });
 
 // ── Page routes ───────────────────────────────────────────────────────────────
