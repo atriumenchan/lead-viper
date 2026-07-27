@@ -92,7 +92,6 @@
   <span class="chip" data-q="What are the pricing tiers?">What are the pricing tiers?</span>
   <span class="chip" data-q="How do I log in?">How do I log in?</span>
   <span class="chip" data-q="What is the DFY Vault?">What is the DFY Vault?</span>
-  <span class="chip" data-q="How do I get a refund?">How do I get a refund?</span>
 </div>
 <div id="chatbot-input-area">
   <textarea id="chatbot-input" placeholder="Type your message..." rows="1"></textarea>
@@ -100,7 +99,7 @@
     <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
   </button>
 </div>
-<div id="chatbot-footer">Powered by DeepSeek AI &middot; <a href="mailto:support@admexo.com">support@admexo.com</a></div>
+<div id="chatbot-footer">Powered by LeadEngine AI &middot; <a href="mailto:support@admexo.com">support@admexo.com</a></div>
 `;
   document.body.appendChild(panel);
 
