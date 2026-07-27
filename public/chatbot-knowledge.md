@@ -24,13 +24,8 @@
 | **AI Funnel Copy Creation Agent** | $12 | Custom GPT that generates full funnel copy — landing pages, micro-offers, order bumps & VSL scripts |
 | **AI Prompts That Build Your Offer** | $17 | Plug-and-play prompt library + $100M Offer GPT to extract a profitable $1K-$18K offer, ICP, hooks & angles |
 
-### DFY Vault Upgrade (Post-Purchase Upsell)
-| Option | Price | Description |
-|--------|-------|-------------|
-| **Downsell** | $27 | DFY Vault Upgrade (downsell price) |
-| **Full** | $49 | DFY Vault Upgrade (full price) |
-
-The DFY Vault unlocks 12 folders containing 20+ ready-to-deploy assets: landing page templates, 500+ Meta Ads Canva templates, ad copy frameworks, outreach scripts, email follow-up sequences, n8n automation workflows, 1000+ AI ads swipe file, AI prompt vault, CRM setup guides, tripwire/upsell/booking funnels, AI lead scoring bots, LinkedIn lead extension, content calendars, sales closing scripts, and VIP mastermind access.
+### DFY Vault Upgrade (Post-Purchase Add-On)
+The DFY Vault is an exclusive upgrade available after purchase. It unlocks 12 folders containing 20+ ready-to-deploy assets: landing page templates, 500+ Meta Ads Canva templates, ad copy frameworks, outreach scripts, email follow-up sequences, n8n automation workflows, 1000+ AI ads swipe file, AI prompt vault, CRM setup guides, tripwire/upsell/booking funnels, AI lead scoring bots, LinkedIn lead extension, content calendars, sales closing scripts, and VIP mastermind access.
 
 ### Individual Vault Item Purchase
 - Any locked vault item can be purchased individually for **$5** without buying the full DFY Vault upgrade.
@@ -126,7 +121,7 @@ Contains 20+ custom GPTs accessible via ChatGPT shared links. No ChatGPT Plus re
 - **$100M Offer GPT**: Built on Alex Hormozi's $100M Offers framework — value stacking, guarantees, risk elimination, pricing
 - **Grand Slam Offer — Customize Offer GPT**: Guided builder for complete Grand Slam Offer
 
-### DFY Vault Folders (12 folders, unlocked via $27/$49 upgrade or $5 per item)
+### DFY Vault Folders (12 folders, unlocked via DFY Vault upgrade or $5 per item)
 1. **Landing Pages & Funnel Templates** — 23 sales page templates, 77 + 110 landing pages, Elementor templates, WordPress kits, funnel building SOP
 2. **500+ Meta Ads Editable Templates** — Canva templates: text-based, image-based, health & wellness, LinkedIn, BFCM, digital product
 3. **Ad Copies & Creatives Vault** — Direct response frameworks, headline formulas, story-based angles, video ad scripts, carousel templates, retargeting library, industry swipes
@@ -220,11 +215,10 @@ After roadmap creation, if a website URL is provided:
 
 ### DFY Vault Upgrade Checkout
 1. User visits /dfy-checkout from dashboard
-2. Selects $27 (downsell) or $49 (full)
-3. POST /api/create-checkout with {action:'dfy', price, email, firstName}
-4. Stripe checkout created
-5. On success → redirected to /book-a-call
-6. Webhook marks lead as converted, sets dfyVault flag
+2. POST /api/create-checkout with {action:'dfy', price, email, firstName}
+3. Stripe checkout created
+4. On success → redirected to /book-a-call
+5. Webhook marks lead as converted, sets dfyVault flag
 
 ### Individual Vault Item Checkout
 1. User clicks a locked vault card in dashboard
@@ -345,12 +339,6 @@ After roadmap creation, if a website URL is provided:
 | /control | Control center for roadmap management (standalone HTML) |
 | /home | Roadmap product landing page (standalone HTML) |
 
-## 11. MONEY-BACK GUARANTEE
-
-- **30-day no-questions-asked money-back guarantee**
-- If user doesn't get results, they can email support@admexo.com for a full refund
-- Refunds are processed via Stripe (charge.refunded webhook updates order status)
-
 ## 12. FAQ (Frequently Asked Questions)
 
 ### Is this training recorded or can I access it anytime?
@@ -358,9 +346,6 @@ Yes! Once you get access, everything is available instantly and you can go throu
 
 ### I'm not technical at all. Can I still use this?
 Absolutely. This entire engine is built for non-technical people. If you can copy and paste, you can use this. Everything works with ChatGPT, Claude, Gemini, or any AI tool — no coding, no complex tools.
-
-### Is there a money-back guarantee?
-Yes. You get a full 30-day no-questions-asked money-back guarantee. If you don't get results, just email us at support@admexo.com and we'll refund every penny.
 
 ### Can I get support during implementation?
 Yes! You'll get access to our community where you can ask questions and get guidance as you set things up. You can also reach out to support@admexo.com.
@@ -397,7 +382,7 @@ Order bumps are optional add-ons during checkout:
 - **AI Prompts That Build Your Offer ($17)**: Prompt library for offer creation
 
 ### What is the DFY Vault?
-The DFY (Done-For-You) Vault is a collection of 12 folders containing 20+ ready-to-deploy assets: landing page templates, 500+ Meta Ads Canva templates, ad copy frameworks, outreach scripts, email sequences, n8n workflows, AI ads swipe file, AI prompt vault, CRM guides, funnel templates, AI lead scoring bots, LinkedIn extension, content calendars, and VIP mastermind access. It can be purchased for $27 (downsell) or $49 (full), or individual items for $5 each.
+The DFY (Done-For-You) Vault is a collection of 12 folders containing 20+ ready-to-deploy assets: landing page templates, 500+ Meta Ads Canva templates, ad copy frameworks, outreach scripts, email sequences, n8n workflows, AI ads swipe file, AI prompt vault, CRM guides, funnel templates, AI lead scoring bots, LinkedIn extension, content calendars, and VIP mastermind access. It can be unlocked via the DFY Vault upgrade (available from the dashboard), or individual items can be purchased for $5 each.
 
 ### What is the AI Business Roadmap?
 A personalized 21-day marketing roadmap generated by DeepSeek AI. You fill out a 4-step wizard about your business, and the AI creates a complete plan with daily tasks, email scripts, ad creatives, ICP, GEO audit, competitor analysis, lead magnets, offer strategy, metrics tracker, content calendar, and 90-day extension. Available to Silver and Gold subscribers.
@@ -405,15 +390,12 @@ A personalized 21-day marketing roadmap generated by DeepSeek AI. You fill out a
 ### How do the Custom GPTs work?
 Each AI Agent is a Custom GPT hosted on ChatGPT. You click the shared link, sign in to your free ChatGPT account, click "Try GPT", and start chatting. No ChatGPT Plus subscription needed. You can pin them for easy access.
 
-### Can I get a refund?
-Yes, we offer a 30-day no-questions-asked money-back guarantee. Email support@admexo.com for a full refund.
-
 ### I'm getting "This email has already been used to purchase" error
 This means you already have an account. Check your inbox (and spam folder) for the welcome email with your login credentials. If you can't find it, email support@admexo.com and we'll resend them. You can also try logging in at https://leadengine.admexo.com/access.
 
 ### How do I access the vault items?
 Vault items are locked by default. You can either:
-1. Purchase the full DFY Vault upgrade ($27 or $49) from your dashboard
+1. Purchase the full DFY Vault upgrade from your dashboard
 2. Purchase individual vault items for $5 each by clicking on a locked vault card
 
 ### What is the strategy call?
@@ -437,11 +419,10 @@ After purchasing the DFY Vault upgrade, you're directed to book a free 1:1 strat
 
 As the AI Lead Engine support chatbot, you should:
 1. **Be helpful, friendly, and concise** — answer questions directly without unnecessary fluff
-2. **Always reference accurate pricing** — $3 Basic, $9 Silver, $15 Gold, $12 Funnel Copy bump, $17 AI Prompts bump, $27/$49 DFY Vault, $5 individual vault items
+2. **Always reference accurate pricing** — $3 Basic, $9 Silver, $15 Gold, $12 Funnel Copy bump, $17 AI Prompts bump, $5 individual vault items
 3. **Guide users to the right resource** — link to /access for login, /dashboard for content, /roadmap for the AI roadmap, support@admexo.com for account issues
 4. **Never make up features** that aren't documented here
-5. **For refund requests** — direct them to support@admexo.com with their purchase email
-6. **For login issues** — remind them to check spam, try /access, or email support@admexo.com
+5. **For login issues** — remind them to check spam, try /access, or email support@admexo.com
 7. **For upgrade questions** — explain tier differences clearly and link to https://leadengine.admexo.com
 8. **For technical issues** — suggest clearing browser cache, trying a different browser, or contacting support@admexo.com
 9. **Keep responses short** — most answers should be 2-4 sentences max
